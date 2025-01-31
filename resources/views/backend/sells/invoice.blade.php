@@ -3,97 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice - {{ $sell->invoice_no }}</title>
+    <title>Invoice Report</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { width: 100%; max-width: 800px; margin: auto; padding: 20px; }
-        .header { text-align: center; }
-        .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .table th, .table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .table th { background-color: #f4f4f4; }
-        .footer { margin-top: 20px; text-align: center; font-size: 12px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h2>Invoice</h2>
-            <p>Invoice No: <strong>{{ $sell->invoice_no }}</strong></p>
-            <p>Date: <strong>{{ $sell->created_at ? $sell->created_at->format('d-m-Y') : 'N/A' }}</strong></p>
-            <p>Customer: <strong>{{ $sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'N/A' }}</strong></p>
-        </div>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($sell->sellDetail as $key => $detail)
-                    <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $detail->product ? $detail->product->names : 'N/A' }}</td>
-                        <td>{{ $detail->qty }}</td>
-                        <td>${{ number_format($detail->price, 2) }}</td>
-                        <td>${{ number_format($detail->total, 2) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="footer">
-            <p>Subtotal: <strong>${{ number_format($sell->sub_total ?? 0, 2) }}</strong></p>
-            <p>Discount: <strong>${{ number_format($sell->discount ?? 0, 2) }}</strong></p>
-            <p><strong>Grand Total: ${{ number_format($sell->grand_total ?? 0, 2) }}</strong></p>
-        </div>
-    </div>
-</body>
-</html> --}}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice - {{ $sell->invoice_no }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; font-size: 12px; text-align: center; width: 58mm; }
-        h2 { font-size: 14px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border-bottom: 1px dashed black; padding: 4px; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            width: 58mm; /* Thermal printer width */
+            margin: 0 auto;
+            text-align: center;
+        }
+        h2 { font-size: 14px; margin-bottom: 5px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        th, td {
+            border-bottom: 1px dashed black;
+            padding: 4px;
+            text-align: left;
+        }
+        th { font-size: 12px; background: none; }
         .total { font-size: 14px; font-weight: bold; }
+        .thanks { margin-top: 10px; font-size: 12px; }
     </style>
 </head>
 <body>
     <h2>INVOICE</h2>
-    <p>Invoice No: {{ $sell->invoice_no }}</p>
-    <p>Date: {{ $sell->created_at->format('d/m/Y h:i A') }}</p>
-    <p>Customer: {{ $sell->customer_id }}</p>
+    <p><strong>Invoice №:</strong> {{ $sell->invoice_no ?? 'N/A' }}</p>
+    <p><strong>Date:</strong> {{ $sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A' }}</p>
+    <p><strong>Customer:</strong> 
+        {{ $sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest' }}
+    </p>
 
     <table>
         <thead>
-            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+            <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
         </thead>
         <tbody>
-            @foreach ($sell->sellDetails as $detail)
+            @foreach ($sell->sellDetail as $detail)
             <tr>
-                <td>{{ $detail->product->names }}</td>
-                <td>{{ $detail->qty }}</td>
-                <td>${{ number_format($detail->price, 2) }}</td>
-                <td>${{ number_format($detail->qty * $detail->price, 2) }}</td>
+                <td>{{ $detail->product ? $detail->product->name : 'Unknown Product' }}</td>
+                <td>{{ $detail->qty ?? 1 }}</td>
+                <td>${{ number_format($detail->price ?? 0, 2) }}</td>
+                <td>${{ number_format(($detail->qty ?? 1) * ($detail->price ?? 0), 2) }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    <p class="total">Grand Total: ${{ number_format($sell->grand_total, 2) }}</p>
+    <p class="total">Total: ${{ number_format($sell->grand_total ?? 0, 2) }}</p>
+    <p>Paid by: {{ $sell->payment_method_id ? 'Cash' : 'N/A' }}</p>
 
-    <p>Paid via: {{ $sell->payment_method_id }}</p>
-    <p>Thanks for your purchase!</p>
+    <p class="thanks">Thank you! Please come again.</p>
 </body>
 </html>
+ --}}
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Invoice</title>
+     <style>
+         body {
+             font-family: Arial, sans-serif;
+             font-size: 11px; /* Optimized for thermal printers */
+             width: 58mm;
+             margin: 0 auto;
+             text-align: center;
+         }
+         h2 { font-size: 14px; margin-bottom: 3px; }
+         .store-info {
+             font-size: 10px;
+             margin-bottom: 5px;
+         }
+         table {
+             width: 100%;
+             border-collapse: collapse;
+             margin-top: 5px;
+         }
+         th, td {
+             border-bottom: 1px dashed black;
+             padding: 3px;
+         }
+         th {
+             font-size: 11px;
+             font-weight: bold;
+             text-align: center; /* Center headers */
+             background: none;
+         }
+         .total, .payment {
+             font-size: 12px;
+             font-weight: bold;
+             text-align: right;
+             margin-top: 5px;
+         }
+         .thanks {
+             margin-top: 10px;
+             font-size: 11px;
+             font-style: italic;
+         }
+         .divider {
+             border-top: 1px solid black;
+             margin: 5px 0;
+         }
+     </style>
+ </head>
+ <body>
+     <!-- Store Info -->
+     <h2>TANYONG BBU-BMC.</h2>
+     <p class="store-info">
+         Sereisophoan City, Banteay Meanchey Province.<br>
+         Phone: +855 93 444 498<br>
+         Date: {{ $sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A' }}
+     </p>
+ 
+     <div class="divider"></div>
+ 
+     <!-- Invoice Info -->
+     <p><strong>Invoice №:</strong> {{ $sell->invoice_no ?? 'N/A' }}</p>
+     <p><strong>Customer:</strong> 
+         {{ $sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest' }}
+     </p>
+ 
+     <div class="divider"></div>
+ 
+    <!-- Order Details -->
+<table>
+    <thead>
+        <tr>
+            <th style="width: 40%; text-align: left;">Item</th>
+            <th style="width: 15%; text-align: center;">Qty</th>
+            <th style="width: 20%; text-align: right;">Price</th>
+            <th style="width: 25%; text-align: right;">Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($sell->sellDetail as $detail)
+        <tr>
+            <td style="text-align: left;">
+                {{ $detail->product ? $detail->product->name : 'Unknown' }}
+            </td>
+            <td style="text-align: center;">
+                {{ $detail->qty ?? 1 }}
+            </td>
+            <td style="text-align: right;">
+                ${{ number_format($detail->price ?? 0, 2) }}
+            </td>
+            <td style="text-align: right;">
+                ${{ number_format(($detail->qty ?? 1) * ($detail->price ?? 0), 2) }}
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
+ 
+     <div class="divider"></div>
+ 
+     <!-- Totals -->
+     <p class="total">Subtotal: ${{ number_format($sell->total ?? 0, 2) }}</p>
+     <p class="total">Discount: ${{ number_format($sell->discount ?? 0, 2) }}</p>
+     <p class="total"><strong>Grand Total: ${{ number_format($sell->grand_total ?? 0, 2) }}</strong></p>
+ 
+     <!-- Payment Method -->
+     <p class="payment">Paid by: {{ $sell->payment_method_id ? 'Cash' : 'N/A' }}</p>
+ 
+     <div class="divider"></div>
+ 
+     <p class="thanks">Thank you for shopping with us! <br> Please visit again.</p>
+ </body>
+ </html>
+ 

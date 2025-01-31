@@ -24,25 +24,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class SellController extends Controller
 {
 
-
-
-
-
-    /**
-     * Display a listing of the resource.
-     */
     public function monthlysell(Request $request, $seller)
     {
-        //echo $seller;
-
-
-        //$model = DB::table('sells')->where('seller_id_seller', $seller)->get();
-        // $model = Sell::where('seller_id_seller', $seller)->get();
-        /*        $model = DB::table('products')
-                    ->join('sell_details', 'products.id', '=', 'sell_details.product_id')
-                    ->join('sells', 'sells.id', '=', 'sell_details.sell_id')
-                    ->where('seller_id', $seller)->get();*/
-
         $sell = Sell::with(['sellDetail' => function ($query) use ($seller) {
             $query->with([
                 'product' => function ($query) use ($seller) {
@@ -91,10 +74,6 @@ class SellController extends Controller
 
     public function boughtproduct(Request $request, $buyer)
     {
-        /*$model = DB::table('products')
-            ->join('sell_details', 'products.id', '=', 'sell_details.product_id')
-            ->join('sells', 'sells.id', '=', 'sell_details.sell_id')
-            ->where('seller_id_buyer', $buyer)->get();*/
 
         $model = Product::join('sell_details', 'products.id', '=', 'sell_details.product_id')
             ->join('sells', 'sells.id', '=', 'sell_details.sell_id')
@@ -175,64 +154,6 @@ class SellController extends Controller
             ->where('seller_id_buyer', $buyer)->get();
         return view('backend.sells.buylist', ['sell' => $model]);
     }
-
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  */
-    // public function store(Request $request)
-    // {
-
-    //     $sell = Sell::create([
-    //         'dates' => $request->input('dates'),
-    //         'times' => $request->input('times'),
-    //         'user_id_buyer' => $request->input('user_id_buyer'),
-    //         'user_id_seller' => $request->input('user_id_seller'),
-    //         'total' => $request->input('total'),
-    //         'promo_code' => $request->input('promo_code'),
-    //         'discount' => $request->input('discount'),
-    //         'pay_method' => $request->input('pay_method'),
-    //         'grand_total' => $request->input('grand_total'),
-    //         'status' => $request->input('status'),
-    //     ]);
-
-
-    //     if ($sell) {
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'status' => 200,
-    //             'message' => 'Sells created successfully',
-    //             'data' => $sell
-    //         ]);
-    //     } else {
-
-    //         return redirect()->back()->with('error', 'There was an issue creating the sell record.')->withInput();
-    //     }
-
-    // }
-
-    // public function create()
-    // {
-    //     // Fetch necessary data for dropdowns (e.g., users, payment methods, etc.)
-    //     $buyers = User::where('role', 'buyer')->get(); // Example: Fetch buyers
-    //     $sellers = User::where('role', 'seller')->get(); // Example: Fetch sellers
-    //     //$paymentMethods = PaymentMethod::all(); // Example: Fetch payment methods
-
-    //    // return view('backend.sells.create', compact('buyers', 'sellers', 'paymentMethods'));
-    //    // return view('backend.sells.create', compact('buyers', 'sellers'));
-    //     return view('backend.sells.create', compact('invoiceNumber', 'currentDate', 'buyers', 'sellers'));
-
-    // }
-
 
     public function create()
     {
@@ -454,22 +375,42 @@ class SellController extends Controller
 
     // }
 
+    // public function saleForm($table)
+    // {
+    //     $customers = Customer::all();
+    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
+    //     $category = Category::whereStatus(1)->get();
+
+    //     // Fix: Make sure to check for 'pending' or 'unpaid' orders
+    //     $order = Sell::with(['sellDetail'])
+    //                 ->where('table_id', $table)
+    //                 ->where('status', 'pending') // ✅ Add a valid status condition
+    //                 ->first();
+
+    //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
+
+    //     return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods', 'customers', 'shippingMethods'));
+    // }
+
     public function saleForm($table)
     {
         $customers = Customer::all();
         $shippingMethods = ShippingMethod::where('status', 'active')->get();
         $category = Category::whereStatus(1)->get();
-
-        // Fix: Make sure to check for 'pending' or 'unpaid' orders
-        $order = Sell::with(['sellDetail'])
+    
+        // Get the latest "paid" order for this table
+        $order = Sell::with(['sellDetail', 'customer'])
                     ->where('table_id', $table)
-                    ->where('status', 'pending') // ✅ Add a valid status condition
+                    ->whereIn('status', ['pending', 'paid']) // Include pending or paid orders
+                    ->latest()
                     ->first();
-
+    
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-
+    
         return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods', 'customers', 'shippingMethods'));
     }
+    
+    
 
 
     public function getProductByCategory(Request $request)
@@ -787,24 +728,6 @@ class SellController extends Controller
         return redirect()->route('saleDashboard')->with('success', 'Sale Confirmed Successfully!');
     }
 
-
-
-    // public function downloadInvoice($id)
-    // {
-    //     $sell = Sell::with(['sellDetail.product', 'customer'])->find($id);
-
-    //     if (!$sell) {
-    //         return back()->with('error', 'Sale record not found.');
-    //     }
-
-    //     if ($sell->sellDetail->isEmpty()) {
-    //         return back()->with('error', 'No sale details found for this order.');
-    //     }
-
-    //     $pdf = PDF::loadView('backend.sells.invoice', compact('sell'));
-
-    //     return $pdf->download('invoice_'.$sell->invoice_no.'.pdf');
-    // }
 
     public function downloadInvoice($id)
     {

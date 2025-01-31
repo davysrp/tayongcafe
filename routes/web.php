@@ -78,28 +78,23 @@ Route::middleware('auth:user')->group(function () {
        Route::resource('shipping-methods', ShippingMethodController::class);
        Route::resource('roles', RoleController::class);
 
-       //Route::get('/invoice/download/{id}', [SellController::class, 'generateInvoice'])->name('downloadInvoice');
 
-      
+       Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
+       Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
+              
 
-    //    Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-    //    Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
+    //    Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
+    //    Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
        
 
-       
-    //    Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirmPayment');
-       
-    //    Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-    //    Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
+    //     Route::post('/confirm-payment', [PaymentMethodController::class, 'confirmPayment'])->name('confirmPayment');
 
-        Route::post('/confirm-payment', [PaymentMethodController::class, 'confirmPayment'])->name('confirmPayment');
+    //    // Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirmPayment');
+    //     Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
+    //     Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
 
-       // Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirmPayment');
-        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
-
-        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
+    //     Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
+    //     Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
         
         Route::get('/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
         Route::post('/admin/sells', [SellController::class, 'store'])->name('sells.store');

@@ -13,6 +13,8 @@ class Sell extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // protected $fillable = ['invoice_no', 'customer_id', 'total', 'grand_total', 'status', 'payment_method_id'];
+
     protected $fillable =
         [
             'id',
@@ -28,7 +30,8 @@ class Sell extends Model
             'status',
             'coupon_code_id',
             'invoice_no',
-            'table_id',
+            'customer_id',
+            'table_id'
         ];
 
     // public function sellDetail()

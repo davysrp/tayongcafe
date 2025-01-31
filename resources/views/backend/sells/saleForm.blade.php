@@ -98,8 +98,34 @@
                                 @endforeach
                             </select>
                         </div>
+
+
+                        <div class="col-md-3 p-1">
+                            <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
+                        </div>
                         
+                        <div class="col-md-3 p-1">
+                            <button type="button" class="btn btn-outline-primary" id="confirm-payment">
+                                Confirm Payment
+                            </button>
+                        </div>
                         
+                        <!-- Invoice Buttons: Show Only If Order is Paid -->
+
+                        @if(isset($order) && $order->status === 'paid' && $order->id)
+                        <div class="col-md-3 p-1">
+                            <a href="{{ route('invoice.view', $order->id) }}" class="btn btn-info">View Invoice</a>
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-success">Download Invoice</a>
+                        </div>
+                    @endif
+                    
+                                                
+
+
+
+{{--                         
 <!-- Remark Input -->
 <div class="col-md-3 p-1">
     <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
@@ -120,6 +146,7 @@
         <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-success">Download Invoice</a>
     </div>
 @endif
+--}}
 
 <div class="row mt-2">
     <div class="col-md-12">
@@ -132,7 +159,7 @@
             </div>
         @endforeach
     </div>
-</div>
+</div> 
 
                 <div class="card shadow mb-4">
                     {{--  <div class="card-header py-3">
@@ -533,6 +560,9 @@
             }
 
         </script>
+
+
+        {{-- <pre>{{ print_r($order, true) }}</pre> --}}
 
     </x-slot>
 
