@@ -100,54 +100,40 @@
                         </div>
                         
                         
-                        <!-- Remark Input -->
-                        <div class="col-md-3 p-1">
-                            <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
-                        </div>             
-                                       
-                            <div class="col-md-3  p-1">
-                                <button type="button" class="btn btn-outline-primary" id="confirm-payment">Confirm
-                                    Payment
-                                </button>
-                                                        <!-- Download Invoice Button (Only if Order is Paid) -->
-                        @if(isset($order) && $order->status === 'paid' && $order->id)
-                        <div class="col-md-3 p-1">
-                            <a href="{{ route('downloadInvoice', $order->id) }}" class="btn btn-info">Download Invoice</a>
-                        </div>
-                    @endif
-                            </div>
+<!-- Remark Input -->
+<div class="col-md-3 p-1">
+    <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
+</div>
 
-                             {{-- <!-- Download Invoice Button (Only if Order is Paid) -->
-                             @if(isset($order) && $order->status === 'paid')
-                             <div class="col-md-3 p-1">
-                                 <a href="{{ route('downloadInvoice', $order->id) }}" class="btn btn-info">Download Invoice</a>
-                             </div>
-                         @endif --}}
+<div class="col-md-3 p-1">
+    <button type="button" class="btn btn-outline-primary" id="confirm-payment">
+        Confirm Payment
+    </button>
+</div>
 
+<!-- Invoice Buttons: Show Only If Order is Paid -->
+@if(isset($order) && $order->status === 'paid' && $order->id)
+    <div class="col-md-3 p-1">
+        <a href="{{ route('invoice.view', $order->id) }}" class="btn btn-info">View Invoice</a>
+    </div>
+    <div class="col-md-3 p-1">
+        <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-success">Download Invoice</a>
+    </div>
+@endif
 
+<div class="row mt-2">
+    <div class="col-md-12">
+        @foreach($paymentMethods as $item)
+            <div class="form-check form-check-inline">
+                <input class="form-check-input payment-method" type="radio"
+                       name="payment_method_id"
+                       id="payment_{{ $item->id }}" value="{{ $item->id }}">
+                <label class="form-check-label" for="payment_{{ $item->id }}">{{ $item->names }}</label>
+            </div>
+        @endforeach
+    </div>
+</div>
 
-
-
-
-                     </div>
-                    
-
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                @foreach($paymentMethods as $item)
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input payment-method" type="radio"
-                                               name="payment_method_id"
-                                               id="{!! $item->id !!}" value="{!! $item->id !!}">
-                                        <label class="form-check-label"
-                                               for="{!! $item->id !!}">{!! $item->names !!}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
                 <div class="card shadow mb-4">
                     {{--  <div class="card-header py-3">
                           <h6 class="m-0 font-weight-bold text-primary">Category/Product</h6>

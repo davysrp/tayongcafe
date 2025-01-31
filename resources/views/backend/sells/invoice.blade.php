@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,5 +52,48 @@
             <p><strong>Grand Total: ${{ number_format($sell->grand_total ?? 0, 2) }}</strong></p>
         </div>
     </div>
+</body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice - {{ $sell->invoice_no }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; text-align: center; width: 58mm; }
+        h2 { font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px dashed black; padding: 4px; text-align: left; }
+        .total { font-size: 14px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>INVOICE</h2>
+    <p>Invoice No: {{ $sell->invoice_no }}</p>
+    <p>Date: {{ $sell->created_at->format('d/m/Y h:i A') }}</p>
+    <p>Customer: {{ $sell->customer_id }}</p>
+
+    <table>
+        <thead>
+            <tr><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+            @foreach ($sell->sellDetails as $detail)
+            <tr>
+                <td>{{ $detail->product->names }}</td>
+                <td>{{ $detail->qty }}</td>
+                <td>${{ number_format($detail->price, 2) }}</td>
+                <td>${{ number_format($detail->qty * $detail->price, 2) }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+
+    <p class="total">Grand Total: ${{ number_format($sell->grand_total, 2) }}</p>
+
+    <p>Paid via: {{ $sell->payment_method_id }}</p>
+    <p>Thanks for your purchase!</p>
 </body>
 </html>

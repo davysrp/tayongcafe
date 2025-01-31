@@ -821,7 +821,6 @@ class SellController extends Controller
     public function telegramNotification(Request $request)
     {
         try {
-
             $apiToken = env('TELEGRAM_BOT_TOKEN');
             $text = 'Hello';
             $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
