@@ -484,7 +484,6 @@ class SellController extends Controller
 
     public function addCardItem(Request $request)
     {
-
         $sell = Sell::where('table_id', $request->table_id)->where('status', 'pending')->first();
         if ($sell) {
             $findProduct = Product::find($request->product_id);
@@ -703,7 +702,7 @@ class SellController extends Controller
                     'status' => 'paid',
                     'payment_method_id' => $request->payment_method_id
                 ]);
-
+                $this->telegramNotification($request);
                 return [
                     'success' => true,
                     'message' => true,
@@ -725,6 +724,8 @@ class SellController extends Controller
                 'total' => $sell->total?$sell->total:$subtotal,
                 'grand_total' => $sell->grand_total?$sell->grand_total:$subtotal
             ]);
+
+            $this->telegramNotification($request);
             return [
                 'success' => true,
                 'message' => 'Order successfully',
@@ -814,6 +815,26 @@ class SellController extends Controller
 
         // Return the PDF as a download
         return $pdf->download('invoice_'.$sell->invoice_no.'.pdf');
+    }
+
+
+    public function telegramNotification(Request $request)
+    {
+        try {
+
+            $apiToken = env('TELEGRAM_BOT_TOKEN');
+            $text = 'Hello';
+            $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
+            return $response->body();
+        } catch (\Exception $exception) {
+            return response()->json([
+                'statusCode' => 200,
+                'message' => 'Failed Notification',
+                'success' => false,
+                'data' => []
+            ]);
+        }
+
     }
 
 }
