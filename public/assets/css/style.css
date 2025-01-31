@@ -1,0 +1,15 @@
+.preview-image{
+    position: relative;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #161616;
+    background-position: center center !important;
+    background-repeat: no-repeat !important;
+    background-size: calc(100% + 130px) auto !important;
+    height: 250px;
+    border-radius: 10px;
+    transition: all 0.5s;
+    margin-bottom: 10px;
+}
