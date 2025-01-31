@@ -41,7 +41,7 @@
             "Tests\\": "tests/"
         }
     },
-    "scripts": {
+    "scriptplatform_check.phps": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

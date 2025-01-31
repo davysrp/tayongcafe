@@ -26,7 +26,7 @@ class SellController extends Controller
 
 
 
-    
+
 
     /**
      * Display a listing of the resource.
@@ -257,12 +257,12 @@ class SellController extends Controller
         // return view('backend.sells.create', compact('invoiceNumber', 'currentDate', 'buyers', 'sellers'));
 
         return view('backend.sells.create', compact(
-            'invoiceNumber', 
-            'currentDate', 
-            'currentTime', 
-            'buyers', 
-            'sellers', 
-            'paymentMethods', 
+            'invoiceNumber',
+            'currentDate',
+            'currentTime',
+            'buyers',
+            'sellers',
+            'paymentMethods',
             'couponCodes'
         ));
     }
@@ -443,7 +443,7 @@ class SellController extends Controller
     // public function saleForm($table)
     // {
     //     $customers = Customer::all();
-    //     $shippingMethods = ShippingMethod::where('status', 'active')->get(); 
+    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
 
 
     //     $category = Category::whereStatus(1)->get();
@@ -451,7 +451,7 @@ class SellController extends Controller
 
     //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
     //     return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods','customers', 'shippingMethods'));
-        
+
     // }
 
     public function saleForm($table)
@@ -459,18 +459,18 @@ class SellController extends Controller
         $customers = Customer::all();
         $shippingMethods = ShippingMethod::where('status', 'active')->get();
         $category = Category::whereStatus(1)->get();
-    
+
         // Fix: Make sure to check for 'pending' or 'unpaid' orders
         $order = Sell::with(['sellDetail'])
                     ->where('table_id', $table)
                     ->where('status', 'pending') // ✅ Add a valid status condition
                     ->first();
-    
+
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-    
+
         return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods', 'customers', 'shippingMethods'));
     }
-    
+
 
     public function getProductByCategory(Request $request)
     {
@@ -525,23 +525,22 @@ class SellController extends Controller
 
         } else {
             $findProduct = Product::find($request->product_id);
+
             $newSell = Sell::create([
                 'table_id' => $request->table_id,
                 'invoice_no' => Sell::invoiceNo(),
                 'customer_id' => $request->customer_id ?? null,
                 'status' => 'pending'
             ]);
-
-
             $price = 0;
             if (!$request->product_variant_id) {
                 $price = $findProduct->price;
             } else {
                 $findVariant = ProductVariant::find($request->product_variant_id);
-                $price = $findVariant->price;
+                $price = $findVariant->variant_price;
+
             }
             $total = $request->qty * $price;
-
             SellDetail::create([
                 'sell_id' => $newSell->id,
                 'product_id' => $findProduct->id,
@@ -553,10 +552,12 @@ class SellController extends Controller
         }
 
 
+
         return [
             'success' => true,
         ];
     }
+
 
     public function orderItemList(Request $request)
     {
@@ -736,8 +737,11 @@ class SellController extends Controller
         $findItem = SellDetail::find($request->id);
         if ($request->type == 'remove') {
             $findItem->delete();
+
+
         } else {
-            $qty = $findItem->qty - $request->qty;
+            if ($request->type == 'minus')  $qty = $findItem->qty - $request->qty;
+            if ($request->type == 'plus')  $qty = $findItem->qty + $request->qty;
 
             if ($qty == 0) {
                 $findItem->delete();
@@ -767,40 +771,40 @@ class SellController extends Controller
             'coupon_code_id' => 'nullable|exists:coupon_codes,id',
             'remark' => 'nullable|string|max:255',
         ]);
-    
+
         $sell = Sell::create([
             'customer_id' => $request->customer_id,
             'shipping_method_id' => $request->shipping_method_id,
             'payment_method_id' => $request->payment_method_id,
             'coupon_code_id' => $request->coupon_code_id,
             'remark' => $request->remark,
-            'sub_total' => 0, 
+            'sub_total' => 0,
             'discount' => 0,
-            'grand_total' => 0, 
+            'grand_total' => 0,
         ]);
-    
+
         return redirect()->route('saleDashboard')->with('success', 'Sale Confirmed Successfully!');
     }
 
 
-    
+
     // public function downloadInvoice($id)
     // {
     //     $sell = Sell::with(['sellDetail.product', 'customer'])->find($id);
-    
+
     //     if (!$sell) {
     //         return back()->with('error', 'Sale record not found.');
     //     }
-    
+
     //     if ($sell->sellDetail->isEmpty()) {
     //         return back()->with('error', 'No sale details found for this order.');
     //     }
-    
+
     //     $pdf = PDF::loadView('backend.sells.invoice', compact('sell'));
-    
+
     //     return $pdf->download('invoice_'.$sell->invoice_no.'.pdf');
     // }
-    
+
     public function downloadInvoice($id)
     {
         $sell = Sell::with(['customer', 'sellDetail.product'])->findOrFail($id);
@@ -811,5 +815,5 @@ class SellController extends Controller
         // Return the PDF as a download
         return $pdf->download('invoice_'.$sell->invoice_no.'.pdf');
     }
-    
+
 }
