@@ -32,7 +32,7 @@
     <h2>INVOICE</h2>
     <p><strong>Invoice №:</strong> {{ $sell->invoice_no ?? 'N/A' }}</p>
     <p><strong>Date:</strong> {{ $sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A' }}</p>
-    <p><strong>Customer:</strong> 
+    <p><strong>Customer:</strong>
         {{ $sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest' }}
     </p>
 
@@ -123,17 +123,17 @@
          Phone: +855 93 444 498<br>
          Date: {{ $sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A' }}
      </p>
- 
+
      <div class="divider"></div>
- 
+
      <!-- Invoice Info -->
      <p><strong>Invoice №:</strong> {{ $sell->invoice_no ?? 'N/A' }}</p>
-     <p><strong>Customer:</strong> 
+     <p><strong>Customer:</strong>
          {{ $sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest' }}
      </p>
- 
+
      <div class="divider"></div>
- 
+
     <!-- Order Details -->
 <table>
     <thead>
@@ -148,7 +148,7 @@
         @foreach ($sell->sellDetail as $detail)
         <tr>
             <td style="text-align: left;">
-                {{ $detail->product ? $detail->product->name : 'Unknown' }}
+                {{ $detail->product ? $detail->product->names : 'Unknown' }}
             </td>
             <td style="text-align: center;">
                 {{ $detail->qty ?? 1 }}
@@ -164,20 +164,19 @@
     </tbody>
 </table>
 
- 
+
      <div class="divider"></div>
- 
+
      <!-- Totals -->
      <p class="total">Subtotal: ${{ number_format($sell->total ?? 0, 2) }}</p>
      <p class="total">Discount: ${{ number_format($sell->discount ?? 0, 2) }}</p>
      <p class="total"><strong>Grand Total: ${{ number_format($sell->grand_total ?? 0, 2) }}</strong></p>
- 
+
      <!-- Payment Method -->
      <p class="payment">Paid by: {{ $sell->payment_method_id ? 'Cash' : 'N/A' }}</p>
- 
+
      <div class="divider"></div>
- 
+
      <p class="thanks">Thank you for shopping with us! <br> Please visit again.</p>
  </body>
  </html>
- 
