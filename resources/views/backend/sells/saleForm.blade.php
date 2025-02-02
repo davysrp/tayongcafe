@@ -19,9 +19,6 @@
 
             <div class="col-lg-5 mb-4">
                 <div class="card shadow mb-4">
-                    {{-- <div class="card-header py-3">
-                         <h6 class="m-0 font-weight-bold text-primary">Order Item</h6>
-                     </div>--}}
                     <div class="card-body">
                         <input type="hidden" id="table_id" value="{!! $table !!}">
                         <table class="table table-striped" id="orderItemList">
@@ -63,17 +60,10 @@
                     <div class="card-body">
                         <div class="row">
 
-                            {{-- <div class="col-md-3 p-1">
-
-                                <select class="form-control" placeholder="Customer" id="customer_id">
-                                    <option disabled selected>Customer</option>
-                                </select>
-                            </div> --}}
-
                             <div class="col-md-3 p-1">
                                 <select class="form-control" name="customer_id" required>
                                     <option value="" disabled selected>Customer</option>
-                                    {{-- <option disabled selected>Customer</option> --}}
+                                    
                                     @foreach($customers as $customer)
                                         <option value="{{ $customer->id }}">{{ $customer->first_name }} {{ $customer->last_name }}</option>
                                     @endforeach
@@ -90,19 +80,19 @@
                             </div>
 
                         <!-- Shipping Method Dropdown -->
-                        <div class="col-md-3 p-1">
+                        {{-- <div class="col-md-3 p-1">
                             <select class="form-control" name="shipping_method_id" required>
                                 <option value="" disabled selected>Select Shipping Method</option>
                                 @foreach($shippingMethods as $method)
                                     <option value="{{ $method->id }}">{{ $method->name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
 
-                        <div class="col-md-3 p-1">
+                        {{-- <div class="col-md-3 p-1">
                             <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
-                        </div>
+                        </div> --}}
                         
                         <div class="col-md-3 p-1">
                             <button type="button" class="btn btn-outline-primary" id="confirm-payment">
@@ -112,59 +102,32 @@
                         
                         <!-- Invoice Buttons: Show Only If Order is Paid -->
 
-                        @if(isset($order) && $order->status === 'paid' && $order->id)
+                        {{-- @if(isset($order) && $order->status === 'paid' && $order->id)
                         <div class="col-md-3 p-1">
                             <a href="{{ route('invoice.view', $order->id) }}" class="btn btn-info">View Invoice</a>
                         </div>
                         <div class="col-md-3 p-1">
                             <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-success">Download Invoice</a>
                         </div>
-                    @endif
-                    
-                                                
+                    @endif --}}
 
 
 
-{{--                         
-<!-- Remark Input -->
-<div class="col-md-3 p-1">
-    <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
-</div>
 
-<div class="col-md-3 p-1">
-    <button type="button" class="btn btn-outline-primary" id="confirm-payment">
-        Confirm Payment
-    </button>
-</div>
-
-<!-- Invoice Buttons: Show Only If Order is Paid -->
-@if(isset($order) && $order->status === 'paid' && $order->id)
-    <div class="col-md-3 p-1">
-        <a href="{{ route('invoice.view', $order->id) }}" class="btn btn-info">View Invoice</a>
-    </div>
-    <div class="col-md-3 p-1">
-        <a href="{{ route('invoice.download', $order->id) }}" class="btn btn-success">Download Invoice</a>
-    </div>
-@endif
---}}
-
-<div class="row mt-2">
-    <div class="col-md-12">
-        @foreach($paymentMethods as $item)
-            <div class="form-check form-check-inline">
-                <input class="form-check-input payment-method" type="radio"
-                       name="payment_method_id"
-                       id="payment_{{ $item->id }}" value="{{ $item->id }}">
-                <label class="form-check-label" for="payment_{{ $item->id }}">{{ $item->names }}</label>
-            </div>
-        @endforeach
-    </div>
-</div> 
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        @foreach($paymentMethods as $item)
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input payment-method" type="radio"
+                                       name="payment_method_id"
+                                       id="payment_{{ $item->id }}" value="{{ $item->id }}">
+                                <label class="form-check-label" for="payment_{{ $item->id }}">{{ $item->names }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div> 
 
                 <div class="card shadow mb-4">
-                    {{--  <div class="card-header py-3">
-                          <h6 class="m-0 font-weight-bold text-primary">Category/Product</h6>
-                      </div>--}}
                     <div class="card-body">
                         <div class="row mt-3">
                             <div class="col-md-12">
@@ -189,6 +152,7 @@
 
     </div>
 
+    
 @include('backend.sells.khqr')
 
 <!-- Modal -->
@@ -217,8 +181,108 @@
         <link rel="stylesheet"
               href="{!! asset('assets/js/select2-bootstrap4-theme/select2-bootstrap4.min.css') !!}">
         <link href="{!! asset('assets/khqr/style.css?v='.time()) !!}" rel="stylesheet">
+        
     </x-slot>
     <x-slot name="script">
+
+        {{-- Code alert  --}}
+        
+        {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.getElementById("confirm-payment").addEventListener("click", function () {
+                let orderId = "{{ $order->id ?? '' }}";
+        
+                if (!orderId) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Order Not Found!',
+                        text: 'Please add items before confirming payment.',
+                    });
+                    return;
+                }
+        
+                fetch("{{ route('confirm.payment') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ order_id: orderId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful 🎉',
+                            html: `
+                                <div style="text-align: left;">
+                                    <strong>TANYONG BBU-BMC.</strong><br>
+                                    Sereisophoan City, Banteay Meanchey Province.<br>
+                                    Phone: +855 93 444 498<br>
+                                    <strong>Date:</strong> ${data.date}<br><br>
+                                    
+                                    <strong>Invoice №:</strong> ${data.invoice_no}<br>
+                                    <strong>Customer:</strong> ${data.customer}<br><br>
+        
+                                    <table style="width:100%; border-collapse: collapse; text-align: left;">
+                                        <tr>
+                                            <th style="border-bottom: 1px solid #ccc;">Item</th>
+                                            <th style="border-bottom: 1px solid #ccc;">Qty</th>
+                                            <th style="border-bottom: 1px solid #ccc;">Price</th>
+                                            <th style="border-bottom: 1px solid #ccc;">Total</th>
+                                        </tr>
+                                        ${data.items.map(item => `
+                                            <tr>
+                                                <td>${item.name}</td>
+                                                <td>${item.qty}</td>
+                                                <td>$${item.price}</td>
+                                                <td>$${item.total}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </table><br>
+        
+                                    <strong>Subtotal:</strong> $${data.subtotal}<br>
+                                    <strong>Discount:</strong> $${data.discount}<br>
+                                    <strong>Grand Total:</strong> $${data.grand_total}<br><br>
+        
+                                    <strong>Paid by:</strong> ${data.payment_method}<br><br>
+        
+                                    <em>Thank you for shopping with us!<br>
+                                    Please visit again.</em>
+                                </div>
+                            `,
+                            showCancelButton: true,
+                            confirmButtonText: 'Download Invoice',
+                            cancelButtonText: 'Close',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = data.invoice_download;
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Payment Failed!',
+                            text: data.message,
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Payment Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Unexpected Error!',
+                        text: 'Something went wrong. Please try again!',
+                    });
+                });
+            });
+        </script> --}}
+        
+        
+
+        
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{!! asset('assets/js/select2/js/select2.full.min.js') !!}"></script>
         <script src="{!! asset('assets/khqr/khqr-1.0.16.min.js') !!}"></script>
@@ -526,6 +590,7 @@
                                 });
                             }
                         });
+                        
 
                     } else {
                         // alert('Please select Payment method before confirm payment')

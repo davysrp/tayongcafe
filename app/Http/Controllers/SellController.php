@@ -705,7 +705,9 @@ class SellController extends Controller
         try {
             $apiToken = env('TELEGRAM_BOT_TOKEN');
             $text = 'Hello';
+
             $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
+
             return $response->body();
         } catch (\Exception $exception) {
             return response()->json([
@@ -717,5 +719,37 @@ class SellController extends Controller
         }
 
     }
+
+    // use Illuminate\Http\Request;
+    // use Illuminate\Support\Facades\Http;
+    
+    // public function processPayment(Request $request)
+    // {
+    //     // Simulate payment success or failure
+    //     $paymentStatus = rand(0, 1) ? 'success' : 'failed';
+    
+    //     // Set the message
+    //     $message = $paymentStatus === 'success' 
+    //         ? "🚀 Payment Successful! Your order is confirmed." 
+    //         : "❌ Payment Failed! Please try again later.";
+    
+    //     // Get Telegram API Token & Chat ID from .env
+    //     $apiToken = env('TELEGRAM_BOT_TOKEN');
+    //     $chatId = env('TELEGRAM_CHAT_CHANEL');
+    
+    //     // Send Telegram Notification using Http::get()
+    //     $response = Http::get("https://api.telegram.org/bot{$apiToken}/sendMessage", [
+    //         'chat_id' => $chatId,
+    //         'text' => $message
+    //     ]);
+    
+    //     // Return response (including Telegram API response for debugging)
+    //     return response()->json([
+    //         'status' => $paymentStatus,
+    //         'telegram_response' => $response->json()
+    //     ]);
+    // }
+    
+
 
 }

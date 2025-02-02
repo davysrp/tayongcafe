@@ -83,6 +83,7 @@ Route::middleware('auth:user')->group(function () {
        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
 
+       Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirm.payment');
 
        Route::get('/admin/report', [DashboardController::class, 'report'])->name('report.index');
        Route::get('/admin/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
