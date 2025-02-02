@@ -267,16 +267,6 @@ class SellController extends Controller
      */
     public function update(Request $request, Sell $sell, $id)
     {
-        // $data = $this->data($request);
-        // $sell->update($data);
-
-        // return response()->json([
-        //     'success'=>true,
-        //     'status'=>200,
-        //     'message'=>'Sell update successful',
-        // ]);
-
-
         $sell = Sell::findOrFail($id);
         $sell->update([
             'dates' => $request->input('dates'),
@@ -360,37 +350,6 @@ class SellController extends Controller
     {
         return view('backend.sells.saleDashboard');
     }
-
-    // public function saleForm($table)
-    // {
-    //     $customers = Customer::all();
-    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
-
-
-    //     $category = Category::whereStatus(1)->get();
-    //     $order = Sell::with(['sellDetail'])->where('table_id', $table)->where('status')->first();
-
-    //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
-    //     return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods','customers', 'shippingMethods'));
-
-    // }
-
-    // public function saleForm($table)
-    // {
-    //     $customers = Customer::all();
-    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
-    //     $category = Category::whereStatus(1)->get();
-
-    //     // Fix: Make sure to check for 'pending' or 'unpaid' orders
-    //     $order = Sell::with(['sellDetail'])
-    //                 ->where('table_id', $table)
-    //                 ->where('status', 'pending') // ✅ Add a valid status condition
-    //                 ->first();
-
-    //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
-
-    //     return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods', 'customers', 'shippingMethods'));
-    // }
 
     public function saleForm($table)
     {

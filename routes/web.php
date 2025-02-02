@@ -15,6 +15,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -81,20 +82,11 @@ Route::middleware('auth:user')->group(function () {
 
        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
-              
 
-    //    Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
-    //    Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
-       
 
-    //     Route::post('/confirm-payment', [PaymentMethodController::class, 'confirmPayment'])->name('confirmPayment');
+       Route::get('/admin/report', [DashboardController::class, 'report'])->name('report.index');
+       Route::get('/admin/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
 
-    //    // Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirmPayment');
-    //     Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-    //     Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
-
-    //     Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('viewInvoice');
-    //     Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('downloadInvoice');
         
         Route::get('/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
         Route::post('/admin/sells', [SellController::class, 'store'])->name('sells.store');

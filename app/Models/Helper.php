@@ -33,33 +33,57 @@ class Helper
             ],
 
             
-            [
-                'menu_name' => 'Sell Management',
-                'icon' => '<i class="fas fa-money-check-alt"></i>',
-                'permission' => '',
-                'child' => [
-                    [
-                        'menu_name' => 'Sale Dashboard',
-                        'icon' => '',
-                        'permission' => '',
-                        'route' => \Route::has('saleDashboard') ? route('saleDashboard') : '#',
-                    ],
-                    [
-                        'menu_name' => 'Sales by Table',
-                        'icon' => '',
-                        'permission' => '',
-                        'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#', // Default table = 1
-                    ],
-                ]
-            ],
+            // [
+            //     'menu_name' => 'Sell Management',
+            //     'icon' => '<i class="fas fa-money-check-alt"></i>',
+            //     'permission' => '',
+            //     'child' => [
+            //         // [
+            //         //     'menu_name' => 'Sale Dashboard',
+            //         //     'icon' => '',
+            //         //     'permission' => '',
+            //         //     'route' => \Route::has('saleDashboard') ? route('saleDashboard') : '#',
+            //         // ],
+            //         [
+            //             'menu_name' => 'Sales by Table',
+            //             'icon' => '',
+            //             'permission' => '',
+            //             'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#', // Default table = 1
+            //         ],
+            //     ]
+            // ],
             
 
             [
                 'menu_name' => 'Sell Dashboard',
                 'icon' => '<i class="fas fa-money-check-alt"></i>',
                 'permission' => '',
-                'route' => \Route::has('saleDashboard') ? route("saleDashboard") : '#',
+                // 'route' => \Route::has('saleDashboard') ? route("saleDashboard") : '#',
+                'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#',
             ],
+
+            
+            [
+                'menu_name' => 'Product',
+                'icon' => '',
+                'permission' => '',
+                'child' => [
+                    [
+                        'menu_name' => 'Category',
+                        'icon' => '',
+                        'permission' => '',
+                        'route' => \Route::has('categories.index') ? route("categories.index") : '#',
+                    ],
+                    [
+                        'menu_name' => 'Product',
+                        'icon' => '',
+                        'permission' => '',
+                        'route' => \Route::has('products.index') ? route("products.index") : '#',
+                    ],
+
+                ]
+                ],
+
             [
                 'menu_name' => 'Coupon Code',
                 'icon' => '<i class="fas fa-gifts"></i>',
@@ -88,46 +112,25 @@ class Helper
                 'route' => \Route::has('payment-method.index') ? route("payment-method.index") : '#',
             ],
 
-            [
-                'menu_name' => 'Shipping Method',
-                'icon' => '<i class="fas fa-money-check"></i>',
-                'permission' => '',
-               // 'route' => \Route::has('shipping-method.index') ? route("shipping-method.index") : '#',
-                'route' => \Route::has('shipping-methods.index') ? route("shipping-methods.index") : '#',
-
-            ],
-
-
-
-            [
-                'menu_name' => 'Product',
-                'icon' => '',
-                'permission' => '',
-                'child' => [
-                    [
-                        'menu_name' => 'Category',
-                        'icon' => '',
-                        'permission' => '',
-                        'route' => \Route::has('categories.index') ? route("categories.index") : '#',
-                    ],
-                    [
-                        'menu_name' => 'Product',
-                        'icon' => '',
-                        'permission' => '',
-                        'route' => \Route::has('products.index') ? route("products.index") : '#',
-                    ],
-
-                ]
-                ]
-
-            
             // [
-            //     'menu_name' => 'Roles Permissions',
-            //     'icon' => '<i class="fas fa-user-shield"></i>',
+            //     'menu_name' => 'Shipping Method',
+            //     'icon' => '<i class="fas fa-money-check"></i>',
             //     'permission' => '',
-            //     'route' => \Route::has('roles.index') ? route("roles.index") : '#',
-            // ]
-            
+            //    // 'route' => \Route::has('shipping-method.index') ? route("shipping-method.index") : '#',
+            //     'route' => \Route::has('shipping-methods.index') ? route("shipping-methods.index") : '#',
+
+            // ],
+
+
+
+
+                [
+                    'menu_name' => 'Reports',
+                    'icon' => '<i class="fas fa-money-check"></i>',
+                    'permission' => '',
+                    'route' => \Route::has('report.index') ? route("report.index") : '#',
+                    
+                ],
         ];
     }
 
