@@ -112,8 +112,6 @@
                     @endif --}}
 
 
-
-
                 <div class="row mt-2">
                     <div class="col-md-12">
                         @foreach($paymentMethods as $item)
@@ -186,7 +184,10 @@
     <x-slot name="script">
 
         {{-- Code alert  --}}
-        
+
+        <!-- Include SweetAlert2 (CDN) -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
@@ -533,76 +534,207 @@
             var optionalData_ = null;
 
 
+            
+
+
+            // $(document).ready(function () {
+            //     var md5 = null;
+            //     $('#confirm-payment').on('click', function () {
+            //         var table_id = $('#table_id').val();
+            //         var grand_total = $('#textGrandTotal').val();
+            //         var customer_id = $('#customer_id').val();
+            //         // var grand_total = 0.01;
+            //         if (grand_total == 0) grand_total = 0.01;
+            //         var merchantInfoData = null
+            //         var optionalData_ = null
+            //         $('.home-amount').val(grand_total)
+            //         const paymentMethod = $('input[name="payment_method_id"]:checked').val();
+            //         console.log(paymentMethod);
+
+            //         if (paymentMethod) {
+
+            //             Swal.fire({
+            //                 title: "Do you want to confirm order?",
+            //                 showDenyButton: true,
+            //                 confirmButtonText: "Yes",
+            //             }).then((result) => {
+            //                 /* Read more about isConfirmed, isDenied below */
+            //                 if (result.isConfirmed) {                    
+            //                 // Show Loading Indicator
+
+            //                 Swal.fire({
+
+            //                     title: 'Processing Payment...',
+            //                     text: 'Please wait while we process your payment.',
+            //                     allowOutsideClick: false,
+            //                     allowEscapeKey: false,
+            //                     showConfirmButton: false,
+            //                     didOpen: () => {
+            //                         Swal.showLoading();
+            //                     }
+            //                 });
+                            
+            //                     $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
+            //                         if (data.success == true) {
+            //                             token = data.data.method.token;
+            //                             merchantInfoData = data.data.merchantInfoData;
+            //                             optionalData_ = data.data.optionalData_;
+            //                         }
+            //                     });
+
+            //                     sleep(1000).then(() => {
+            //                         var orderLink = "{!! route('placeOrderAdmin') !!}";
+            //                         var orderData = {
+            //                             payment_method_id: paymentMethod,
+            //                             invoice_no: optionalData_.billNumber,
+            //                             customer_id: customer_id,
+            //                             table_id: table_id,
+            //                             is_order: paymentMethod === 1 ? 0 : 1,
+            //                         };
+            //                         if (paymentMethod == 1) {
+            //                             $('.home-amount').text(grand_total);
+            //                             var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
+            //                             var qrUrl = generateQRCode(qrData.qr)
+            //                             md5 = qrData.md5
+            //                             $('#qrCode').attr('src', qrUrl)
+            //                             $('body').addClass("modal-show");
+            //                             $('#KHqrModal').modal('show')
+            //                             updateCountdown(180);
+            //                             // Call the function to initiate the process
+            //                             checkTransactionData(md5, orderData, optionalData_.billNumber);
+            //                         } else {
+            //                             checkTransactionData(md5, orderData, optionalData_.billNumber);
+            //                         }
+            //                     });
+            //                 }
+            //             });
+                        
+
+            //         } else {
+            //             // alert('Please select Payment method before confirm payment')
+            //             Swal.fire("Please select Payment method before confirm payment");
+            //         }
+
+            //     });
+
+            //         function checkTransactionData(md5, orderData, inv) {
+
+            //             let intervalId;
+
+            //             function refresh() {
+            //                 $.post("{!! route('checkTransactionOrderAdmin') !!}", {
+            //                     md5: md5,
+            //                     payment_method_id: orderData.payment_method_id,
+            //                     orderData: orderData
+            //                 }, function (data) {
+            //                     if (data.success == true) {
+            //                         $('#KHqrModal').modal('hide'); // Hide the QR modal if open
+                                
+            //                         // Show SweetAlert2 popup with embedded invoice
+            //                         Swal.fire({
+            //                             title: 'Payment Successful!',
+            //                             html: `
+                                    
+            //                                 <iframe src="{{ route('invoice.view', $order->id) }}" width="100%" height="400px" style="border: none;"></      iframe>
+            //                             `,
+            //                             icon: 'success',
+            //                             showCancelButton: true,
+            //                             confirmButtonText: 'Download Invoice',
+            //                             cancelButtonText: 'Close',
+            //                             width: '600px'
+            //                         }).then((result) => {
+            //                             if (result.isConfirmed) {
+            //                                 window.location.href = "{{ route('invoice.download', $order->id) }}";
+            //                             }
+            //                         });
+                                
+            //                         clearInterval(intervalId);
+            //                     }
+            //                 });
+            //             }
+                    
+            //             intervalId = setInterval(refresh, 5000);
+            //         }
+            // });
+
             $(document).ready(function () {
+
+
                 var md5 = null;
+
                 $('#confirm-payment').on('click', function () {
                     var table_id = $('#table_id').val();
                     var grand_total = $('#textGrandTotal').val();
                     var customer_id = $('#customer_id').val();
-                    // var grand_total = 0.01;
                     if (grand_total == 0) grand_total = 0.01;
-                    var merchantInfoData = null
-                    var optionalData_ = null
-                    $('.home-amount').val(grand_total)
+                    var merchantInfoData = null;
+                    var optionalData_ = null;
+                    $('.home-amount').val(grand_total);
                     const paymentMethod = $('input[name="payment_method_id"]:checked').val();
-                    console.log(paymentMethod);
-
+                
                     if (paymentMethod) {
-
                         Swal.fire({
                             title: "Do you want to confirm order?",
                             showDenyButton: true,
                             confirmButtonText: "Yes",
                         }).then((result) => {
-                            /* Read more about isConfirmed, isDenied below */
                             if (result.isConfirmed) {
-                                $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
-                                    if (data.success == true) {
-                                        token = data.data.method.token;
-                                        merchantInfoData = data.data.merchantInfoData;
-                                        optionalData_ = data.data.optionalData_;
+                                // Show Loading Indicator
+                                Swal.fire({
+                                    title: 'Processing Payment...',
+                                    text: 'Please wait while we process your payment.',
+                                    allowOutsideClick: false,
+                                    allowEscapeKey: false,
+                                    showConfirmButton: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
                                     }
                                 });
-
-                                sleep(1000).then(() => {
-                                    var orderLink = "{!! route('placeOrderAdmin') !!}";
-                                    var orderData = {
-                                        payment_method_id: paymentMethod,
-                                        invoice_no: optionalData_.billNumber,
-                                        customer_id: customer_id,
-                                        table_id: table_id,
-                                        is_order: paymentMethod === 1 ? 0 : 1,
-                                    };
-                                    if (paymentMethod == 1) {
-                                        $('.home-amount').text(grand_total);
-                                        var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
-                                        var qrUrl = generateQRCode(qrData.qr)
-                                        md5 = qrData.md5
-                                        $('#qrCode').attr('src', qrUrl)
-                                        $('body').addClass("modal-show");
-                                        $('#KHqrModal').modal('show')
-                                        updateCountdown(180);
-                                        // Call the function to initiate the process
-                                        checkTransactionData(md5, orderData, optionalData_.billNumber);
-                                    } else {
-                                        checkTransactionData(md5, orderData, optionalData_.billNumber);
-                                    }
-                                });
+                            
+                                setTimeout(() => {
+                                    // Fetch payment method details
+                                    $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
+                                        if (data.success == true) {
+                                            token = data.data.method.token;
+                                            merchantInfoData = data.data.merchantInfoData;
+                                            optionalData_ = data.data.optionalData_;
+                                        }
+                                    });
+                                
+                                    setTimeout(() => {
+                                        var orderLink = "{!! route('placeOrderAdmin') !!}";
+                                        var orderData = {
+                                            payment_method_id: paymentMethod,
+                                            invoice_no: optionalData_.billNumber,
+                                            customer_id: customer_id,
+                                            table_id: table_id,
+                                            is_order: paymentMethod === 1 ? 0 : 1,
+                                        };
+                                        if (paymentMethod == 1) {
+                                            $('.home-amount').text(grand_total);
+                                            var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
+                                            var qrUrl = generateQRCode(qrData.qr);
+                                            md5 = qrData.md5;
+                                            $('#qrCode').attr('src', qrUrl);
+                                            $('body').addClass("modal-show");
+                                            $('#KHqrModal').modal('show');
+                                            updateCountdown(180);
+                                            checkTransactionData(md5, orderData, optionalData_.billNumber);
+                                        } else {
+                                            checkTransactionData(md5, orderData, optionalData_.billNumber);
+                                        }
+                                    }, 1000); // Small delay for request completion
+                                }, 1000); // 5 seconds delay for "Processing Payment"
                             }
                         });
-                        
-
                     } else {
-                        // alert('Please select Payment method before confirm payment')
-                        Swal.fire("Please select Payment method before confirm payment");
+                        Swal.fire("Please select a payment method before confirming payment");
                     }
-
                 });
-
-
+            
                 function checkTransactionData(md5, orderData, inv) {
                     let intervalId;
-
+                
                     function refresh() {
                         $.post("{!! route('checkTransactionOrderAdmin') !!}", {
                             md5: md5,
@@ -611,12 +743,30 @@
                         }, function (data) {
                             if (data.success == true) {
                                 $('#KHqrModal').modal('hide');
-                                alert('Payment Successful')
+                            
+                                // Show Payment Success Popup with Embedded Invoice
+                                Swal.fire({
+                                    title: 'Payment Successful!',
+                                    html: `
+                                        <iframe src="{{ route('invoice.view', $order->id) }}" width="100%" height="400px" style="border: none;"></iframe>
+                                    `,
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Download Invoice',
+                                    cancelButtonText: 'Close',
+                                    width: '600px'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        window.location.href = "{{ route('invoice.download', $order->id) }}";
+                                    }
+                                });
+                            
+                                clearInterval(intervalId);
                             }
                         });
                     }
-
-                    intervalId = setInterval(refresh, 5000);
+                
+                    intervalId = setInterval(refresh, 1000);
                 }
             });
 
@@ -627,8 +777,8 @@
         </script>
 
 
-        {{-- <pre>{{ print_r($order, true) }}</pre> --}}
-
     </x-slot>
 
 </x-admin-layout>
+
+

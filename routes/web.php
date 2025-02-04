@@ -88,7 +88,15 @@ Route::middleware('auth:user')->group(function () {
        Route::get('/admin/report', [DashboardController::class, 'report'])->name('report.index');
        Route::get('/admin/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
 
-        
+       
+
+       
+      // Route::get('/report', [DashboardController::class, 'index'])->name('report.index');
+       //Route::get('/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
+       
+
+
+
         Route::get('/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
         Route::post('/admin/sells', [SellController::class, 'store'])->name('sells.store');
 

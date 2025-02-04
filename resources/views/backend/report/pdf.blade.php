@@ -6,15 +6,17 @@
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; }
-        .logo { width: 100px; }
+        .header { margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <h2>Sales Report</h2>
-    <p><strong>From:</strong> {{ $startDate }} - <strong>To:</strong> {{ $endDate }}</p>
+    <div class="header">
+        <h2>Sales Report</h2>
+        <p><strong>From:</strong> {{ $startDate }} - <strong>To:</strong> {{ $endDate }}</p>
+    </div>
 
     <table>
         <thead>

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\Http;
 class SellController extends Controller
 {
 
@@ -704,7 +704,7 @@ class SellController extends Controller
     {
         try {
             $apiToken = env('TELEGRAM_BOT_TOKEN');
-            $text = 'Hello';
+            $text = '🚀 Payment Successful! Your order is confirmed.';
 
             $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
 
@@ -720,8 +720,6 @@ class SellController extends Controller
 
     }
 
-    // use Illuminate\Http\Request;
-    // use Illuminate\Support\Facades\Http;
     
     // public function processPayment(Request $request)
     // {
