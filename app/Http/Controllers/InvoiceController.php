@@ -10,11 +10,12 @@ use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
-    public function viewInvoice($sellId)
+    public function viewInvoice($sellId,Request $request)
     {
         $sell = Sell::with(['sellDetail'=>function($q){
             $q->with(['product']);
-        }, 'customer'])->findOrFail($sellId);
+        }, 'customer'])->findOrFail($request->order_id);
+
 
         // If no customer exists, assign "General Customer"
 
