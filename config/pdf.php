@@ -53,7 +53,7 @@ return [
     'margin_header'            => 0,
     'margin_footer'            => 0,
     'orientation'              => 'P',
-    'title'                    => 'Mayura Invoice',
+    'title'                    => 'Tangong Invoice',
     'subject'                  => '',
     'author'                   => '',
     'watermark'                => '',
@@ -78,31 +78,6 @@ return [
             'useOTL' => 0xFF,   // required for complicated langs like Persian, Arabic and Chinese
             'useKashida' => 75, // required for complicated langs like Persian, Arabic and Chinese
         ],
-        'muollight' => [
-            'R'  => 'KhmerOS_muollight.ttf',   // regular font
-            'useOTL' => 0xFF,   // required for complicated langs like Persian, Arabic and Chinese
-            'useKashida' => 75, // required for complicated langs like Persian, Arabic and Chinese
-        ],
-        'roboto' => [
-            'R' => 'Roboto-Regular.ttf',
-            'useOTL' => 0xFF, // required for Khmer
-            'useKashida' => 75, // required for Khmer
-        ],
-        'bayon' => [
-            'R' => 'Bayon-Regular.ttf',
-            'useOTL' => 0xFF, // required for Khmer
-            'useKashida' => 75, // required for Khmer
-        ],
-        'angkor' => [
-            'R' => 'Angkor-Regular.ttf',
-            'useOTL' => 0xFF, // required for Khmer
-            'useKashida' => 75, // required for Khmer
-        ],
-        'siemreap' => [
-            'R' => 'Siemreap-Regular.ttf',
-            'useOTL' => 0xFF, // required for Khmer
-            'useKashida' => 75, // required for Khmer
-        ] ,
-        // ...add as many as you want.
+
     ]
 ];
