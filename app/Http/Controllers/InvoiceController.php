@@ -22,7 +22,6 @@ class InvoiceController extends Controller
             $defaultCustomer = Customer::where('first_name', 'General')
                                         ->where('last_name', 'Customer')
                                         ->first();
-
             if ($defaultCustomer) {
                 $sell->customer_id = $defaultCustomer->id;
                 $sell->save();
@@ -51,12 +50,12 @@ class InvoiceController extends Controller
 
         $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
                   ->setPaper([0, 0, 160, 600]); // Adjust width (160pt = ~58mm)
-        
+
         return $pdf->download('invoice_' . ($sell->invoice_no ?? 'N/A') . '.pdf');
     }
 
     //
-    
+
     // // Export report as PDF
     // public function exportPdf(Request $request)
     // {
