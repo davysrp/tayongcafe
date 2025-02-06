@@ -84,6 +84,7 @@
         <tr>
             <td style="text-align: left;">
                 {{ $detail->product ? $detail->product->names : 'Unknown' }}
+                {!! $detail->productVariant->variant_name ?? null !!}
             </td>
             <td style="text-align: center;">
                 {{ $detail->qty ?? 1 }}
