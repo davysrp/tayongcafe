@@ -52,10 +52,10 @@ class Sell extends Model
     }
 
     
-    public function buyer()
-    {
-        return $this->belongsTo(Seller::class, 'seller_id_buyer', 'id');
-    }
+    // public function buyer()
+    // {
+    //     return $this->belongsTo(Seller::class, 'seller_id_buyer', 'id');
+    // }
 
     protected static function boot()
     {

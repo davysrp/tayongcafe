@@ -33,34 +33,34 @@ class Helper
             ],
 
             
-            // [
-            //     'menu_name' => 'Sell Management',
-            //     'icon' => '<i class="fas fa-money-check-alt"></i>',
-            //     'permission' => '',
-            //     'child' => [
-            //         // [
-            //         //     'menu_name' => 'Sale Dashboard',
-            //         //     'icon' => '',
-            //         //     'permission' => '',
-            //         //     'route' => \Route::has('saleDashboard') ? route('saleDashboard') : '#',
-            //         // ],
-            //         [
-            //             'menu_name' => 'Sales by Table',
-            //             'icon' => '',
-            //             'permission' => '',
-            //             'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#', // Default table = 1
-            //         ],
-            //     ]
-            // ],
-            
-
             [
-                'menu_name' => 'Sell Dashboard',
+                'menu_name' => 'Sell Management',
                 'icon' => '<i class="fas fa-money-check-alt"></i>',
                 'permission' => '',
-                // 'route' => \Route::has('saleDashboard') ? route("saleDashboard") : '#',
-                'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#',
+                'child' => [
+                    [
+                        'menu_name' => 'General Table',
+                        'icon' => '',
+                        'permission' => '',
+                        'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#', // Default table = 1
+                    ],
+                    [
+                        'menu_name' => 'Sale by Table',
+                        'icon' => '',
+                        'permission' => '',
+                        'route' => \Route::has('saleDashboard') ? route('saleDashboard') : '#',
+                    ],
+                ]
             ],
+            
+
+            // [
+            //     'menu_name' => 'General Sales',
+            //     'icon' => '<i class="fas fa-money-check-alt"></i>',
+            //     'permission' => '',
+            //     // 'route' => \Route::has('saleDashboard') ? route("saleDashboard") : '#',
+            //     'route' => \Route::has('saleForm') ? route('saleForm', ['table' => 1]) : '#',
+            // ],
 
             
             [
