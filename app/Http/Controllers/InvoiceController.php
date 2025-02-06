@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Sell;
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -34,6 +32,7 @@ class InvoiceController extends Controller
 
     public function downloadInvoice($sellId)
     {
+
         $sell = Sell::with(['sellDetail'=>function($q){
             $q->with(['product']);
         }, 'customer'])->findOrFail($sellId);
@@ -49,10 +48,18 @@ class InvoiceController extends Controller
             }
         }
 
-        $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
+     /*   $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
+            ->setOptions(['defaultFont' => 'NotoSansKhmer'])
                   ->setPaper([0, 0, 160, 600]); // Adjust width (160pt = ~58mm)
 
-        return $pdf->download('invoice_' . ($sell->invoice_no ?? 'N/A') . '.pdf');
+        return $pdf->download('invoice_' . ($sell->invoice_no ?? 'N/A') . '.pdf');*/
+
+        $pdf = PDF::loadView('backend.sells.invoice', compact('sell'));
+
+        $pdf->getMpdf()->SetPageSize([215.9, 279.4]);
+        return $pdf->stream('invoice' . time() . '.pdf');
+
+
     }
 
     //
