@@ -356,20 +356,20 @@ class SellController extends Controller
         $customers = Customer::all();
         $shippingMethods = ShippingMethod::where('status', 'active')->get();
         $category = Category::whereStatus(1)->get();
-    
+
         // Get the latest "paid" order for this table
         $order = Sell::with(['sellDetail', 'customer'])
                     ->where('table_id', $table)
                     ->whereIn('status', ['pending', 'paid']) // Include pending or paid orders
                     ->latest()
                     ->first();
-    
+
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-    
+
         return view('backend.sells.saleForm', compact('category', 'order', 'table', 'paymentMethods', 'customers', 'shippingMethods'));
     }
-    
-    
+
+
 
 
     public function getProductByCategory(Request $request)
@@ -606,6 +606,7 @@ class SellController extends Controller
                 return [
                     'success' => true,
                     'message' => true,
+                    'data' => $sell,
                 ];
 
             } elseif ($data->responseCode == 1 && $data->errorCode == 6) {
@@ -629,6 +630,7 @@ class SellController extends Controller
             return [
                 'success' => true,
                 'message' => 'Order successfully',
+                'data' => $sell,
             ];
         }
     }
@@ -720,34 +722,34 @@ class SellController extends Controller
 
     }
 
-    
+
     // public function processPayment(Request $request)
     // {
     //     // Simulate payment success or failure
     //     $paymentStatus = rand(0, 1) ? 'success' : 'failed';
-    
+
     //     // Set the message
-    //     $message = $paymentStatus === 'success' 
-    //         ? "🚀 Payment Successful! Your order is confirmed." 
+    //     $message = $paymentStatus === 'success'
+    //         ? "🚀 Payment Successful! Your order is confirmed."
     //         : "❌ Payment Failed! Please try again later.";
-    
+
     //     // Get Telegram API Token & Chat ID from .env
     //     $apiToken = env('TELEGRAM_BOT_TOKEN');
     //     $chatId = env('TELEGRAM_CHAT_CHANEL');
-    
+
     //     // Send Telegram Notification using Http::get()
     //     $response = Http::get("https://api.telegram.org/bot{$apiToken}/sendMessage", [
     //         'chat_id' => $chatId,
     //         'text' => $message
     //     ]);
-    
+
     //     // Return response (including Telegram API response for debugging)
     //     return response()->json([
     //         'status' => $paymentStatus,
     //         'telegram_response' => $response->json()
     //     ]);
     // }
-    
+
 
 
 }

@@ -63,13 +63,13 @@
                             <div class="col-md-3 p-1">
                                 <select class="form-control" name="customer_id" required>
                                     <option value="" disabled selected>Customer</option>
-                                    
+
                                     @foreach($customers as $customer)
                                         <option value="{{ $customer->id }}">{{ $customer->first_name }} {{ $customer->last_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-3  p-1">
                                 <select class="form-control" placeholder="Coupon Code" id="coupon_code_id">
                                     <option disabled selected>Coupon Code</option>
@@ -93,13 +93,13 @@
                         {{-- <div class="col-md-3 p-1">
                             <input type="text" name="remark" class="form-control" placeholder="Enter remark (optional)">
                         </div> --}}
-                        
+
                         <div class="col-md-3 p-1">
                             <button type="button" class="btn btn-outline-primary" id="confirm-payment">
                                 Confirm Payment
                             </button>
                         </div>
-                        
+
                         <!-- Invoice Buttons: Show Only If Order is Paid -->
 
                         {{-- @if(isset($order) && $order->status === 'paid' && $order->id)
@@ -123,7 +123,7 @@
                             </div>
                         @endforeach
                     </div>
-                </div> 
+                </div>
 
                 <div class="card shadow mb-4">
                     <div class="card-body">
@@ -150,7 +150,7 @@
 
     </div>
 
-    
+
 @include('backend.sells.khqr')
 
 <!-- Modal -->
@@ -179,7 +179,7 @@
         <link rel="stylesheet"
               href="{!! asset('assets/js/select2-bootstrap4-theme/select2-bootstrap4.min.css') !!}">
         <link href="{!! asset('assets/khqr/style.css?v='.time()) !!}" rel="stylesheet">
-        
+
     </x-slot>
     <x-slot name="script">
 
@@ -193,7 +193,7 @@
         <script>
             document.getElementById("confirm-payment").addEventListener("click", function () {
                 let orderId = "{{ $order->id ?? '' }}";
-        
+
                 if (!orderId) {
                     Swal.fire({
                         icon: 'error',
@@ -202,7 +202,7 @@
                     });
                     return;
                 }
-        
+
                 fetch("{{ route('confirm.payment') }}", {
                     method: "POST",
                     headers: {
@@ -223,10 +223,10 @@
                                     Sereisophoan City, Banteay Meanchey Province.<br>
                                     Phone: +855 93 444 498<br>
                                     <strong>Date:</strong> ${data.date}<br><br>
-                                    
+
                                     <strong>Invoice №:</strong> ${data.invoice_no}<br>
                                     <strong>Customer:</strong> ${data.customer}<br><br>
-        
+
                                     <table style="width:100%; border-collapse: collapse; text-align: left;">
                                         <tr>
                                             <th style="border-bottom: 1px solid #ccc;">Item</th>
@@ -243,13 +243,13 @@
                                             </tr>
                                         `).join('')}
                                     </table><br>
-        
+
                                     <strong>Subtotal:</strong> $${data.subtotal}<br>
                                     <strong>Discount:</strong> $${data.discount}<br>
                                     <strong>Grand Total:</strong> $${data.grand_total}<br><br>
-        
+
                                     <strong>Paid by:</strong> ${data.payment_method}<br><br>
-        
+
                                     <em>Thank you for shopping with us!<br>
                                     Please visit again.</em>
                                 </div>
@@ -280,10 +280,10 @@
                 });
             });
         </script> --}}
-        
-        
 
-        
+
+
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{!! asset('assets/js/select2/js/select2.full.min.js') !!}"></script>
         <script src="{!! asset('assets/khqr/khqr-1.0.16.min.js') !!}"></script>
@@ -534,7 +534,7 @@
             var optionalData_ = null;
 
 
-            
+
 
 
             // $(document).ready(function () {
@@ -559,7 +559,7 @@
             //                 confirmButtonText: "Yes",
             //             }).then((result) => {
             //                 /* Read more about isConfirmed, isDenied below */
-            //                 if (result.isConfirmed) {                    
+            //                 if (result.isConfirmed) {
             //                 // Show Loading Indicator
 
             //                 Swal.fire({
@@ -573,7 +573,7 @@
             //                         Swal.showLoading();
             //                     }
             //                 });
-                            
+
             //                     $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
             //                         if (data.success == true) {
             //                             token = data.data.method.token;
@@ -608,7 +608,7 @@
             //                     });
             //                 }
             //             });
-                        
+
 
             //         } else {
             //             // alert('Please select Payment method before confirm payment')
@@ -629,12 +629,12 @@
             //                 }, function (data) {
             //                     if (data.success == true) {
             //                         $('#KHqrModal').modal('hide'); // Hide the QR modal if open
-                                
+
             //                         // Show SweetAlert2 popup with embedded invoice
             //                         Swal.fire({
             //                             title: 'Payment Successful!',
             //                             html: `
-                                    
+
             //                                 <iframe src="{{ route('invoice.view', $order->id) }}" width="100%" height="400px" style="border: none;"></      iframe>
             //                             `,
             //                             icon: 'success',
@@ -647,12 +647,12 @@
             //                                 window.location.href = "{{ route('invoice.download', $order->id) }}";
             //                             }
             //                         });
-                                
+
             //                         clearInterval(intervalId);
             //                     }
             //                 });
             //             }
-                    
+
             //             intervalId = setInterval(refresh, 5000);
             //         }
             // });
@@ -671,7 +671,7 @@
                     var optionalData_ = null;
                     $('.home-amount').val(grand_total);
                     const paymentMethod = $('input[name="payment_method_id"]:checked').val();
-                
+
                     if (paymentMethod) {
                         Swal.fire({
                             title: "Do you want to confirm order?",
@@ -690,7 +690,7 @@
                                         Swal.showLoading();
                                     }
                                 });
-                            
+
                                 setTimeout(() => {
                                     // Fetch payment method details
                                     $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
@@ -700,7 +700,7 @@
                                             optionalData_ = data.data.optionalData_;
                                         }
                                     });
-                                
+
                                     setTimeout(() => {
                                         var orderLink = "{!! route('placeOrderAdmin') !!}";
                                         var orderData = {
@@ -731,25 +731,24 @@
                         Swal.fire("Please select a payment method before confirming payment");
                     }
                 });
-            
+
                 function checkTransactionData(md5, orderData, inv) {
                     let intervalId;
-                
+
                     function refresh() {
                         $.post("{!! route('checkTransactionOrderAdmin') !!}", {
                             md5: md5,
                             payment_method_id: orderData.payment_method_id,
                             orderData: orderData
                         }, function (data) {
+                            console.log(data.data.id);
                             if (data.success == true) {
                                 $('#KHqrModal').modal('hide');
-                            
+
                                 // Show Payment Success Popup with Embedded Invoice
                                 Swal.fire({
                                     title: 'Payment Successful!',
-                                    html: `
-                                        <iframe src="{{ route('invoice.view', $order->id) }}" width="100%" height="400px" style="border: none;"></iframe>
-                                    `,
+                                    html:'<iframe src="{{ route('invoice.view', $order->id) }}?order_id='+data.data.id+'" width="100%" height="400px" style="border: none;"></iframe>',
                                     icon: 'success',
                                     showCancelButton: true,
                                     confirmButtonText: 'Download Invoice',
@@ -760,12 +759,12 @@
                                         window.location.href = "{{ route('invoice.download', $order->id) }}";
                                     }
                                 });
-                            
+
                                 clearInterval(intervalId);
                             }
                         });
                     }
-                
+
                     intervalId = setInterval(refresh, 1000);
                 }
             });
