@@ -6,10 +6,22 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Invoice</title>
      <style>
+        /* @font-face {
+             font-family: 'NotoSansKhmer';
+             src: url('{{ public_path('fonts/NotoSansKhmer-Regular.ttf') }}') format('truetype');
+             font-weight: normal;
+             font-style: normal;
+         }
+         @font-face {
+             font-family: 'KhmerOS_battambang';
+             src: url('{{ public_path('fonts/KhmerOS_battambang.ttf') }}') format('truetype');
+             font-weight: normal;
+             font-style: normal;
+         }*/
+
          body {
-             font-family: Arial, sans-serif;
+             font-family: 'battambang', sans-serif;
              font-size: 11px; /* Optimized for thermal printers */
-             width: 58mm;
              margin: 0 auto;
              text-align: center;
          }
@@ -48,6 +60,14 @@
              border-top: 1px solid black;
              margin: 5px 0;
          }
+        @page {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        body {
+            margin: 5;
+            padding: 0;
+        }
      </style>
  </head>
  <body>
@@ -82,7 +102,7 @@
     <tbody>
         @foreach ($sell->sellDetail as $detail)
         <tr>
-            <td style="text-align: left;">
+            <td style="text-align: left; font-family: 'battambang', sans-serif">
                 {{ $detail->product ? $detail->product->names : 'Unknown' }}
                 {!! $detail->productVariant->variant_name ?? null !!}
             </td>
