@@ -1,13 +1,5 @@
 <div class="container">
     <div class="product-wrap">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="trending-title">
-                    <h1><i class="fas fa-fire"></i> Trending Products</h1>
-                </div>
-
-            </div>
-        </div>
         <?php
         $products = \App\Models\Product::whereStatus(1)->paginate(20);
 

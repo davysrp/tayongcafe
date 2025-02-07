@@ -4,24 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Tanyong Cofee</title>
+    <title>Tanyong Cafe</title>
 
     <!-- Fonts -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{!! asset('frontend__/bootstrap/css/bootstrap.min.css') !!}" type="text/css">
-    <link rel="stylesheet" href="{!! asset('frontend__/fontawesome/css/all.min.css') !!}" type="text/css">
-    <link rel="stylesheet" href="{!! asset('frontend__/css/style.css?v='.time()) !!}">
+    <link rel="stylesheet" href="{!! asset('frontend/bootstrap/css/bootstrap.min.css') !!}" type="text/css">
+    <link rel="stylesheet" href="{!! asset('frontend/fontawesome/css/all.min.css') !!}" type="text/css">
+    <link rel="stylesheet" href="{!! asset('frontend/css/style.css?v='.time()) !!}">
     <!-- Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Koh+Santepheap:wght@100;300;400;700;900&display=swap"
           rel="stylesheet">
-    <link href="{!! asset('frontend__/summernote/summernote.min.css') !!}" rel="stylesheet">
-    <link href="{!! asset('frontend__/summernote/summernote-bs4.min.css') !!}" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css">
-
-    
+    <link href="{!! asset('frontend/summernote/summernote.min.css') !!}" rel="stylesheet">
+    <link href="{!! asset('frontend/summernote/summernote-bs4.min.css') !!}" rel="stylesheet">
 
     @if(isset($css))
         {!! $css !!}
@@ -85,10 +81,17 @@
 <div class="wrapper">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            {{-- <a class="navbar-brand" href="/">
-                 <img src="/static/img/logo.svg" alt="logo">
-             </a>--}}
-            <a class="navbar-brand" href="{!! route('homePage') !!}">ខេ អេជ អឹម អឹម អូ</a>
+
+            <a class="navbar-brand" href="/">
+                 <img src="logo.svg" alt="logo">
+             </a>
+
+             {{-- <a class="navbar-brand" href="/">
+                <img src="/public/storage/logo.png" alt="logo">
+            </a> --}}
+            
+
+            <a class="navbar-brand" href="{!! route('homePage') !!}">Tanyong Cafe</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     id="toggleMobileNav" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -96,10 +99,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse navbar-mobile" id="navbarSupportedContent">
-                {!! Form::open(['route'=>'productList','class'=>'d-flex','method'=>'get']) !!}
+                {{-- {!! Form::open(['route'=>'productList','class'=>'d-flex','method'=>'get']) !!}
                 <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
                 <button class="btn btn-search" type="submit"><i class="fas fa-search"></i> Search</button>
-                {!! Form::close() !!}
+                {!! Form::close() !!} --}}
 
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     @if(!Auth::guard('seller')->user())
@@ -150,7 +153,7 @@
 
     {{ $slot }}
 
-    <div class="mt-auto">
+    {{-- <div class="mt-auto">
         <div class="footer-container">
             <div class="container">
                 <div class="row justify-content-center ">
@@ -160,25 +163,25 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <footer class="footer py-4">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-12 text-center">
-                        <p>Tanyong Coffee</p>
+                        <p>Copyright ©2025 តាន់យ៉ុងកាហ្វេ - Tanyong Café. All Rights Reserved</p>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
 </div>
-<script src="{!! asset('frontend__/jquery-3.7.1.min.js') !!}"></script>
-<script src="{!! asset('frontend__/bootstrap/js/bootstrap.bundle.min.js') !!}" type="text/javascript"></script>
+<script src="{!! asset('frontend/jquery-3.7.1.min.js') !!}"></script>
+<script src="{!! asset('frontend/bootstrap/js/bootstrap.bundle.min.js') !!}" type="text/javascript"></script>
 
-<script src="{!! asset('frontend__/jquery-ui/jquery-ui.min.js') !!}"></script>
-<script src="{!! asset('frontend__/jquery-validation/dist/jquery.validate.min.js') !!}" type="text/javascript"></script>
-<script src="{!! asset('frontend__/summernote/summernote.min.js') !!}" type="text/javascript"></script>
-<script src="{!! asset('frontend__/summernote/summernote-bs4.min.js') !!}" type="text/javascript"></script>
+<script src="{!! asset('frontend/jquery-ui/jquery-ui.min.js') !!}"></script>
+<script src="{!! asset('frontend/jquery-validation/dist/jquery.validate.min.js') !!}" type="text/javascript"></script>
+<script src="{!! asset('frontend/summernote/summernote.min.js') !!}" type="text/javascript"></script>
+<script src="{!! asset('frontend/summernote/summernote-bs4.min.js') !!}" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @if(isset($script))
     {!! $script !!}
@@ -221,7 +224,5 @@
     })
 
 </script>
-
-
 </body>
 </html>

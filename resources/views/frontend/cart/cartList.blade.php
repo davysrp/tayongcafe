@@ -205,7 +205,7 @@
                                         <div class="home-bodyqr">
                                             <span class="home-currency">$</span>
                                             <span class="home-amount">22</span>
-                                            <span class="home-name"><span>KHMMO.COM</span>
+                                            <span class="home-name"><span>tanyong.vivat.asia</span>
                                           <br/>
                                           <br/>
                                         </span>
