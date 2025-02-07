@@ -82,16 +82,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
 
-            <a class="navbar-brand" href="/">
-                 <img src="logo.svg" alt="logo">
-             </a>
-
-             {{-- <a class="navbar-brand" href="/">
-                <img src="/public/storage/logo.png" alt="logo">
-            </a> --}}
+            <a class="navbar-brand" href="{!! route('homePage') !!}">
+                <img src="{{ asset('storage/Logo.svg') }}" alt="Tanyong Cafe Logo" width="150" height="50">
+            </a>
             
-
-            <a class="navbar-brand" href="{!! route('homePage') !!}">Tanyong Cafe</a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent"
                     id="toggleMobileNav" aria-controls="navbarSupportedContent" aria-expanded="false"

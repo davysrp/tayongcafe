@@ -35,7 +35,7 @@
                             </div>
                             <a href="{!! route('addCart',['id'=>$product->id,'buy_now'=>1]) !!}" type="button" class="btn add-cart w-100"><i
                                     class="fas fa-cart-plus"></i>
-                                Buy Now
+                                ដាក់ចូលកន្ត្រក
                             </a>
                         </div>
                     </div>
