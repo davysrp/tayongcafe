@@ -34,10 +34,6 @@ class Sell extends Model
             'table_id'
         ];
 
-    // public function sellDetail()
-    // {
-    //     return $this->hasMany(SellDetail::class);
-    // }
 
     // Relationship with SellDetail
     public function sellDetail()
