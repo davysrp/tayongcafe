@@ -46,6 +46,7 @@ return [
     'format'                   => 'A4',
     'default_font_size'        => '12',
     'default_font'             => 'Nunito,sans-serif, battambang',
+<<<<<<< HEAD
     'margin_left'              =>10,
     'margin_right'             =>10,
     'margin_top'               => 40,
@@ -54,6 +55,16 @@ return [
     'margin_footer'            => 10,
     'orientation'              => 'P',
     'title'                    => 'Mayura Invoice',
+=======
+    'margin_left'              =>0,
+    'margin_right'             =>0,
+    'margin_top'               => 0,
+    'margin_bottom'            => 0,
+    'margin_header'            => 0,
+    'margin_footer'            => 0,
+    'orientation'              => 'P',
+    'title'                    => 'Tangong Invoice',
+>>>>>>> 10562032fbec44a4c2deb69a46238faec7885a22
     'subject'                  => '',
     'author'                   => '',
     'watermark'                => '',
@@ -78,6 +89,7 @@ return [
             'useOTL' => 0xFF,   // required for complicated langs like Persian, Arabic and Chinese
             'useKashida' => 75, // required for complicated langs like Persian, Arabic and Chinese
         ],
+<<<<<<< HEAD
         'muollight' => [
             'R'  => 'KhmerOS_muollight.ttf',   // regular font
             'useOTL' => 0xFF,   // required for complicated langs like Persian, Arabic and Chinese
@@ -104,5 +116,8 @@ return [
             'useKashida' => 75, // required for Khmer
         ] ,
         // ...add as many as you want.
+=======
+
+>>>>>>> 10562032fbec44a4c2deb69a46238faec7885a22
     ]
 ];
