@@ -47,59 +47,27 @@ Route::middleware('auth:user')->group(function () {
         Route::resource('coupon-code', \App\Http\Controllers\CouponCodeController::class);
         Route::resource('sells', \App\Http\Controllers\SellController::class);
         Route::resource('payment-method', \App\Http\Controllers\PaymentMethodController::class);
-
         Route::put('renew-token/{id}', [\App\Http\Controllers\PaymentMethodController::class, 'renewToken'])->name('renewToken');
-
         Route::resource('users', \App\Http\Controllers\UserController::class);
         Route::resource('web-pages', \App\Http\Controllers\WebpageController::class);
         Route::resource('categories', \App\Http\Controllers\CategoryController::class);
-
-
         Route::resource('coupon-code', \App\Http\Controllers\CouponCodeController::class);
         Route::resource('sells', \App\Http\Controllers\SellController::class);
-
-
         Route::resource('customers', CustomerController::class);
-
-
         Route::resource('coupon-code', CouponCodeController::class);
-
         Route::resource('coupon-code', CouponCodeController::class)->parameters(['coupon-code' => 'coupon_code']);
-
-
-
-
-    //    Route::get('/admin/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
-    //    Route::post('/admin/admin/sells', [SellController::class, 'store'])->name('sells.store');
-       
         Route::resource('customers', CustomerController::class);
-       // Route::get('/get-customers', [SellController::class, 'getCustomers'])->name('getCustomer');
-       //Route::resource('shipping-methods', ShippingMethodController::class);
-
        Route::resource('shipping-methods', ShippingMethodController::class);
        Route::resource('roles', RoleController::class);
 
-
        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
-
        Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirm.payment');
-
        Route::get('/admin/report', [DashboardController::class, 'report'])->name('report.index');
        Route::get('/admin/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
 
-       
-
-       
-      // Route::get('/report', [DashboardController::class, 'index'])->name('report.index');
-       //Route::get('/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
-       
-
-
-
         Route::get('/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
         Route::post('/admin/sells', [SellController::class, 'store'])->name('sells.store');
-
 
         Route::get('sale-dashboard',[ \App\Http\Controllers\SellController::class, 'saleDashboard'])->name('saleDashboard');
         Route::get('sales/{table}',[ \App\Http\Controllers\SellController::class, 'saleForm'])->name('saleForm');
@@ -113,9 +81,6 @@ Route::middleware('auth:user')->group(function () {
         Route::post('place-order',[ \App\Http\Controllers\SellController::class, 'placeOrder'])->name('placeOrderAdmin');
         Route::post('checkTransactionOrder',[ \App\Http\Controllers\SellController::class, 'checkTransactionOrder'])->name('checkTransactionOrderAdmin');
         Route::post('update-remove-qty',[ \App\Http\Controllers\SellController::class, 'updateRemoveQty'])->name('updateRemoveQty');
-
-
-
 
 
     });
