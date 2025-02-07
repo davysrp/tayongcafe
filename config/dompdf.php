@@ -288,6 +288,7 @@ return [
          */
         'font_height_ratio' => 1.1,
 
+
         /**
          * Use the HTML5 Lib parser
          *
@@ -296,6 +297,11 @@ return [
          * @var bool
          */
         'enable_html5_parser' => true,
+
+        
     ],
+
+
+
 
 ];

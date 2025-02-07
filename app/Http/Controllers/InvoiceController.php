@@ -50,10 +50,24 @@ class InvoiceController extends Controller
         }
 
         $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
-                  ->setPaper([0, 0, 160, 600]); // Adjust width (160pt = ~58mm)
+                  ->setPaper([0, 0, 160, 600]);
+
 
         return $pdf->download('invoice_' . ($sell->invoice_no ?? 'N/A') . '.pdf');
     }
+
+
+    // public function generateInvoice($sellId)
+
+    // {
+    //     $sell = Sell::find($sellId);
+
+    //     $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
+    //             ->setPaper([0, 0, 160, 600]) // 58mm width for receipt printing
+    //             ->setOption('defaultFont', 'Battambang'); // Force Khmer font
+
+    //     return $pdf->stream('invoice.pdf'); // Open in browser
+    // }
 
     //
 
