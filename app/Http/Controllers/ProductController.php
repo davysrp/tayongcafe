@@ -16,11 +16,10 @@ use function Termwind\ValueObjects\p;
 
 class ProductController extends Controller
 {
-
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $model = Product::select('products.*');
+            $model = Product::with('productVariant')->select('products.*');
             return DataTables::of($model)
                 ->setRowAttr(['data-id' => function ($model) {
                     return $model->id;
@@ -35,28 +34,37 @@ class ProductController extends Controller
                 ->editColumn('status', function ($model) {
                     return $model->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
                 })
+                ->addColumn('price', function ($model) {
+                    return number_format($model->price, 2) . ' ' . config('app.currency_symbol', '$');
+                })
+                ->addColumn('image', function ($model) {
+                    $imageUrl = asset('storage/product/' . $model->photo);
+                    return '<img src="' . $imageUrl . '" alt="Product Image" width="50" height="50">';
+                })
                 ->escapeColumns([])
                 ->make(true);
         }
 
         return view('backend.product.index');
-
     }
+
 
     public function create()
     {
-        $category=Category::pluck('names','id');
-        return view('backend.product.create',compact('category'));
+        $category = Category::pluck('names', 'id');
+        return view('backend.product.create', compact('category'));
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
-        $destinationPath = public_path('uploads');
+        $destinationPath = public_path('storage/product');
+
         if ($request->photo) {
             $photo = $request->file('photo');
-            $newName = rand(100000, 999999) . date('YmdHis');
+            $newName = rand(100000, 999999) . date('YmdHis') . '.jpg';
 
+            // Resize image as per your original logic
             $imgwidth = Image::make($photo->path())->getWidth();
             $imgHeigh = Image::make($photo->path())->getHeight();
             $percentOptm = 100 - (720 * 100 / $imgwidth);
@@ -69,6 +77,7 @@ class ProductController extends Controller
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save($destinationPath . '/' . $newName . '.jpg');
+
             $data['photo'] = $imageFile;
         }
 
@@ -86,26 +95,36 @@ class ProductController extends Controller
                 ]);
             }
         }
-        return redirect()->back()->with('success', 'Product Save successfully');
+
+        return redirect()->route('products.index')->with('success', 'Product saved successfully');
     }
 
     public function edit($id)
     {
         $model = Product::with('productVariant')->find($id);
-        $category=Category::pluck('names','id');
-        return view('backend.product.edit', compact('model','category'));
+        $category = Category::pluck('names', 'id');
+        return view('backend.product.edit', compact('model', 'category'));
     }
 
     public function update(Request $request, $id)
     {
         $model = Product::find($id);
+
         if ($model) {
             $data = $request->all();
-            if ($request->photo) {
-                $destinationPath = public_path('uploads');
-                $photo = $request->file('photo');
-                $newName = rand(100000, 999999) . date('YmdHis');
+            $destinationPath = public_path('storage/product');
 
+            if ($request->photo) {
+                // Delete old photo if exists
+                if ($model->photo && File::exists($destinationPath . '/' . $model->photo)) {
+                    File::delete($destinationPath . '/' . $model->photo);
+                }
+
+                // Handle new photo upload and resizing
+                $photo = $request->file('photo');
+                $newName = rand(100000, 999999) . date('YmdHis'); // Keep original naming logic
+
+                // Resize image using your original logic
                 $imgwidth = Image::make($photo->path())->getWidth();
                 $imgHeigh = Image::make($photo->path())->getHeight();
                 $percentOptm = 100 - (720 * 100 / $imgwidth);
@@ -118,66 +137,60 @@ class ProductController extends Controller
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($destinationPath . '/' . $newName . '.jpg');
+
                 $data['photo'] = $imageFile;
             }
 
             $model->update($data);
 
+            // Update or create product variants
             if ($request->variant_code) {
                 foreach ($request->variant_code as $key => $vCode) {
+                    $variantData = [
+                        'variant_name' => $request->variant_name[$key],
+                        'variant_price' => $request->variant_price[$key],
+                        'status' => $request->variant_status[$key],
+                        'variant_size' => $request->variant_size[$key]
+                    ];
 
-                    /*Find old*/
-                    if (isset($request->variant_id[$key])) {
-                        $findVariant = ProductVariant::find($request->variant_id[$key]);
-                        if ($findVariant) {
-                            $findVariant->update([
-                                'variant_code' => $vCode,
-                                'variant_name' => $request->variant_name[$key],
-                                'variant_price' => $request->variant_price[$key],
-                                'status' => $request->variant_status[$key],
-                                'variant_size' => $request->variant_size[$key]
-                            ]);
-                        } else {
-                            ProductVariant::create([
-                                'product_id' => $model->id,
-                                'variant_code' => $vCode,
-                                'variant_name' => $request->variant_name[$key],
-                                'variant_price' => $request->variant_price[$key],
-                                'status' => $request->variant_status[$key],
-                                'variant_size' => $request->variant_size[$key]
-                            ]);
-                        }
+                    // Check if the variant already exists
+                    $variant = ProductVariant::where('product_id', $model->id)
+                        ->where('variant_code', $vCode)
+                        ->first();
+
+                    if ($variant) {
+                        // Update existing variant
+                        $variant->update($variantData);
                     } else {
-                        ProductVariant::create([
-                            'product_id' => $model->id,
-                            'variant_code' => $vCode,
-                            'variant_name' => $request->variant_name[$key],
-                            'variant_price' => $request->variant_price[$key],
-                            'status' => $request->variant_status[$key],
-                            'variant_size' => $request->variant_size[$key]
-                        ]);
+                        // Create new variant
+                        $variantData['product_id'] = $model->id;
+                        $variantData['variant_code'] = $vCode;
+                        ProductVariant::create($variantData);
                     }
-
-
                 }
             }
 
-
+            return redirect()->route('products.index')->with('success', 'Product updated successfully');
         }
-        return redirect()->back()->with('success', 'Product Save successfully');
 
+        return redirect()->route('products.index')->with('error', 'Product not found');
     }
 
     public function destroy($id)
     {
         $model = Product::find($id);
+
         if ($model) {
+            $destinationPath = public_path('storage/product');
+
+            // Delete the product photo if exists
+            if ($model->photo && File::exists($destinationPath . '/' . $model->photo)) {
+                File::delete($destinationPath . '/' . $model->photo);
+            }
+
             $model->delete();
         }
-        return response()->json([
-            'success' => true,
-        ]);
+
+        return response()->json(['success' => true]);
     }
-
-
 }

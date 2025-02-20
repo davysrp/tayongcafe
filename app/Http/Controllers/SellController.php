@@ -702,110 +702,54 @@ class SellController extends Controller
     }
 
 
-    // public function telegramNotification(Request $request)
-    
-    // {
-    //     try {
-    //         $apiToken = env('TELEGRAM_BOT_TOKEN');
-
-
-    //         $text = '🚀 Payment Successful! Your order is confirmed.';
-
-    //         $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
-
-    //         return $response->body();
-    //     } catch (\Exception $exception) {
-    //         return response()->json([
-    //             'statusCode' => 200,
-    //             'message' => 'Failed Notification',
-    //             'success' => false,
-    //             'data' => []
-    //         ]);
-    //     }
-
-
-    // }
-
-
-    
-    // Version 2 🚀 Payment Successful! 📅 Date: 07-02-2025 11:19 PM
-
-
     public function telegramNotification(Request $request)
     {
         try {
             $apiToken = env('TELEGRAM_BOT_TOKEN');
-            $chatId = env('TELEGRAM_CHAT_CHANEL'); // Ensure this is correct
-    
-            // ✅ Get the current date & time (formatted)
-            $currentDate = now()->format('d-m-Y h:i A'); // Example: 07-02-2025 11:03 PM
-    
-            // ✅ Construct message with dynamic date
-            $text = "🚀 Payment Successful!\n";
-            $text .= "📅 Date: $currentDate";
-    
-            // ✅ Send message exactly like your old working code
-            $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($text));
-    
+            $text = '🚀 Payment Successful! Your order is confirmed.';
+
+            $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
+
             return $response->body();
         } catch (\Exception $exception) {
             return response()->json([
-                'statusCode' => 500,
+                'statusCode' => 200,
                 'message' => 'Failed Notification',
                 'success' => false,
-                'error' => $exception->getMessage(),
                 'data' => []
             ]);
         }
+
     }
 
-    
-    // public function telegramNotification(Request $request)
+
+    // public function processPayment(Request $request)
     // {
-    //     try {
-    //         $apiToken = env('TELEGRAM_BOT_TOKEN');
-    //         $chatId = env('TELEGRAM_CHAT_CHANEL'); // Ensure this is correct
-    
-    //         // ✅ Get the current date & time (formatted)
-    //         $currentDate = now()->format('d-m-Y h:i A'); // Example: 07-02-2025 03:45 PM
-    
-    //         // ✅ Fetch sell data (Assuming request contains sell_id)
-    //         $sell = Sell::with(['customer', 'paymentMethod'])->find($request->sell_id);
-    
-    //         if (!$sell) {
-    //             return response()->json([
-    //                 'statusCode' => 404,
-    //                 'message' => 'Invoice not found',
-    //                 'success' => false,
-    //                 'data' => []
-    //             ]);
-    //         }
-    
-    //         // ✅ Extract payment details
-    //         $total = number_format($sell->grand_total ?? 0, 2); // Format total price
-    //         $paymentMethod = $sell->paymentMethod->names ?? 'N/A'; // Payment method
-    
-    //         // ✅ Construct message with payment details
-    //         $text = "🚀 Payment Successful!\n";
-    //         $text .= "💵 Paid: \$$total\n"; // Dynamic amount
-    //         $text .= "📅 Date: $currentDate\n";
-    //         $text .= "💳 Paid By: $paymentMethod";
-    
-    //         // ✅ Send message exactly like your old working code
-    //         $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . $chatId . "&text=" . urlencode($text));
-    
-    //         return $response->body();
-    //     } catch (\Exception $exception) {
-    //         return response()->json([
-    //             'statusCode' => 500,
-    //             'message' => 'Failed Notification',
-    //             'success' => false,
-    //             'error' => $exception->getMessage(),
-    //             'data' => []
-    //         ]);
-    //     }
+    //     // Simulate payment success or failure
+    //     $paymentStatus = rand(0, 1) ? 'success' : 'failed';
+
+    //     // Set the message
+    //     $message = $paymentStatus === 'success'
+    //         ? "🚀 Payment Successful! Your order is confirmed."
+    //         : "❌ Payment Failed! Please try again later.";
+
+    //     // Get Telegram API Token & Chat ID from .env
+    //     $apiToken = env('TELEGRAM_BOT_TOKEN');
+    //     $chatId = env('TELEGRAM_CHAT_CHANEL');
+
+    //     // Send Telegram Notification using Http::get()
+    //     $response = Http::get("https://api.telegram.org/bot{$apiToken}/sendMessage", [
+    //         'chat_id' => $chatId,
+    //         'text' => $message
+    //     ]);
+
+    //     // Return response (including Telegram API response for debugging)
+    //     return response()->json([
+    //         'status' => $paymentStatus,
+    //         'telegram_response' => $response->json()
+    //     ]);
     // }
-    
+
 
 
 }

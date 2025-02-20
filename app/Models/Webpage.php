@@ -11,6 +11,6 @@ class Webpage extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'names', 'detail'
+        'names', 'detail','image'
     ];
 }

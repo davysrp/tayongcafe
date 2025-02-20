@@ -17,4 +17,9 @@ class ProductVariant extends Model
         'variant_price',
         'status'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

@@ -47,7 +47,7 @@ class Sell extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    
+
     // public function buyer()
     // {
     //     return $this->belongsTo(Seller::class, 'seller_id_buyer', 'id');
@@ -84,6 +84,6 @@ class Sell extends Model
     {
         return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
     }
-    
+
 }
 

@@ -16,73 +16,70 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Frontend\FrontendController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebpageController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-Route::get('/', [\App\Http\Controllers\Frontend\FrontendController::class, 'index'])->name('homePage');
-Route::get('/page/{category}', [\App\Http\Controllers\Frontend\FrontendController::class, 'index'])->name('productCategory');
-
+Route::get('/', [FrontendController::class, 'index'])->name('homePage');
+Route::get('/page/{category}', [FrontendController::class, 'index'])->name('productCategory');
 
 Route::middleware('auth:user')->group(function () {
-    Route::group(['prefix' => 'admin'], function () {
+    Route::prefix('admin')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('adminDashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
 
-
-        Route::resource('users', \App\Http\Controllers\UserController::class);
-        Route::resource('web-pages', \App\Http\Controllers\WebpageController::class);
-        Route::resource('products', \App\Http\Controllers\ProductController::class);
-        Route::resource('categories', \App\Http\Controllers\CategoryController::class);
-        Route::resource('coupon-code', \App\Http\Controllers\CouponCodeController::class);
-        Route::resource('sells', \App\Http\Controllers\SellController::class);
-        Route::resource('payment-method', \App\Http\Controllers\PaymentMethodController::class);
-        Route::put('renew-token/{id}', [\App\Http\Controllers\PaymentMethodController::class, 'renewToken'])->name('renewToken');
-        Route::resource('users', \App\Http\Controllers\UserController::class);
-        Route::resource('web-pages', \App\Http\Controllers\WebpageController::class);
-        Route::resource('categories', \App\Http\Controllers\CategoryController::class);
-        Route::resource('coupon-code', \App\Http\Controllers\CouponCodeController::class);
-        Route::resource('sells', \App\Http\Controllers\SellController::class);
-        Route::resource('customers', CustomerController::class);
+        // Resources (only one instance per controller)
+        Route::resource('users', UserController::class);
+        Route::resource('web-pages', WebpageController::class);
+        Route::resource('products', ProductController::class);
+        Route::resource('categories', CategoryController::class);
         Route::resource('coupon-code', CouponCodeController::class);
-        Route::resource('coupon-code', CouponCodeController::class)->parameters(['coupon-code' => 'coupon_code']);
+        Route::resource('sells', SellController::class);
+        Route::resource('payment-method', PaymentMethodController::class);
         Route::resource('customers', CustomerController::class);
-       Route::resource('shipping-methods', ShippingMethodController::class);
-       Route::resource('roles', RoleController::class);
+        Route::resource('shipping-methods', ShippingMethodController::class);
+        Route::resource('roles', RoleController::class);
 
-       Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
-       Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
-       Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirm.payment');
-       Route::get('/admin/report', [DashboardController::class, 'report'])->name('report.index');
-       Route::get('/admin/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
+        // Payment Routes
+        Route::put('renew-token/{id}', [PaymentMethodController::class, 'renewToken'])->name('renewToken');
+        Route::post('/confirm-payment', [PaymentController::class, 'confirmPayment'])->name('confirm.payment');
 
-        Route::get('/admin/sells/create', [SellController::class, 'create'])->name('sells.create');
-        Route::post('/admin/sells', [SellController::class, 'store'])->name('sells.store');
+        // Invoice Routes
+        Route::get('/invoice/view/{id}', [InvoiceController::class, 'viewInvoice'])->name('invoice.view');
+        Route::get('/invoice/download/{id}', [InvoiceController::class, 'downloadInvoice'])->name('invoice.download');
 
-        Route::get('sale-dashboard',[ \App\Http\Controllers\SellController::class, 'saleDashboard'])->name('saleDashboard');
-        Route::get('sales/{table}',[ \App\Http\Controllers\SellController::class, 'saleForm'])->name('saleForm');
-        Route::get('get-product-by-category',[ \App\Http\Controllers\SellController::class, 'getProductByCategory'])->name('getProductByCategory');
-        Route::post('add-cart-item',[ \App\Http\Controllers\SellController::class, 'addCardItem'])->name('addCardItem');
-        Route::post('apply-coupon',[ \App\Http\Controllers\SellController::class, 'applyCouponCode'])->name('applyCouponCodeAdmin');
-        Route::get('order-item-list',[ \App\Http\Controllers\SellController::class, 'orderItemList'])->name('orderItemList');
-        Route::get('get-coupon-code',[ \App\Http\Controllers\SellController::class, 'getCouponCode'])->name('getCouponCode');
-        Route::get('get-customer-list',[ \App\Http\Controllers\SellController::class, 'getCustomer'])->name('getCustomer');
-        Route::get('getPaymentMethod',[ \App\Http\Controllers\SellController::class, 'getPaymentMethod'])->name('getPaymentMethodAdmin');
-        Route::post('place-order',[ \App\Http\Controllers\SellController::class, 'placeOrder'])->name('placeOrderAdmin');
-        Route::post('checkTransactionOrder',[ \App\Http\Controllers\SellController::class, 'checkTransactionOrder'])->name('checkTransactionOrderAdmin');
-        Route::post('update-remove-qty',[ \App\Http\Controllers\SellController::class, 'updateRemoveQty'])->name('updateRemoveQty');
+        // Reports
+        Route::get('/report', [DashboardController::class, 'report'])->name('report.index');
+        Route::get('/report/export/pdf', [DashboardController::class, 'exportPdf'])->name('report.export.pdf');
+
+        // Sales Dashboard & Transactions
+        Route::get('sale-dashboard', [SellController::class, 'saleDashboard'])->name('saleDashboard');
+        Route::get('sales/{table}', [SellController::class, 'saleForm'])->name('saleForm');
+        Route::get('get-product-by-category', [SellController::class, 'getProductByCategory'])->name('getProductByCategory');
+        Route::post('add-cart-item', [SellController::class, 'addCardItem'])->name('addCardItem');
+        Route::post('apply-coupon', [SellController::class, 'applyCouponCode'])->name('applyCouponCodeAdmin');
+        Route::get('order-item-list', [SellController::class, 'orderItemList'])->name('orderItemList');
+        Route::get('get-coupon-code', [SellController::class, 'getCouponCode'])->name('getCouponCode');
+        Route::get('get-customer-list', [SellController::class, 'getCustomer'])->name('getCustomer');
+        Route::get('getPaymentMethod', [SellController::class, 'getPaymentMethod'])->name('getPaymentMethodAdmin');
+        Route::post('place-order', [SellController::class, 'placeOrder'])->name('placeOrderAdmin');
+        Route::post('checkTransactionOrder', [SellController::class, 'checkTransactionOrder'])->name('checkTransactionOrderAdmin');
+        Route::post('update-remove-qty', [SellController::class, 'updateRemoveQty'])->name('updateRemoveQty');
 
 
+
+        // Cart routes
+        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/add-to-cart', [FrontendController::class, 'addToCart'])->name('add-to-cart');
+        Route::post('/cart/add', [CartController::class, 'addToCart'])->name('addToCart');
+        Route::post('/cart/update', [CartController::class, 'updateCart'])->name('updateCart');
+        Route::get('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('removeFromCart');
+        Route::post('/cart/apply-coupon', [CartController::class, 'applyCouponCode'])->name('applyCouponCode');
+        Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('clearCart');
     });
 });
 

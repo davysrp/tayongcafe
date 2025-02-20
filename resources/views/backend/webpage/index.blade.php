@@ -7,12 +7,14 @@
 
     @php
         $fields=[
-               [ 'name'=>'id', 'label'=>'ID','width'=>'', ],
-               [ 'name'=>'names', 'label'=>'Names','width'=>'' ],
-               [ 'name'=>'detail', 'label'=>'Detail','width'=>'' ],
-               [ 'name'=>'status', 'label'=>'Status','width'=>'' ],
-               [ 'name'=>'action', 'label'=>'Action','width'=>'' ],
-        ]
+   [ 'name'=>'id', 'label'=>'ID','width'=>'', ],
+   [ 'name'=>'names', 'label'=>'Names','width'=>'' ],
+   [ 'name'=>'detail', 'label'=>'Detail','width'=>'' ],
+   [ 'name'=>'image', 'label'=>'Image','width'=>'' ],
+   [ 'name'=>'status', 'label'=>'Status','width'=>'' ],
+   [ 'name'=>'action', 'label'=>'Action','width'=>'' ],
+];
+
     @endphp
     <div class="card shadow mb-4">
         <div class="card-header py-3">

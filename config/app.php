@@ -172,7 +172,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class
-        
+
+
         //Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ])->toArray(),
@@ -194,6 +195,6 @@ return [
        // 'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ])->toArray(),
-    
+
 
 ];

@@ -18,6 +18,6 @@ class ProductPhotoController extends Controller
       ->orderBy('prophoto.id','desc')
       ->paginate(3);
       $products = DB::table('products')->get();
-      return view('backend.product.productphoto', compact('productphoto','products'));
+      return view('backend.product.index', compact('productphoto','products'));
    }
 }
