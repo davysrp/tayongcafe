@@ -190,7 +190,6 @@
                         })
                     });
 
-
                     $(document).on('click', '#edit', function (e) {
                         var link = $(this).data("link");
                         var id = $(this).data("id");

@@ -12,27 +12,9 @@
                     <div class="col-md-12 nav-link-wrap mb-5">
                         <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <!-- Add an "All" tab to show all products -->
-                            <a
-                                class="nav-link active"
-                                id="v-pills-all-tab"
-                                data-toggle="pill"
-                                href="#v-pills-all"
-                                role="tab"
-                                aria-controls="v-pills-all"
-                                aria-selected="true">
-                                All
-                            </a>
+                            <a class="nav-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all" role="tab" aria-controls="v-pills-all" aria-selected="true">All</a>
                             @foreach($categories as $category)
-                                <a
-                                    class="nav-link"
-                                    id="v-pills-{{ $category->id }}-tab"
-                                    data-toggle="pill"
-                                    href="#v-pills-{{ $category->id }}"
-                                    role="tab"
-                                    aria-controls="v-pills-{{ $category->id }}"
-                                    aria-selected="false">
-                                    {{ $category->names }}
-                                </a>
+                                <a class="nav-link" id="v-pills-{{ $category->id }}-tab" data-toggle="pill" href="#v-pills-{{ $category->id }}" role="tab" aria-controls="v-pills-{{ $category->id }}" aria-selected="false">{{ $category->names }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -43,30 +25,22 @@
                             <!-- Tab pane for "All" products -->
                             <div class="tab-pane fade show active" id="v-pills-all" role="tabpanel" aria-labelledby="v-pills-all-tab">
                                 <div class="row">
-                                    @foreach($categories as $category)
-                                        @if($category->products->isNotEmpty())
-                                            @foreach($category->products as $product)
-                                            <div class="col-md-4 text-center mb-4 product" data-category="{{ $category->id }}" data-has-variants="{{ $product->variants && $product->variants->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->variants ? $product->variants->toJson() : '[]' }}">
-                                                    <div class="menu-wrap">
-                                                        <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
-                                                        <div class="text">
-                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a></h3>
-                                                            <p>{{ $product->detail }}</p>
-                                                            <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
-                                                            <p>
-                                                                <input type="hidden" name="quantity" value="1">
-                                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                                <button type="button" class="btn btn-primary buy-button">Buy</button>
-                                                            </p>
-                                                        </div>
-                                                    </div>
+                                    @foreach($products as $product)
+                                        <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}" data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->productVariant->toJson() }}">
+                                            <div class="menu-wrap">
+                                                <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
+                                                <div class="text">
+                                                    <h3><a href="#" class="menu-warp-name-product">{{ $product->name }}</a></h3>
+                                                    <p>{{ $product->detail }}</p>
+                                                    <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
+                                                    <p>
+                                                        <input type="hidden" name="quantity" value="1">
+                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                        <button type="button" class="btn btn-primary buy-button">Buy</button>
+                                                    </p>
                                                 </div>
-                                            @endforeach
-                                        @else
-                                            <div class="col-md-12 text-center">
-                                                <p>No products available in this category.</p>
                                             </div>
-                                        @endif
+                                        </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -77,13 +51,13 @@
                                     <div class="row">
                                         @if($category->products->isNotEmpty())
                                             @foreach($category->products as $product)
-                                            <div class="col-md-4 text-center mb-4 product" data-category="{{ $category->id }}" data-has-variants="{{ $product->variants && $product->variants->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->variants ? $product->variants->toJson() : '[]' }}">
+                                                <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}" data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->productVariant->toJson() }}">
                                                     <div class="menu-wrap">
                                                         <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
                                                         <div class="text">
-                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a></h3>
+                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->name }}</a></h3>
                                                             <p>{{ $product->detail }}</p>
-                                                            <p class="price"><span>{{ number_format($product->price,2) }} $</span></p>
+                                                            <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
                                                             <p>
                                                                 <input type="hidden" name="quantity" value="1">
                                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -109,34 +83,31 @@
     </div>
 </section>
 
-
 <!-- Modal for selecting product variants -->
 <div id="variantModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color: black; color: #fff; font-family: 'Khmer OS Siemreap', sans-serif;">
             <div class="modal-header">
-                <h5 class="modal-title">Select Variant</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" style="font-size: 24px; font-weight: normal;">Select Variant</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; font-size: 24px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="variantForm">
-                    <div class="form-group">
-                        <label for="variantSelect">Choose a variant:</label>
-                        <select class="form-control" id="variantSelect">
-                            <!-- Variant options will be populated here -->
-                        </select>
-                    </div>
-                </form>
+                <div id="variantButtonsContainer">
+                    <!-- Buttons will be dynamically added here -->
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="console.log('Close button clicked')">Close</button>
-                <button type="button" class="btn btn-primary" id="confirmVariant">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px;">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmVariant" style="font-size: 18px;">Confirm</button>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
 <!-- jQuery -->
@@ -144,118 +115,119 @@
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const tabs = document.querySelectorAll('.nav-link');
-        const products = document.querySelectorAll('.product');
-        const variantModal = new bootstrap.Modal(document.getElementById('variantModal')); // Bootstrap 5 modal instance
-        const variantSelect = document.getElementById('variantSelect');
+        const variantModal = new bootstrap.Modal(document.getElementById('variantModal'));
         const confirmVariant = document.getElementById('confirmVariant');
-        let currentProduct = null;
+        let selectedProductId = null;
+        let selectedVariantId = null;  // Stores the selected variant
 
-        // Function to handle "Add to Cart" button click
-        function handleAddToCart(event) {
-            console.log('Buy button clicked'); // Debugging
-            event.preventDefault();
-            const product = event.target.closest('.product');
-            const hasVariants = product.dataset.hasVariants === 'true';
-            const productId = product.querySelector('input[name="product_id"]').value;
+        // Handle "Buy" button click
+        document.querySelectorAll('.buy-button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
 
-            console.log('Product ID:', productId); // Debugging
-            console.log('Has variants:', hasVariants); // Debugging
+                const product = this.closest('.product');
+                const hasVariants = product.dataset.hasVariants === 'true';
+                selectedProductId = product.dataset.productId;
 
-            if (hasVariants) {
-                currentProduct = product;
-                // Populate the variant select options
-                const variants = JSON.parse(product.dataset.variants || '[]');
-                console.log('Variants:', variants); // Debugging
-                variantSelect.innerHTML = ''; // Clear existing options
-                variants.forEach(variant => {
-                    const option = document.createElement('option');
-                    option.value = variant.id;
-                    option.text = variant.name;
-                    variantSelect.appendChild(option);
-                });
-                variantModal.show(); // Show the modal
-            } else {
-                // Add product to cart directly if no variants
-                addToCart(productId, null);
+                if (hasVariants) {
+                    // Get the variants for the selected product
+                    const variants = JSON.parse(product.dataset.variants || '[]');
+                    populateVariantButtons(variants);  // Populate variant options dynamically
+                    selectedVariantId = null;  // Reset variant selection when opening modal
+                    variantModal.show();
+                } else {
+                    // If no variants, add product directly to cart
+                    addToCart(selectedProductId, null);
+                }
+            });
+        });
+
+        // Handle Confirm button in the modal
+        confirmVariant.addEventListener('click', function () {
+            if (selectedVariantId === null) {
+                alert('Please select a product variant.');
+                return;
             }
+
+            // Add the selected variant to the cart
+            addToCart(selectedProductId, selectedVariantId);
+            variantModal.hide();  // Close the modal
+        });
+
+        // Populate variant buttons dynamically
+        function populateVariantButtons(variants) {
+            const container = document.getElementById('variantButtonsContainer');
+            container.innerHTML = '';  // Clear any existing buttons
+
+            variants.forEach(variant => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'btn btn-outline-light btn-block text-left variant-btn';
+                button.style.marginBottom = '10px';
+                button.dataset.variantId = variant.id;
+
+                // Include variant size (e.g., 250ml, 500ml)
+                const sizeText = variant.variant_size ? `(${variant.variant_size})` : '';
+                button.innerHTML = `<span style="font-weight: normal;">${variant.variant_name}</span> ${sizeText} - $${variant.variant_price}`;
+
+                button.addEventListener('click', () => {
+                    selectVariant(button);
+                });
+
+                container.appendChild(button);
+            });
         }
 
-        // Attach event listeners to "Buy" buttons
-        document.querySelectorAll('.buy-button').forEach(button => {
-            button.addEventListener('click', handleAddToCart);
-        });
+        // Highlight selected variant button and store selectedVariantId
+        function selectVariant(button) {
+            selectedVariantId = button.dataset.variantId;
 
-        // Handle confirm button click in the modal
-        confirmVariant.addEventListener('click', function () {
-            const selectedVariant = variantSelect.value;
-            if (selectedVariant) {
-                const productId = currentProduct.querySelector('input[name="product_id"]').value;
-                addToCart(productId, selectedVariant);
-                variantModal.hide(); // Hide the modal
-            }
-        });
+            // Remove highlight from all variant buttons
+            document.querySelectorAll('.variant-btn').forEach(btn => {
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-light');
+            });
+
+            // Highlight the selected variant button
+            button.classList.remove('btn-outline-light');
+            button.classList.add('btn-success');
+        }
 
         // Function to add product to cart via AJAX
         function addToCart(productId, variantId) {
             const formData = new FormData();
             formData.append('product_id', productId);
-            formData.append('quantity', 1);
+            formData.append('quantity', 1);  // Default quantity is 1
+
             if (variantId) {
-                formData.append('variant_id', variantId);
+                formData.append('variant_id', variantId);  // Only include variant_id if selected
             }
 
-            fetch('/add-to-cart', {
+            console.log('Adding to cart: Product ID:', productId, 'Variant ID:', variantId);
+
+            fetch('{{ route('cart.add') }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    product_id: productId,
-                    quantity: 1,
-                    variant_id: variantId, // Optional
-                }),
+                body: formData,
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Server Response:', data);  // Log the server response
                 if (data.success) {
-                    console.log('Product added to cart:', data); // Debugging
+                    alert('Product added to cart successfully!');
+                    window.location.href = "{{ route('cart.index') }}";  // Redirect to the cart page
                 } else {
-                    console.error('Failed to add product to cart:', data.message); // Debugging
+                    alert('Failed to add product to cart: ' + data.message);
                 }
             })
             .catch(error => {
-                console.error('Error:', error); // Debugging
+                console.error('Error:', error);
+                alert('An error occurred while adding the product to the cart.');
             });
         }
-
-        // Handle tab switching (existing code)
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
-                const target = this.getAttribute('aria-controls');
-                if (target === 'v-pills-all') {
-                    // Show all products
-                    products.forEach(product => {
-                        product.style.display = 'block';
-                    });
-                } else {
-                    // Show only products of the selected category
-                    const categoryId = target.replace('v-pills-', '');
-                    products.forEach(product => {
-                        if (product.getAttribute('data-category') === categoryId) {
-                            product.style.display = 'block';
-                        } else {
-                            product.style.display = 'none';
-                        }
-                    });
-                }
-            });
-        });
-
-
     });
 </script>

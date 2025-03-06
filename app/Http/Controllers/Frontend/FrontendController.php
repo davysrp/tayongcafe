@@ -19,7 +19,7 @@ class FrontendController extends Controller
 
         // Fetch categories with their active products and variants
         $categories = Category::with(['products' => function ($query) {
-            $query->where('status', 1)->with('variants'); // Only active products with variants
+            $query->where('status', 1)->with('productVariant'); // Only active products with variants
         }])->get();
 
         // Fetch products based on category if provided, along with their variants
@@ -27,7 +27,7 @@ class FrontendController extends Controller
             ->when($category, function ($query, $category) {
                 return $query->where('category_id', $category); // Filter products by category
             })
-            ->with('variants') // Eager load variants for products
+            ->with('productVariant') // Eager load variants for products
             ->get();
 
         // Fetch webpages with status = 1 (active webpages)
@@ -37,16 +37,14 @@ class FrontendController extends Controller
         return view('frontend.index', compact('categories', 'products', 'webpages', 'cart'));
     }
 
-
-
     public function __invoke()
     {
         // Fetch categories and products with variants
         $categories = Category::with(['products' => function ($query) {
-            $query->where('status', 1)->with('variants'); // Only active products and their variants
+            $query->where('status', 1)->with('productVariant'); // Only active products and their variants
         }])->get();
 
-        $products = Product::where('status', 1)->with('variants')->get();
+        $products = Product::where('status', 1)->with('productVariant')->get();
 
         return view('frontend.index', compact('categories', 'products'));
     }
@@ -63,7 +61,7 @@ class FrontendController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
-            'variant_id' => 'nullable|exists:variants,id', // Optional variant ID
+            'variant_id' => 'nullable|exists:product_variants,id', // Ensure this matches your table name
         ]);
 
         // Get the product and variant (if applicable)
@@ -76,11 +74,11 @@ class FrontendController extends Controller
         $cartItem = [
             'product_id' => $product->id,
             'name' => $product->name,
-            'price' => $variant ? $variant->price : $product->price,
+            'price' => $variant ? $variant->variant_price : $product->price,
             'quantity' => $request->input('quantity'),
             'photo' => $product->photo,
             'variant_id' => $variant ? $variant->id : null,
-            'variant_name' => $variant ? $variant->name : null,
+            'variant_name' => $variant ? $variant->variant_name : null,
         ];
 
         // Add the item to the cart

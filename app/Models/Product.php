@@ -44,10 +44,12 @@ class Product extends Model
 
     }
 
-    public function variants()
+    public function productVariant()
     {
         return $this->hasMany(ProductVariant::class, 'product_id');
     }
+
+
 
     function generateRandomString($length = 10) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

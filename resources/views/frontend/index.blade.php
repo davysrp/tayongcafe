@@ -4,7 +4,6 @@
     @include('frontend.css')
   </head>
   <body>
-    {{-- @include('frontend.cart.cartList', ['cart' => $cart]) --}}
 
   	@include('frontend.navbar')
 

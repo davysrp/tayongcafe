@@ -7,17 +7,9 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\CouponCode;
-use App\Model\PaymentMethod;
 
 class CartController extends Controller
 {
-
-    public function cartList()
-    {
-        $paymentMethod = PaymentMethod::all(); // Fetch payment methods
-        $balance = Auth::guard('seller')->user()->balance; // Fetch the user's balance
-        return view('frontend.cart.cartList', compact('paymentMethod', 'balance'));
-    }
     // Add a product to the cart
     public function addToCart(Request $request)
     {
@@ -120,5 +112,5 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart cleared!');
     }
-
+    
 }

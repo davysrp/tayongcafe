@@ -26,26 +26,26 @@
           <li class="nav-item"><a href="{{url('/login')}}" class="nav-link" style="font-size: 15px;">ចូលគណនី</a></li>
 
           <li class="nav-item cart">
-            {{-- <a href="{{ route('cart.index') }}" class="nav-link"> --}}
-              <span class="material-icons" style="font-size: 20px; color: white;">shopping_cart</span>
-              <span class="bag" style="
-                  background: #f7b733;
-                  color: black;
-                  border-radius: 50%;
-                  width: 20px;
-                  height: 20px;
-                  font-size: 12px;
-                  font-weight: bold;
-                  position: absolute;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-              ">
-                  <small>{{ session('cart') ? count(session('cart')) : 0 }}</small>
-              </span>
+            <a href="{{ route('cart.index') }}" class="nav-link">
+                <span class="material-icons" style="font-size: 20px; color: white;">shopping_cart</span>
+                <span class="bag" style="
+                    background: #f7b733;
+                    color: black;
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    font-size: 12px;
+                    font-weight: bold;
+                    position: absolute;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                ">
+                    <small>{{ session('cart') ? count(session('cart')) : 0 }}</small>
+                </span>
             </a>
-          </li>
+        </li>
 
 
         </ul>
