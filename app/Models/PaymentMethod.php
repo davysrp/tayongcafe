@@ -13,3 +13,5 @@ class PaymentMethod extends Model
         'names', 'icon', 'status','token_expired','token'
     ];
 }
+
+

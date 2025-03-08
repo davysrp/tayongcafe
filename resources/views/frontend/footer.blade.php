@@ -21,11 +21,6 @@
     <div class="ftco-footer-widget mb-4">
       <h2 class="ftco-heading-2">About Us</h2>
       <p>TANYONG in BBU-BMC. Now We are open in Sereisophoan City, Banteay Meanchey Province Cambodia Country.</p>
-      {{-- <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-        <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-        <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-        <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-      </ul> --}}
 
       <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
         <!-- Facebook -->
@@ -80,11 +75,7 @@
 </div>
 <div class="row">
   <div class="col-md-12 text-center">
-
-    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
       Copyright ©2025 តាន់យ៉ុងកាហ្វេ - Tanyong Café. All Rights Reserved
-
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
   </div>
 </div>
 </div>

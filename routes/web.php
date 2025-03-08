@@ -99,5 +99,7 @@ Route::middleware('auth:user')->group(function () {
     });
 });
 
+
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/frontend.php';

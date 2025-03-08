@@ -51,7 +51,7 @@ Route::middleware(['auth:seller'])->group(function () {
         Route::get('soldproduct/{seller}',[SellController::class,'soldproduct'] )->name('frontend__.soldproduct');
         Route::get('boughtproduct/{buyer}',[SellController::class,'boughtproduct'] )->name('frontend__.boughtproduct');
 
-        Route::resource('seller-products', ProductController::class);
+        // Route::resource('seller-products', ProductController::class);
         Route::get('get-payment-method',  [CartController::class,'getPaymentMethod'])->name('getPaymentMethod');
     });
 });

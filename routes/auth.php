@@ -59,8 +59,11 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('auth/google', [\App\Http\Controllers\SellerAuth\AuthController::class, 'redirectToGoogle'])->name('auth/google');
-Route::get('auth/google/callback', [\App\Http\Controllers\SellerAuth\AuthController::class, 'handleGoogleCallback']);
+// Route::get('auth/google', [\App\Http\Controllers\SellerAuth\AuthController::class, 'redirectToGoogle'])->name('auth/google');
+// Route::get('auth/google/callback', [\App\Http\Controllers\SellerAuth\AuthController::class, 'handleGoogleCallback']);
+
+
+
 Route::get('/clear-cache', function () {
     $exitCode = Artisan::call('optimize:clear');
     // return what you want
