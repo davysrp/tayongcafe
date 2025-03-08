@@ -13,20 +13,19 @@ class InvoiceController extends Controller
     // View Invoice
     public function viewInvoice($sellId, Request $request)
     {
-        // ✅ Use $sellId instead of $request->order_id to correctly fetch the order
+
         $sell = Sell::with(['sellDetail' => function ($q) {
             $q->with(['product', 'productVariant']);
         }, 'customer', 'paymentMethod'])->findOrFail($sellId);
 
-        // ✅ Ensure invoice_no exists
         if (!$sell->invoice_no) {
-            $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT); // Generate a default invoice number
+            $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT); 
             $sell->save();
         }
 
         // Format the invoice details into a message
         $invoiceDetails = "Date: " . ($sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A') . "\n";
-        $invoiceDetails .= "Invoice №: " . ($sell->invoice_no ?? 'Unknown') . "\n"; // ✅ Ensure it never returns "N/A"
+        $invoiceDetails .= "Invoice №: " . ($sell->invoice_no ?? 'Unknown') . "\n";
         $invoiceDetails .= "Customer: " . ($sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest') . "\n\n";
 
         $invoiceDetails .= "Item\tQty\tPrice\tTotal\n";
@@ -72,17 +71,16 @@ class InvoiceController extends Controller
             $q->with(['product']);
         }, 'customer'])->findOrFail($sellId);
 
-        // ✅ Ensure invoice_no exists
         if (!$sell->invoice_no) {
             $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT);
             $sell->save();
         }
 
-        // ✅ Generate PDF using Barryvdh\DomPDF
         $pdf = Pdf::loadView('backend.sells.invoice', compact('sell'))
             ->setPaper('a4', 'portrait');
 
-        // ✅ Return downloadable response
         return $pdf->download('invoice_' . $sell->invoice_no . '.pdf'); // ✅ Always correct invoice number
     }
 }
+
+

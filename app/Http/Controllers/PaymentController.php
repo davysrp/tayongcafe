@@ -17,7 +17,6 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'Invalid order ID');
         }
     
-        // Simulate Payment Success (Replace with actual payment gateway logic)
         $sell = Sell::findOrFail($orderId);
         $sell->status = 'paid';
         $sell->save();
