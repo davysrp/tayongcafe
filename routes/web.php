@@ -46,8 +46,13 @@ Route::middleware('auth:user')->group(function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('adminDashboard');
 
-        // Resources (only one instance per controller)
+
         Route::resource('users', UserController::class);
+        // Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+
+        // Resources (only one instance per controller)
+        // Route::resource('users', UserController::class);
         Route::resource('web-pages', WebpageController::class);
         Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class);

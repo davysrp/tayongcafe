@@ -10,6 +10,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+
 class UserController extends Controller
 {
     /**
@@ -24,11 +27,14 @@ class UserController extends Controller
                     return $model->id;
                 }])
                 ->addColumn('action', function ($model) {
-                    $html = '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                              <button type="button" class="btn btn-danger" data-id="' . $model->id . '" data-link="' . route('users.destroy', $model->id) . '" id="delete"><i class="fas fa-trash-alt"></i></button>
-                              <a href="'.route('users.edit', $model->id).'" class="btn btn-secondary" data-id="' . $model->id . '" id="edit" data-link="' . route('users.edit', $model->id) . '"><i class="fas fa-edit"></i></a>
+                    return '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-danger" data-id="' . $model->id . '" data-link="' . route('users.destroy', $model->id) . '" id="delete">
+                                  <i class="fas fa-trash-alt"></i>
+                              </button>
+                              <a href="' . route('users.edit', $model->id) . '" class="btn btn-secondary">
+                                  <i class="fas fa-edit"></i>
+                              </a>
                             </div>';
-                    return $html;
                 })
                 ->addColumn('status', function ($model) {
                     return Helper::statusLabel($model->status);
@@ -37,7 +43,7 @@ class UserController extends Controller
                     return Helper::dateFormat($model->created_at);
                 })
                 ->addColumn('updated_at', function ($model) {
-                    return Helper::dateFormat($model->created_at);
+                    return Helper::dateFormat($model->updated_at);
                 })
                 ->escapeColumns([])
                 ->make(true);
@@ -54,79 +60,94 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user.
      */
     public function store(Request $request)
     {
-        $data = $this->validate($request, [
-            'password' => 'required',
+        $data = $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email',
+            'password' => 'required',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $data['password'] = \Hash::make($request->password);
+
+        $data['password'] = Hash::make($request->password);
+
+        // Handle Profile Photo Upload
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = 'profile_pictures/' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public', $fileName); // Save to storage/app/public/profile_pictures
+            $data['photo'] = $fileName;
+        }
+
         User::create($data);
 
-        return redirect()->back()-> with('success', 'Category Save successfully');
+        return redirect()->back()->with('success', 'User created successfully.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing a user.
      */
     public function edit($id)
     {
-        $model = User::find($id);
-        return view('backend.users.edit',compact('model'));
-
+        $model = User::findOrFail($id);
+        return view('backend.users.edit', compact('model'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified user.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-
-        $data = $this->validate($request, [
-
+        $data = $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users,email,'.$id,
-
+            'email' => 'required|unique:users,email,' . $id,
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        if ($request->password) $data['password'] = \Hash::make($request->password);
-        $user = User::find($id);
+
+        if ($request->password) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user = User::findOrFail($id);
+
+        // Handle Profile Photo Upload
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $fileName = 'profile_pictures/' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('public', $fileName); // Save to storage/app/public/profile_pictures
+            $data['photo'] = $fileName;
+
+            // Delete old photo if it exists
+            if ($user->photo && Storage::exists('public/' . $user->photo)) {
+                Storage::delete('public/' . $user->photo);
+            }
+        }
+
         $user->update($data);
-        return redirect()->back()-> with('success', 'Category Save successfully');
+
+        return redirect()->back()->with('success', 'User updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified user.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $model = User::find($id);
-        $model->delete();
+        $user = User::findOrFail($id);
+
+        // Delete the profile photo if it exists
+        if ($user->photo && Storage::exists('public/' . $user->photo)) {
+            Storage::delete('public/' . $user->photo);
+        }
+
+        $user->delete();
+
         return response()->json([
             'success' => true,
             'status' => 200,
-            'message' => 'User Account delete successful'
+            'message' => 'User deleted successfully'
         ]);
-    }
-    public function data(Request $request)
-    {
-        $data = $this->validate($request, [
-
-            'name' => 'nullable',
-            'email' => 'required',
-
-        ]);
-        return $data;
-
     }
 }

@@ -13,18 +13,31 @@ class InvoiceController extends Controller
     // View Invoice
     public function viewInvoice($sellId, Request $request)
     {
-
         $sell = Sell::with(['sellDetail' => function ($q) {
             $q->with(['product', 'productVariant']);
         }, 'customer', 'paymentMethod'])->findOrFail($sellId);
 
         if (!$sell->invoice_no) {
-            $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT); 
+            $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT);
             $sell->save();
         }
+        // Get all sales for the same date as this sale
+        $salesForTheDay = Sell::whereDate('created_at', $sell->created_at->toDateString())
+            ->orderBy('created_at', 'asc')
+            ->get();
 
+        // Assign queue numbers dynamically (start from 1)
+        $queueNumber = 1;
+        foreach ($salesForTheDay as $index => $sale) {
+            if ($sale->id == $sell->id) {
+                $queueNumber = $index + 1;
+                break;
+            }
+        }
         // Format the invoice details into a message
         $invoiceDetails = "Date: " . ($sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A') . "\n";
+        $invoiceDetails .= "Queue No:" . str_pad($queueNumber, 1, STR_PAD_LEFT) . "\n";
+
         $invoiceDetails .= "Invoice №: " . ($sell->invoice_no ?? 'Unknown') . "\n";
         $invoiceDetails .= "Customer: " . ($sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest') . "\n\n";
 
@@ -61,7 +74,7 @@ class InvoiceController extends Controller
             ]);
         }
 
-        return view('backend.sells.invoice', compact('sell'));
+        return view('backend.sells.invoice', compact('sell','queueNumber'));
     }
 
     // Download Invoice as PDF
@@ -82,5 +95,3 @@ class InvoiceController extends Controller
         return $pdf->download('invoice_' . $sell->invoice_no . '.pdf'); // ✅ Always correct invoice number
     }
 }
-
-
