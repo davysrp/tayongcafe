@@ -48,59 +48,10 @@
             </div>
         </li> --}}
 
+
+
+
         
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
-              មីនុយ
-          </a>
-          <div class="dropdown-menu" aria-labelledby="dropdown04">
-              @foreach($categories as $category)
-                  <a class="dropdown-item font-weight-bold scroll-to-category" href="#category-{{ $category->id }}">
-                      {{ $category->names }}
-                  </a>
-                  @if($category->products->count() > 0)
-                      @foreach($category->products as $product)
-                          <a class="dropdown-item pl-4 scroll-to-category" href="#category-{{ $category->id }}">
-                              - {{ $product->names }}
-                          </a>
-                      @endforeach
-                  @else
-                      <a class="dropdown-item pl-4 text-muted">No products available</a>
-                  @endif
-                  <div class="dropdown-divider"></div>
-              @endforeach
-          </div>
-      </li>
-      
-      <script>
-          document.addEventListener("DOMContentLoaded", function () {
-              document.querySelectorAll('.scroll-to-category').forEach(anchor => {
-                  anchor.addEventListener('click', function (e) {
-                      e.preventDefault();
-                      let targetId = this.getAttribute('href');
-                      let targetElement = document.querySelector(targetId);
-      
-                      if (targetElement) {
-                          window.scrollTo({
-                              top: targetElement.offsetTop - 80, // Adjust for navbar height
-                              behavior: 'smooth'
-                          });
-      
-                          // Activate the correct tab in the product section
-                          let tabLink = document.querySelector(`[href="${targetId}"]`);
-                          if (tabLink) {
-                              tabLink.click();
-                          }
-                      }
-                  });
-              });
-          });
-      </script>
-      
-
-
-
-
             {{-- <div class="dropdown-menu" aria-labelledby="dropdown04">
               <a class="dropdown-item" href="">កាហ្វេ-Coffee</a>
               <a class="dropdown-item" href="">តែទឹកដោះគោ-Milk Tea</a>

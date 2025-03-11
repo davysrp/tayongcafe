@@ -99,6 +99,11 @@ Route::middleware('auth:user')->group(function () {
         Route::get('/products', [ProductController::class, 'showProducts'])->name('products.index');
 
 
+
+        
+        // Route::get('/order-success/{order_id}', [OrderController::class, 'success'])->name('order.success');
+        
+
         // Cart routes
         // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
         // Route::post('/add-to-cart', [FrontendController::class, 'addToCart'])->name('add-to-cart');
