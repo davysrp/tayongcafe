@@ -178,8 +178,8 @@
                          
                              <!-- Display User Profile Picture -->
                              <img class="img-profile rounded-circle" 
-                                  src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/defaultprofile.png') }}" 
-                                  alt="User Profile" width="40" height="40">
+                                src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/defaultprofile.png') }}" 
+                                alt="User Profile" width="40" height="40">
                          
                          </a>
                          

@@ -17,10 +17,10 @@
         ];
     @endphp
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
+        {{-- <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Coupon Codes</h6>
             <a href="{{ route('coupon-code.create') }}" class="btn btn-primary btn-sm float-right">Add Coupon</a>
-        </div>
+        </div> --}}
         <div class="card-body">
             {!! \App\Models\Helper::datatable($fields, 'coupon_list', 1, route('coupon-code.create')) !!}
         </div>

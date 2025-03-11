@@ -8,6 +8,7 @@
         <div class="row d-md-flex">
             <div class="col-lg-12 ftco-animate p-md-5">
                 <div class="row">
+                    
                     <!-- Category Tabs -->
                     <div class="col-md-12 nav-link-wrap mb-5">
                         <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">

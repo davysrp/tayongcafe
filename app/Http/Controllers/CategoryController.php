@@ -37,6 +37,9 @@ class CategoryController extends Controller
         return view('backend.category.index');
     }
 
+
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -151,6 +154,15 @@ class CategoryController extends Controller
     }
 
 
+    public function showNavbar()
+    {
+        $categories = Category::with('products')->where('status', 1)->get();
+    
+        // Debugging: Log the output
+        Log::info($categories);
+    
+        return view('frontend.navbar', compact('categories'));
+    }
 
 
 

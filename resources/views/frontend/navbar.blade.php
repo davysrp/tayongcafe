@@ -9,9 +9,99 @@
       <div class="collapse navbar-collapse" id="ftco-nav" style="font-family: 'Khmer OS Siemreap', sans-serif;">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active"><a href="{{url('/')}}" class="nav-link" style="font-size: 15px;">ទំព័រដើម</a></li>
+{{-- 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="room.html" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">មីនុយ</a>
+            <a class="nav-link dropdown-toggle" href="room.htmls" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">មីនុយ</a> --}}
+
+
+            {{-- <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
+                  មីនុយ
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdown04">
+                  @foreach($categories as $category)
+                      <a class="dropdown-item" href="/category/{{ $category->id }}">{{ $category->names }}</a>
+                  @endforeach
+              </div>
+          </li> --}}
+          
+          {{-- <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
+                មីនុយ
+            </a>
             <div class="dropdown-menu" aria-labelledby="dropdown04">
+                @foreach($categories as $category)
+                    <a class="dropdown-item font-weight-bold" href="#">
+                        {{ $category->names }}
+                    </a>
+                    @if($category->products->count() > 0)
+                        @foreach($category->products as $product)
+                            <a class="dropdown-item pl-4" href="/product/{{ $product->id }}">
+                                - {{ $product->names }} <!-- Make sure 'names' is correct field -->
+                            </a>
+                        @endforeach
+                    @else
+                        <a class="dropdown-item pl-4 text-muted">No products available</a>
+                    @endif
+                    <div class="dropdown-divider"></div>
+                @endforeach
+            </div>
+        </li> --}}
+
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
+              មីនុយ
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdown04">
+              @foreach($categories as $category)
+                  <a class="dropdown-item font-weight-bold scroll-to-category" href="#category-{{ $category->id }}">
+                      {{ $category->names }}
+                  </a>
+                  @if($category->products->count() > 0)
+                      @foreach($category->products as $product)
+                          <a class="dropdown-item pl-4 scroll-to-category" href="#category-{{ $category->id }}">
+                              - {{ $product->names }}
+                          </a>
+                      @endforeach
+                  @else
+                      <a class="dropdown-item pl-4 text-muted">No products available</a>
+                  @endif
+                  <div class="dropdown-divider"></div>
+              @endforeach
+          </div>
+      </li>
+      
+      <script>
+          document.addEventListener("DOMContentLoaded", function () {
+              document.querySelectorAll('.scroll-to-category').forEach(anchor => {
+                  anchor.addEventListener('click', function (e) {
+                      e.preventDefault();
+                      let targetId = this.getAttribute('href');
+                      let targetElement = document.querySelector(targetId);
+      
+                      if (targetElement) {
+                          window.scrollTo({
+                              top: targetElement.offsetTop - 80, // Adjust for navbar height
+                              behavior: 'smooth'
+                          });
+      
+                          // Activate the correct tab in the product section
+                          let tabLink = document.querySelector(`[href="${targetId}"]`);
+                          if (tabLink) {
+                              tabLink.click();
+                          }
+                      }
+                  });
+              });
+          });
+      </script>
+      
+
+
+
+
+            {{-- <div class="dropdown-menu" aria-labelledby="dropdown04">
               <a class="dropdown-item" href="">កាហ្វេ-Coffee</a>
               <a class="dropdown-item" href="">តែទឹកដោះគោ-Milk Tea</a>
               <a class="dropdown-item" href="">ផាសិន-Passion</a>
@@ -19,10 +109,58 @@
               <a class="dropdown-item" href="">រស់់ជាតិ-Flavor</a>
               <a class="dropdown-item" href="">សូដា-Soda</a>
               <a class="dropdown-item" href="">ក្រឡុក-Smoothie</a>
-            </div>
+            </div> --}}
           </li>
-          <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">អំពីតាន់យ៉ុង</a></li>
-          <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">ទំនាក់ទំនង</a></li>
+          {{-- <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">អំពីតាន់យ៉ុង</a></li> --}}
+
+
+          <li class="nav-item">
+            <a href="#about-section" class="nav-link scroll-to" style="font-size: 15px;">អំពីតាន់យ៉ុង</a>
+        </li>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('.scroll-to').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        let targetId = this.getAttribute('href');
+                        let targetElement = document.querySelector(targetId);
+        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 50, // Adjust to avoid header overlap
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        
+          {{-- <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">ទំនាក់ទំនង</a></li> --}}
+          <li class="nav-item">
+            <a href="#contact-section" class="nav-link scroll-to" style="font-size: 15px;">ទំនាក់ទំនង</a>
+        </li>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('.scroll-to').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        let targetId = this.getAttribute('href');
+                        let targetElement = document.querySelector(targetId);
+        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 50, // Adjust to avoid header overlap
+                                behavior: 'smooth'
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+        
           <li class="nav-item"><a href="{{url('/login')}}" class="nav-link" style="font-size: 15px;">ចូលគណនី</a></li>
 
           <li class="nav-item cart">
