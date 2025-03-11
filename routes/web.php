@@ -93,16 +93,11 @@ Route::middleware('auth:user')->group(function () {
 
 
 
-        Route::get('/navbar', [CategoryController::class, 'showNavbar'])->name('navbar');
-        Route::get('/categories-list', [CategoryController::class, 'getCategories'])->name('categories.list');
-        Route::get('/category/{id}/products', [ProductController::class, 'getProductsByCategory'])->name('category.products');
-        Route::get('/products', [ProductController::class, 'showProducts'])->name('products.index');
+        // Route::get('/navbar', [CategoryController::class, 'showNavbar'])->name('navbar');
+        // Route::get('/categories-list', [CategoryController::class, 'getCategories'])->name('categories.list');
+        // Route::get('/category/{id}/products', [ProductController::class, 'getProductsByCategory'])->name('category.products');
+        // Route::get('/products', [ProductController::class, 'showProducts'])->name('products.index');
 
-
-
-        
-        // Route::get('/order-success/{order_id}', [OrderController::class, 'success'])->name('order.success');
-        
 
         // Cart routes
         // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

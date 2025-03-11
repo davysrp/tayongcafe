@@ -194,12 +194,12 @@ class ProductController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function showProducts()
-    {
-        $categories = Category::with('products')->where('status', 1)->get();
-        $products = Product::where('status', 1)->get(); // Fetch all active products
+    // public function showProducts()
+    // {
+    //     $categories = Category::with('products')->where('status', 1)->get();
+    //     $products = Product::where('status', 1)->get(); // Fetch all active products
     
-        return view('frontend.products', compact('categories', 'products'));
-    }
+    //     return view('frontend.products', compact('categories', 'products'));
+    // }
 }
 
