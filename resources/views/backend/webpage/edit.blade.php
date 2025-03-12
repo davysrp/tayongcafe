@@ -2,7 +2,7 @@
 <x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Category') }}
+            {{ __('Edit Webpage') }}
         </h2>
     </x-slot>
     @include('backend.Lib.edit',[
@@ -10,7 +10,7 @@
     'id'=>'product_form',
     'form'=>'backend.webpage.form',
     'formName'=>'category_form',
-    'title'=>'Update Category',
+    'title'=>'Update Webpage',
     'model'=>$model
 ])
 

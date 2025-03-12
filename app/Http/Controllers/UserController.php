@@ -66,7 +66,9 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users,email',
+            #'email' => 'required|unique:users,email',
+            'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/'],
+
             'password' => 'required',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
@@ -102,7 +104,10 @@ class UserController extends Controller
     {
         $data = $request->validate([
             'name' => 'required',
-            'email' => 'required|unique:users,email,' . $id,
+            #'email' => 'required|unique:users,email,' . $id,
+            'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/' . $id],
+            
+
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 

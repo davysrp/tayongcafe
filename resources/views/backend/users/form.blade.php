@@ -26,7 +26,7 @@
     
     <div class="col">
         <div class="form-group">
-            {!! Form::label('photo', 'Profile Photo ') !!}
+            {!! Form::label('photo', 'Profile Photo (optional)') !!}
             {!! Form::file('photo', ['class' => 'form-control-file']) !!}
         </div>
     </div>
@@ -40,3 +40,27 @@
         </div>
     </div>
 @endif
+
+
+<x-slot name="script">
+    <script>
+        $(document).ready(function () {
+            // Restrict email input to prevent typing after "@gmail.com"
+            $('#email').on('input', function () {
+                let value = $(this).val();
+                let match = value.match(/^([^@]*)@gmail\.com$/);
+
+                if (match) {
+                    // If the email contains "@gmail.com", lock the input to prevent more typing
+                    $(this).val(match[0]); // Keep only "@gmail.com" and block extra input
+                } else {
+                    // If @gmail.com is not typed yet, allow input normally
+                    let parts = value.split('@');
+                    if (parts.length > 1) {
+                        $(this).val(parts[0] + '@gmail.com'); // Force "@gmail.com"
+                    }
+                }
+            });
+        });
+    </script>
+</x-slot>

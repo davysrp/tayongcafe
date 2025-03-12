@@ -57,7 +57,7 @@
           <h2 class="ftco-heading-2">About Us</h2>
           <p>TANYONG in BBU-BMC. Now We are open in Sereisophoan City, Banteay Meanchey Province Cambodia Country.</p>
 
-          <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+          {{-- <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
             <li class="ftco-animate">
               <a href="https://web.facebook.com/Tanyong.cambodia" target="_blank" rel="noopener">
                 <span class="icon-facebook"></span>
@@ -73,7 +73,32 @@
                 <span class="icon-youtube"></span>
               </a>
             </li>
-          </ul>
+          </ul> --}}
+
+
+          <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+            <!-- Facebook -->
+            <li class="ftco-animate">
+                <a href="https://web.facebook.com/Tanyong.cambodia" target="_blank" rel="noopener">
+                    <span class="ion-social-facebook"></span> <!-- Correct Ionicons class -->
+                </a>
+            </li>
+        
+            <!-- Instagram -->
+            <li class="ftco-animate">
+                <a href="https://www.instagram.com" target="_blank" rel="noopener">
+                    <span class="ion-social-instagram"></span> <!-- Correct Ionicons class -->
+                </a>
+            </li>
+        
+            <!-- YouTube -->
+            <li class="ftco-animate">
+                <a href="https://www.youtube.com" target="_blank" rel="noopener">
+                    <span class="ion-social-youtube"></span> <!-- Correct Ionicons class -->
+                </a>
+            </li>
+        </ul>
+
         </div>
 
 
