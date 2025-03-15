@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\Customer;
 use Yajra\DataTables\DataTables;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 use Illuminate\Http\Request;
 
@@ -42,23 +44,27 @@ class CustomerController extends Controller
         return view('backend.customer.create');
     }
 
+
     public function store(Request $request)
     {
         $data = $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            #'email' => 'required|email|unique:customers,email',
             'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/'],
-
-            #'phone_number' => 'nullable'
             'phone_number' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
-
-
         ]);
 
-        Customer::create($data);
+        try {
+            Customer::create($data);
+            return redirect()->back()->with('success', 'Customer created successfully');
+        } catch (QueryException $e) {
+            // Log::error("Database error in store(): " . $e->getMessage());
 
-        return redirect()->back()->with('success', 'Customer created successfully');
+            if ($e->getCode() == 23000) {
+                return redirect()->back()->withInput()->with('error', 'This email is already registered. Please use a different email.');
+            }
+            return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again.');
+        }
     }
 
     public function edit($id)
@@ -67,31 +73,103 @@ class CustomerController extends Controller
         return view('backend.customer.edit', compact('model'));
     }
 
+
+
+    // public function update(Request $request, $id)
+    // {
+    //     $data = $this->validate($request, [
+    //         'first_name' => 'required',
+    //         'last_name' => 'required',
+    //         'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/', "unique:customers,email,$id"],
+    //         'phone_number' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+    //     ]);
+    
+    //     try {
+    //         $model = Customer::findOrFail($id);
+    //         $model->update($data);
+    //         return redirect()->back()->with('success', 'Customer updated successfully');
+    //     } catch (QueryException $e) {
+    //         // Log::error("Database error in update(): " . $e->getMessage());
+    
+    //         if ($e->getCode() == 23000) { // Integrity constraint violation (Duplicate Entry)
+    //             return redirect()->back()->withInput()->with('error', 'This email is already registered. Please use a different email.');
+    //         }
+    
+    //         return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again.');
+    //     }
+    // }
+    
+
+    // public function update(Request $request, $id)
+    // {
+    //     $data = $this->validate($request, [
+    //         'first_name' => 'required',
+    //         'last_name' => 'required',
+    //         'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/', "unique:customers,email,$id"],
+    //         'phone_number' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+    //     ]);
+    
+    //     try {
+    //         $model = Customer::findOrFail($id);
+    //         $model->update($data);
+    //         return redirect()->back()->with('success', 'Customer updated successfully');
+    //     } catch (QueryException $e) {
+    //         if ($e->getCode() == 23000) { // Integrity constraint violation (Duplicate Entry)
+    //             return redirect()->back()->withInput()->with('error', 'This email is already registered. Please use a different email.');
+    //         }
+    
+    //         return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again.');
+    //     }
+    // }
+    
+
     public function update(Request $request, $id)
     {
         $data = $this->validate($request, [
             'first_name' => 'required',
             'last_name' => 'required',
-            #'email' => 'required|email|unique:customers,email,'.$id,
-            'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/' .$id],
-
-            #'phone_number' => 'nullable'
+            'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/', "unique:customers,email,$id"],
             'phone_number' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
-
-
         ]);
-
-        $model = Customer::findOrFail($id);
-        $model->update($data);
-
-        return redirect()->back()->with('success', 'Customer updated successfully');
+    
+        try {
+            $model = Customer::findOrFail($id);
+            $model->update($data);
+    
+            // If request is AJAX, return JSON success response
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'message' => 'Customer updated successfully']);
+            }
+    
+            return redirect()->back()->with('success', 'Customer updated successfully');
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) { // Duplicate email error
+                if ($request->ajax()) {
+                    return response()->json(['success' => false, 'message' => 'This email is already registered. Please use a different email.']);
+                }
+                return redirect()->back()->withInput()->with('error', 'This email is already registered. Please use a different email.');
+            }
+    
+            return redirect()->back()->withInput()->with('error', 'Something went wrong. Please try again.');
+        }
     }
-
+    
 
 
     public function destroy($id)
     {
-        $model = Customer::destroy($id);
+        $model = Customer::find($id);
+
+        if (!$model) {
+            return response()->json([
+                'success' => false,
+                'status' => 404,
+                'message' => 'Customer not found'
+            ], 404);
+        }
+
+        $model->delete();
+        
         return response()->json([
             'success' => true,
             'status' => 200,
@@ -99,19 +177,15 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * Validate the request data.
-     */
-    public function data(Request $request)
+    public function data(Request $request, $id = null)
     {
-
-        $data = $this->validate($request, [
+        $rules = [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:customers,email',
+            'email' => 'required|email|unique:customers,email' . ($id ? ',' . $id : ''),
             'phone_number' => 'nullable|string|max:15',
-        ]);
-        
-        return $data;
+        ];
+
+        return $this->validate($request, $rules);
     }
 }

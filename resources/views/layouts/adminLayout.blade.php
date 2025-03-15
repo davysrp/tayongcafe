@@ -24,6 +24,9 @@
     <link href="{!! asset('assets/vendor/datatables/dataTables.bootstrap4.min.css') !!}" rel="stylesheet">
 
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     @if(isset($css))
         {!! $css !!}
     @endif
@@ -169,27 +172,40 @@
 
 
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         
-                             <!-- Display User Name -->
-                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                 {{ Auth::user()->name ?? 'Guest' }}
-                             </span>
-                         
-                             <!-- Display User Profile Picture -->
-                             <img class="img-profile rounded-circle" 
-                                src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/defaultprofile.png') }}" 
-                                alt="User Profile" width="40" height="40">
-                         
-                         </a>
-                         
-                         
-                        
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                <!-- Display User Name -->
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    {{ Auth::user()->name ?? 'Guest' }}
+                                </span>
+                                {{-- <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="{{ Auth::user()->photo ?? 'Guest' }}"> --}}
+
+
+
+                                {{-- <img src="{{ asset('storage/', . Auth::user()->photo)}}" alt="{{ Auth::user()->photo ?? 'Guest' }}"> --}}
+                                <!-- Display User Profile Picture -->
+                                {{-- <img class="img-profile rounded-circle"
+                                    src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/defaultprofile.png') }}"
+                                    alt="User Profile" width="40" height="40"> --}}
+{{-- 
+                                <img class="img-profile rounded-circle"
+                                    src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/profile_pictures/defaultprofile.png') }}"
+                                    alt="User Profile" width="40" height="40"> --}}
+
+                                    {{-- <img class="img-profile rounded-circle"
+                                    src="{{ Auth::user() && Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('storage/app/public/profile_pictures/defaultprofile.png') }}"
+                                    alt="User Profile" width="40" height="40"> --}}
+
+
+                                    {{-- <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" width="30" height="30" alt=""> --}}
+                                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="{{ Auth::user()->photo ?? 'Guest' }}" width="30" height="30">
+                                
+
+                            </a>
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                 aria-labelledby="userDropdown">
+                                aria-labelledby="userDropdown">
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
+                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
                                 </a>
@@ -198,7 +214,7 @@
                                 </form>
                             </div>
                         </li>
-                        
+
 
                     </ul>
 

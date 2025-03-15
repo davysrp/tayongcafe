@@ -79,25 +79,25 @@
           <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
             <!-- Facebook -->
             <li class="ftco-animate">
-                <a href="https://web.facebook.com/Tanyong.cambodia" target="_blank" rel="noopener">
-                    <span class="ion-social-facebook"></span> <!-- Correct Ionicons class -->
-                </a>
+              <a href="https://web.facebook.com/Tanyong.cambodia" target="_blank" rel="noopener">
+                <span class="ion-social-facebook"></span> <!-- Correct Ionicons class -->
+              </a>
             </li>
-        
+
             <!-- Instagram -->
             <li class="ftco-animate">
-                <a href="https://www.instagram.com" target="_blank" rel="noopener">
-                    <span class="ion-social-instagram"></span> <!-- Correct Ionicons class -->
-                </a>
+              <a href="https://www.instagram.com" target="_blank" rel="noopener">
+                <span class="ion-social-instagram"></span> <!-- Correct Ionicons class -->
+              </a>
             </li>
-        
+
             <!-- YouTube -->
             <li class="ftco-animate">
-                <a href="https://www.youtube.com" target="_blank" rel="noopener">
-                    <span class="ion-social-youtube"></span> <!-- Correct Ionicons class -->
-                </a>
+              <a href="https://www.youtube.com" target="_blank" rel="noopener">
+                <span class="ion-social-youtube"></span> <!-- Correct Ionicons class -->
+              </a>
             </li>
-        </ul>
+          </ul>
 
         </div>
 
@@ -132,9 +132,28 @@
 
           <div class="block-23 mb-3" id="contact-section">
             <ul>
-              <li><a href="#"><span class="icon icon-phone"></span><span class="text">+855 93 444 498</span></a></li>
+              {{-- <li><a href="#"><span class="icon icon-phone"></span><span class="text">+855 93 444 498</span></a>
+              </li>
               <li><a href="#"><span class="icon icon-envelope"></span><span
-                    class="text">chatanyong@outlook.com</span></a></li>
+                    class="text">chatanyong@outlook.com</span></a></li> --}}
+
+                    
+              <!-- Phone -->
+              <li>
+                <a href="tel:+85593444498">
+                  <span class="icon ion-ios-telephone"></span>
+                  <span class="text">+855 93 444 498</span>
+                </a>
+              </li>
+
+              <!-- Email -->
+              <li>
+                <a href="mailto:chatanyong@outlook.com">
+                  <span class="icon ion-ios-email"></span>
+                  <span class="text">chatanyong@outlook.com</span>
+                </a>
+              </li>
+
             </ul>
           </div>
 
