@@ -1,14 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Seller;
 use App\Models\Webpage;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
+
 class WebpageController extends Controller
 {
+    
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -18,14 +21,25 @@ class WebpageController extends Controller
                 ->setRowAttr(['data-id' => function ($model) {
                     return $model->id;
                 }])
+                // ->addColumn('image', function ($model) {
+                //     // return '<img src="'.asset('storage/'.$model->image).'" width="50">';
+                //     return '<img src="'.asset('storage/'.$model->image).'" width="50">';
+
+                // })
+
                 ->addColumn('image', function ($model) {
-                    return '<img src="'.asset('storage/'.$model->image).'" width="50">';
+                    if ($model->image && Storage::exists('public/' . $model->image)) {
+                        return '<img src="' . Storage::url($model->image) . '" width="50">';
+                    }
+                    return '<img src="' . asset('default.png') . '" width="50">'; // Default image if missing
                 })
+                
                 ->editColumn('status', function ($model) {
                     return $model->status
                         ? '<span class="badge badge-success">Active</span>'
                         : '<span class="badge badge-danger">Inactive</span>';
                 })
+
                 ->addColumn('action', function ($model) {
                     $html = '<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
                               <button type="button" class="btn btn-danger" data-id="' . $model->id . '" data-link="' . route('web-pages.destroy', $model->id) . '" id="delete"><i class="fas fa-trash-alt"></i></button>
@@ -46,20 +60,36 @@ class WebpageController extends Controller
         return view('backend.webpage.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $data = $this->data($request);
+
+    //     if ($request->hasFile('image')) {
+    //         $imagePath = $request->file('image')->store('webpages', 'public');
+    //         $data['image'] = $imagePath;
+    //     }
+
+    //     Webpage::create($data);
+
+    //     return redirect()->back()->with('success', 'Web page saved successfully');
+    // }
     public function store(Request $request)
     {
-        $data = $this->data($request);
-
+        $validatedData = $request->validate([
+            'names' => 'required|max:191',
+            'detail' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+    
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('webpages', 'public');
-            $data['image'] = $imagePath;
+            $validatedData['image'] = $imagePath;
         }
-
-        Webpage::create($data);
-
-        return redirect()->back()->with('success', 'Web page saved successfully');
+    
+        WebPage::create($validatedData);
+    
+        return redirect()->route('web-pages.index')->with('success', 'Web page created successfully.');
     }
-
 
     public function show(Webpage $webpage)
     {

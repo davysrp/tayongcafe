@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center mb-5">
             <div class="col-md-7 heading-section text-center ftco-animate">
-                <h2 class="mb-4">Products</h2>
+                <h2 class="mb-4">ផលិតផល</h2>
             </div>
         </div>
         <div class="row d-md-flex">
@@ -13,7 +13,7 @@
                     <div class="col-md-12 nav-link-wrap mb-5">
                         <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <!-- Add an "All" tab to show all products -->
-                            <a class="nav-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all" role="tab" aria-controls="v-pills-all" aria-selected="true">All</a>
+                            <a class="nav-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all" role="tab" aria-controls="v-pills-all" aria-selected="true">ទាំងអស់</a>
                             @foreach($categories as $category)
                                 <a class="nav-link" id="v-pills-{{ $category->id }}-tab" data-toggle="pill" href="#v-pills-{{ $category->id }}" role="tab" aria-controls="v-pills-{{ $category->id }}" aria-selected="false">{{ $category->names }}</a>
                             @endforeach
@@ -37,7 +37,7 @@
                                                     <p>
                                                         <input type="hidden" name="quantity" value="1">
                                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                        <button type="button" class="btn btn-primary buy-button">Buy</button>
+                                                        <button type="button" class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -56,13 +56,13 @@
                                                     <div class="menu-wrap">
                                                         <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
                                                         <div class="text">
-                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->name }}</a></h3>
+                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a></h3>
                                                             <p>{{ $product->detail }}</p>
                                                             <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
                                                             <p>
                                                                 <input type="hidden" name="quantity" value="1">
                                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                                <button type="button" class="btn btn-primary buy-button">Buy</button>
+                                                                <button type="button" class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -70,7 +70,8 @@
                                             @endforeach
                                         @else
                                             <div class="col-md-12 text-center">
-                                                <p>No products available in this category.</p>
+                                                {{-- <p>No products available in this category.</p> --}}
+                                                <p>ផលិតផលអស់ពីស្តុក</p>
                                             </div>
                                         @endif
                                     </div>
@@ -89,7 +90,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="background-color: black; color: #fff; font-family: 'Khmer OS Siemreap', sans-serif;">
             <div class="modal-header">
-                <h5 class="modal-title" style="font-size: 24px; font-weight: normal;">Select Variant</h5>
+                <h5 class="modal-title" style="font-size: 24px; font-weight: normal;">ជ្រើសរើសតាមប្រភេទ</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; font-size: 24px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -100,8 +101,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px;">Close</button>
-                <button type="button" class="btn btn-primary" id="confirmVariant" style="font-size: 18px;">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px;">បិទ</button>
+                <button type="button" class="btn btn-primary" id="confirmVariant" style="font-size: 18px;">បញ្ជាក់</button>
             </div>
         </div>
     </div>

@@ -49,7 +49,7 @@
         </li> --}}
 
         
-        <li class="nav-item dropdown">
+        {{-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
               មីនុយ
           </a>
@@ -70,8 +70,24 @@
                   <div class="dropdown-divider"></div>
               @endforeach
           </div>
-      </li>
+      </li> --}}
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
+            មីនុយ
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdown04">
+            @foreach($categories as $category)
+                <a class="dropdown-item font-weight-bold scroll-to-category" href="#category-{{ $category->id }}">
+                    {{ $category->names }}
+                </a>
+                <div class="dropdown-divider"></div> <!-- Divider between categories -->
+            @endforeach
+        </div>
+    </li>
+    
       
+
       <script>
           document.addEventListener("DOMContentLoaded", function () {
               document.querySelectorAll('.scroll-to-category').forEach(anchor => {

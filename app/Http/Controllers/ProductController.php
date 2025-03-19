@@ -55,49 +55,6 @@ class ProductController extends Controller
         return view('backend.product.create', compact('category'));
     }
 
-    // public function store(Request $request)
-    // {
-    //     $data = $request->all();
-    //     $destinationPath = public_path('storage/product');
-
-    //     if ($request->photo) {
-    //         $photo = $request->file('photo');
-    //         $newName = rand(100000, 999999) . date('YmdHis') . '.jpg';
-
-    //         // Resize image as per your original logic
-    //         $imgwidth = Image::make($photo->path())->getWidth();
-    //         $imgHeigh = Image::make($photo->path())->getHeight();
-    //         $percentOptm = 100 - (720 * 100 / $imgwidth);
-    //         $width = $imgwidth - (($imgwidth / 100) * $percentOptm);
-    //         $height = $imgHeigh - (($imgHeigh / 100) * $percentOptm);
-
-    //         $imageFile = $newName . '.jpg';
-    //         $img = Image::make($photo->path());
-    //         $img->resize($width, $height, function ($constraint) {
-    //             $constraint->aspectRatio();
-    //             $constraint->upsize();
-    //         })->save($destinationPath . '/' . $newName . '.jpg');
-
-    //         $data['photo'] = $imageFile;
-    //     }
-
-    //     $model = Product::create($data);
-
-    //     if ($request->variant_code) {
-    //         foreach ($request->variant_code as $key => $vCode) {
-    //             ProductVariant::create([
-    //                 'product_id' => $model->id,
-    //                 'variant_code' => $vCode,
-    //                 'variant_name' => $request->variant_name[$key],
-    //                 'variant_price' => $request->variant_price[$key],
-    //                 'status' => $request->variant_status[$key],
-    //                 'variant_size' => $request->variant_size[$key]
-    //             ]);
-    //         }
-    //     }
-
-    //     return redirect()->route('products.index')->with('success', 'Product saved successfully');
-    // }
 
 
     public function store(Request $request)
@@ -157,76 +114,6 @@ class ProductController extends Controller
         $category = Category::pluck('names', 'id');
         return view('backend.product.edit', compact('model', 'category'));
     }
-
-    // public function update(Request $request, $id)
-    // {
-    //     $model = Product::find($id);
-
-    //     if ($model) {
-    //         $data = $request->all();
-    //         $destinationPath = public_path('storage/product');
-
-    //         if ($request->photo) {
-    //             // Delete old photo if exists
-    //             if ($model->photo && File::exists($destinationPath . '/' . $model->photo)) {
-    //                 File::delete($destinationPath . '/' . $model->photo);
-    //             }
-
-    //             // Handle new photo upload and resizing
-    //             $photo = $request->file('photo');
-    //             $newName = rand(100000, 999999) . date('YmdHis'); // Keep original naming logic
-
-    //             // Resize image using your original logic
-    //             $imgwidth = Image::make($photo->path())->getWidth();
-    //             $imgHeigh = Image::make($photo->path())->getHeight();
-    //             $percentOptm = 100 - (720 * 100 / $imgwidth);
-    //             $width = $imgwidth - (($imgwidth / 100) * $percentOptm);
-    //             $height = $imgHeigh - (($imgHeigh / 100) * $percentOptm);
-
-    //             $imageFile = $newName . '.jpg';
-    //             $img = Image::make($photo->path());
-    //             $img->resize($width, $height, function ($constraint) {
-    //                 $constraint->aspectRatio();
-    //                 $constraint->upsize();
-    //             })->save($destinationPath . '/' . $newName . '.jpg');
-
-    //             $data['photo'] = $imageFile;
-    //         }
-
-    //         $model->update($data);
-
-    //         // Update or create product variants
-    //         if ($request->variant_code) {
-    //             foreach ($request->variant_code as $key => $vCode) {
-    //                 $variantData = [
-    //                     'variant_name' => $request->variant_name[$key],
-    //                     'variant_price' => $request->variant_price[$key],
-    //                     'status' => $request->variant_status[$key],
-    //                     'variant_size' => $request->variant_size[$key]
-    //                 ];
-
-    //                 // Check if the variant already exists
-    //                 $variant = ProductVariant::where('product_id', $model->id)
-    //                     ->where('variant_code', $vCode)
-    //                     ->first();
-
-    //                 if ($variant) {
-    //                     // Update existing variant
-    //                     $variant->update($variantData);
-    //                 } else {
-    //                     // Create new variant
-    //                     $variantData['product_id'] = $model->id;
-    //                     $variantData['variant_code'] = $vCode;
-    //                     ProductVariant::create($variantData);
-    //                 }
-    //             }
-    //         }
-
-    //         return redirect()->route('products.index')->with('success', 'Product updated successfully');
-    //     }
-
-    //     return redirect()->route('products.index')->with('error', 'Product not found');
-    // }
 
 
     public function update(Request $request, $id)
@@ -324,14 +211,6 @@ class ProductController extends Controller
         return response()->json(['success' => true]);
     }
 
-    
 
-    // public function showProducts()
-    // {
-    //     $categories = Category::with('products')->where('status', 1)->get();
-    //     $products = Product::where('status', 1)->get(); // Fetch all active products
-    
-    //     return view('frontend.products', compact('categories', 'products'));
-    // }
 }
 

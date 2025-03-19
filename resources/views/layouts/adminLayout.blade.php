@@ -41,12 +41,16 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <div class="text-center">
+            {{-- <div class="text-center">
                 <a class="navbar-brand" href="{{ route('homePage') }}">
                     <img src="{{ asset('LOGO2.png') }}" alt="Tanyong Cafe Logo" width="100" height="100">
                 </a>
+            </div> --}}
+            
+            <div class="text-center">
+                <img src="{{ asset('LOGO2.png') }}" alt="Tanyong Cafe Logo" width="100" height="100">
             </div>
-
+            
 
             {{-- <div class="sidebar-brand-text mx-3">Admin</div> --}}
 
