@@ -4,7 +4,6 @@
     @include('frontend.css')
   </head>
   <body>
-
   	@include('frontend.navbar')
 
     @include('frontend.slider')

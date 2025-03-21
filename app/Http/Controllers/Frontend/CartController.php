@@ -35,11 +35,15 @@ class CartController extends Controller
         // Unique key for the cart item
         $cartKey = $variantId ? "{$productId}-{$variantId}" : $productId;
 
+        $productName = $product->names;
+        if ($variant) $productName .='-'. $variant->variant_name;
+
         if (isset($cart[$cartKey])) {
             $cart[$cartKey]['quantity']++;
         } else {
             $cart[$cartKey] = [
-                "name" => $product->name . ($variant ? " - {$variant->variant_name}" : ""),
+                "name" => $productName,
+                "product_id" => $productId,
                 "quantity" => 1,
                 "price" => $variant ? $variant->variant_price : $product->price,
                 "photo" => $product->photo,
@@ -62,16 +66,13 @@ class CartController extends Controller
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] = $quantity;
             session()->put('cart', $cart);
-
             // Calculate the new subtotal for this item
             $newSubtotal = $cart[$id]['price'] * $quantity;
-
             // Recalculate total
             $total = 0;
             foreach ($cart as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
-
             return response()->json([
                 'success' => true,
                 'newSubtotal' => $newSubtotal,
