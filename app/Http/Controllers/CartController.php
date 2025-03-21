@@ -39,6 +39,7 @@ class CartController extends Controller
         } else {
             // Add a new product to the cart
             $cart[$productId] = [
+                'product_id' => $productId,
                 'name' => $name,
                 'price' => $price,
                 'quantity' => $quantity,
@@ -112,5 +113,5 @@ class CartController extends Controller
 
         return redirect()->back()->with('success', 'Cart cleared!');
     }
-    
+
 }

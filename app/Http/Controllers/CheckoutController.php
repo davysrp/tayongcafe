@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sell;
+use App\Models\SellDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
-    
+
     // Display the checkout page
     public function index()
     {
@@ -30,6 +32,7 @@ class CheckoutController extends Controller
     // Process the checkout
     public function process(Request $request)
     {
+
         // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
@@ -48,7 +51,7 @@ class CheckoutController extends Controller
         }
 
         // Save the order to the database (example logic)
-        $order = Auth::user()->orders()->create([
+        $order = Sell::create([
             'total_amount' => $total,
             'status' => 'pending',
             'shipping_address' => $request->input('address'),
@@ -57,12 +60,13 @@ class CheckoutController extends Controller
 
         // Add order items to the database
         foreach ($cart as $id => $item) {
-            $order->items()->create([
-                'product_id' => $id,
-                'quantity' => $item['quantity'],
-                'price' => $item['price'],
-                'variant_name' => $item['variant_name'] ?? null,
-                'variant_size' => $item['variant_size'] ?? null,
+            SellDetail::create([
+                'sell_id' => $order->id,
+                'product_id' => $item['product_id'],
+                'qty' => $item['quantity'],
+                'price' => (float)$item['price'],
+                'total' => (float) $item['price'] *  (int)$item['quantity'],
+                'product_variant_id' =>(int) $item['variant_id'],
             ]);
         }
 
