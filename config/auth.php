@@ -40,9 +40,9 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'seller' => [
+        'customer' => [
             'driver' => 'session',
-            'provider' => 'sellers',
+            'provider' => 'customers',
         ],
     ],
 
@@ -76,7 +76,7 @@ return [
 
         'customers' => [
             'driver' => 'database',
-            'table' => \App\Models\Customer::class
+            'table' => 'customers',
         ],
     ],
 
