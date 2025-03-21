@@ -16,7 +16,7 @@ class Authenticate extends Middleware
         $routeMiddleware = \Route::current()->middleware();
         $guard = $routeMiddleware[1];
         if ($guard == 'auth:user')  return $request->expectsJson() ? null : route('login');
-        if ($guard == 'auth:seller')  return $request->expectsJson() ? null : route('memberLogin');
+        if ($guard == 'auth:customer')  return $request->expectsJson() ? null : route('memberLogin');
 
     }
 }

@@ -3,21 +3,21 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Controllers\Seller\CartController;
 use App\Http\Controllers\SellController;
-
+use App\Http\Controllers\CustomerAuth\AuthController;
 
 
 
 Route::middleware('guest')->group(function () {
     Route::group(['prefix' => 'member'], function () {
-        Route::get('login', [AuthenticatedSessionController::class, 'loginForm'])->name('memberFormLogin');
-        Route::get('forgot-password', [AuthenticatedSessionController::class, 'forgotPasswordForm'])->name('forgotPasswordForm');
-        Route::post('forgot-password-link', [AuthenticatedSessionController::class, 'forgotPasswordSendLink'])->name('forgotPasswordSendLink');
-        Route::get('reset-password/{token}', [AuthenticatedSessionController::class, 'resetPasswordSendLink'])->name('resetPasswordSendLink');
-        Route::get('register', [AuthenticatedSessionController::class, 'registerForm'])->name('memberFormRegister');
-        Route::post('save-change-password', [AuthenticatedSessionController::class, 'saveChangePassword'])->name('saveChangePassword');
+        Route::get('login', [AuthController::class, 'loginForm'])->name('memberFormLogin');
+        Route::get('forgot-password', [AuthController::class, 'forgotPasswordForm'])->name('forgotPasswordForm');
+        Route::post('forgot-password-link', [AuthController::class, 'forgotPasswordSendLink'])->name('forgotPasswordSendLink');
+        Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordSendLink'])->name('resetPasswordSendLink');
+        Route::get('register', [AuthController::class, 'registerForm'])->name('memberFormRegister');
+        Route::post('save-change-password', [AuthController::class, 'saveChangePassword'])->name('saveChangePassword');
 
-        Route::post('login', [AuthenticatedSessionController::class, 'login'])->name('memberLogin');
-        Route::post('register', [AuthenticatedSessionController::class, 'register'])->name('memberRegister');
+        Route::post('login', [AuthController::class, 'login'])->name('memberLogin');
+        Route::post('register', [AuthController::class, 'register'])->name('memberRegister');
     });
 
     Route::get('product-list', [FrontendController::class, 'productList'])->name('productList');
@@ -26,12 +26,10 @@ Route::middleware('guest')->group(function () {
     Route::get('page/{page}', [FrontendController::class, 'page'])->name('page');
 });
 
-Route::middleware(['auth:seller'])->group(function () {
+Route::middleware(['auth:customer'])->group(function () {
     Route::group(['prefix' => 'member'], function () {
 
-        Route::get('top-up-balance',[FrontendController::class,'topUpBalance'] )->name('topUpBalance');
-        Route::post('submit-top-up-balance',[FrontendController::class,'submitTopUpBalance'] )->name('submitTopUpBalance');
-        Route::get('seller-logout',[AuthenticatedSessionController::class,'logout'] )->name('sellerlogout');
+        Route::get('seller-logout',[AuthController::class,'logout'] )->name('sellerlogout');
 
         Route::get('cart-list',[CartController::class,'index'] )->name('cartList');
         Route::get('add-cart/{id}',[CartController::class,'addCart'] )->name('addCart');
@@ -44,13 +42,6 @@ Route::middleware(['auth:seller'])->group(function () {
         Route::get('khqr', [FrontendController::class, 'khqrPay'])->name('khqrPay');
         Route::get('khqr-success', [CartController::class, 'khqrPaymentSuccess'])->name('khqrPaymentSuccess');
         Route::post('khqr-check-transaction', [CartController::class, 'checkTransactionOrder'])->name('checkTransactionOrder');
-
-
-
-
-        Route::get('soldproduct/{seller}',[SellController::class,'soldproduct'] )->name('frontend__.soldproduct');
-        Route::get('boughtproduct/{buyer}',[SellController::class,'boughtproduct'] )->name('frontend__.boughtproduct');
-
         // Route::resource('seller-products', ProductController::class);
         Route::get('get-payment-method',  [CartController::class,'getPaymentMethod'])->name('getPaymentMethod');
     });
