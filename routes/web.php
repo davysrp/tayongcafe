@@ -107,6 +107,9 @@ Route::middleware('auth:user')->group(function () {
         // Route::get('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('removeFromCart');
         // Route::post('/cart/apply-coupon', [CartController::class, 'applyCouponCode'])->name('applyCouponCode');
         // Route::get('/cart/clear', [CartController::class, 'clearCart'])->name('clearCart');
+
+        
+        
     });
 });
 
