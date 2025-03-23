@@ -38,7 +38,7 @@
 
                 <div class="collapse navbar-collapse navbar-mobile" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        @guest('seller')
+                        @guest('customer')
                             <li class="nav-item active">
                                 <a class="nav-link btn nav-btn-login" href="{{ route('memberFormLogin') }}">
                                     <i class="fa-solid fa-arrow-right-to-bracket"></i> {{ __('Sign In') }}

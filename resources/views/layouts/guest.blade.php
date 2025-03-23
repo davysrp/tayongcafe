@@ -17,7 +17,7 @@
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div style="margin-buttom:-100px">
-                <a href="/">
+                <a >
                     <!-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> -->
                     <img src="{{asset('photo/img/user_avatar.png')}}" alt="" style="margin-bottom: -70px;
     z-index: 100;

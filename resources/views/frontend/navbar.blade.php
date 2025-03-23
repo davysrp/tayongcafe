@@ -191,16 +191,88 @@
                         });
                     </script>
 
+
+
                     {{-- <li class="nav-item"><a href="{{url('/login')}}" class="nav-link"
                             style="font-size: 15px;">ចូលគណនី</a></li> --}}
 
-                            @guest
+                    {{-- @guest
+                    <li class="nav-item">
+                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
+                    </li>
+                    @endguest --}}
+
+
+
+                    {{-- @guest
+                    <li class="nav-item">
+                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
+                    </li>
+                    @endguest --}}
+
+
+                    {{-- <li class="nav-item">
+                        <!-- Display for guests (not logged in) -->
+                        @guest
+                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
+                        @endguest --}}
+
+
+                    <li class="nav-item dropdown">
+                        @if (Auth::guard('customer')->check())
+                        @if(Auth::guard('customer')->check())
+                        <a href="{{ route('member.profile') }}" class="nav-link" style="font-size: 15px;">
+                            គណនី {{-- Go to profile --}}
+                        </a>
+                    @else
+                        <a href="{{ route('memberFormLogin') }}" class="nav-link" style="font-size: 15px;">
+                            គណនី {{-- Go to login --}}
+                        </a>
+                    @endif
+                            <!-- Logged-in User Display -->
+                            {{-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                    {{ Auth::guard('customer')->user()->first_name }}
+                                    {{ Auth::guard('customer')->user()->last_name }}
+                                </span>
+                            </a>
+
+                            <img src="{{ asset('storage/' . Auth::guard('customer')->user()->userphoto) }}"
+                                alt="{{ Auth::guard('customer')->user()->userphoto ?? 'Guest' }}" width="30" height="30"> --}}
+
+
+                            <!-- Dropdown Menu -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Option -->
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+
+                                <!-- Hidden Logout Form -->
+                                {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form> --}}
+                            </div>
+                        @else
+                            <!-- Guest (Not Logged-in) Display -->
                             <li class="nav-item">
-                                <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
+                                @if(Auth::guard('customer')->check())
+                                    <a href="{{ route('member.profile') }}" class="nav-link" style="font-size: 15px;">
+                                        គណនី {{-- Go to profile --}}
+                                    </a>
+                                @else
+                                    <a href="{{ route('memberFormLogin') }}" class="nav-link" style="font-size: 15px;">
+                                        គណនី {{-- Go to login --}}
+                                    </a>
+                                @endif
                             </li>
-                        @endguest
-                        
-                        
+                        @endif
+                    </li>
+
 
 
                     <li class="nav-item cart">

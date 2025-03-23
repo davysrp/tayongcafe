@@ -93,6 +93,8 @@ Route::middleware('auth:user')->group(function () {
 
 
 
+
+
         // Route::get('/navbar', [CategoryController::class, 'showNavbar'])->name('navbar');
         // Route::get('/categories-list', [CategoryController::class, 'getCategories'])->name('categories.list');
         // Route::get('/category/{id}/products', [ProductController::class, 'getProductsByCategory'])->name('category.products');

@@ -69,7 +69,7 @@ class CategoryController extends Controller
 
             $imageFile = $newName . '.jpg';
             $img = Image::make($photo->path());
-            $img->resize($width, $height, function ($constraint) {
+            $img->resize($width, $height, function ($constraint): void {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             })->save($destinationPath . '/' . $newName . '.jpg');
