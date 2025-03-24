@@ -22,23 +22,12 @@ use App\Http\Controllers\WebpageController;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\CartController;
 
-use App\Http\Controllers\Frontend\CartController;
-use App\Http\Controllers\CheckoutController;
+
 
 Route::get('/', [FrontendController::class, 'index'])->name('homePage');
 Route::get('/page/{category}', [FrontendController::class, 'index'])->name('productCategory');
 
 
-// Checkout route
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
-
-
-// Public Cart Routes (accessible to all users)
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
-Route::post('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
-Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::middleware('auth:user')->group(function () {
     Route::prefix('admin')->group(function () {

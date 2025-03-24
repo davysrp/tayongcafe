@@ -1,0 +1,219 @@
+/* Cart UI Styles */
+/* 
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.product-wrap {
+    background-color: #f8f5f2;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+.trending-title h1 {
+    font-weight: 700;
+    color: #5c3d2e;
+    border-bottom: 2px solid #d6a76c;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.table {
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #f3e9dc;
+    color: #5c3d2e;
+}
+
+.table th, .table td {
+    vertical-align: middle !important;
+}
+
+.cart-thumb {
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.product-cart {
+    align-items: center;
+}
+
+.product-cart .col-sm-8 {
+    padding-left: 10px;
+}
+
+.input-group .btn {
+    border-color: #d6a76c;
+}
+
+.input-group input {
+    border: 1px solid #d6a76c;
+    max-width: 60px;
+}
+
+.btn-number {
+    color: #5c3d2e;
+}
+
+.btn-number:hover {
+    background-color: #d6a76c;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.total-price {
+    text-align: right;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff5ec;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.total-price h4 {
+    color: #2f2f2f;
+    font-weight: 600;
+}
+
+.btn-success {
+    background-color: #6c4f3d;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #523c2e;
+} */
+
+
+
+
+
+
+
+
+/* ===============================
+   Coffee Management UI Theme
+   =============================== */
+   body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f3efe8; /* latte cream background */
+}
+
+.product-wrap {
+    background-color: #fffaf5; /* very light coffee cream */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(90, 64, 50, 0.08);
+}
+
+.trending-title h1 {
+    font-weight: 700;
+    color: #4b2e2a; /* espresso dark */
+    border-bottom: 2px solid #c19b76; /* cappuccino beige */
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.table {
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #e8d9c4; /* light roasted bean */
+    color: #4b2e2a;
+    font-weight: 600;
+}
+
+.table th, .table td {
+    vertical-align: middle !important;
+    color: #3f2e2b;
+}
+
+.cart-thumb {
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.product-cart {
+    align-items: center;
+}
+
+.product-cart .col-sm-8 {
+    padding-left: 10px;
+}
+
+.input-group .btn {
+    border-color: #c19b76;
+    background-color: #fff;
+    color: #4b2e2a;
+}
+
+.input-group input {
+    border: 1px solid #c19b76;
+    max-width: 60px;
+    color: #4b2e2a;
+    background-color: #fdf9f5;
+}
+
+.btn-number:hover {
+    background-color: #c19b76;
+    color: #fff;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+.total-price {
+    text-align: right;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f5ede4; /* milky beige */
+    border-radius: 10px;
+    font-size: 1.2rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.total-price h4 {
+    color: #3a2a28;
+    font-weight: 600;
+}
+
+.btn-success {
+    background-color: #6b4e3d; /* coffee brown */
+    border: none;
+    color: #fff;
+}
+
+.btn-success:hover {
+    background-color: #543c2e;
+}

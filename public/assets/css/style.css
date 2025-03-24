@@ -13,3 +13,45 @@
     transition: all 0.5s;
     margin-bottom: 10px;
 }
+
+body {
+    background-color: #f9fcfd;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.profile-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.btn-upload {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-upload:hover {
+    background-color: #218838;
+}
+
+.btn-logout {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    background: transparent;
+}
+
+.btn-logout:hover {
+    background: #dc3545;
+    color: #fff;
+}

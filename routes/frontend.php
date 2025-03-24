@@ -1,10 +1,11 @@
 <?php
+
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\Seller\CartController;
 use App\Http\Controllers\SellController;
 use App\Http\Controllers\CustomerAuth\AuthController;
-
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Frontend\CartController;
 
 
 // Route::middleware('guest')->group(function () {
@@ -49,32 +50,30 @@ use App\Http\Controllers\CustomerAuth\AuthController;
 
 
 
-// Define logout route with POST method
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-
-
-Route::post('/member/profile/update', [AuthController::class, 'update'])->name('member.profile.update');
-Route::post('/member/profile/update/photo', [AuthController::class, 'updatePhoto'])->name('member.profile.update.photo');
 
 
 
 
 Route::middleware('guest')->group(function () {
     Route::group(['prefix' => 'member'], function () {
-        // Customer registration form route
-        Route::get('register', [AuthController::class, 'registerForm'])->name('memberFormRegister'); 
-        Route::post('register', [AuthController::class, 'register'])->name('memberRegister'); // Form submission
-
-        // Customer login form route
+        Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+        Route::post('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
+        Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+        Route::get('register', [AuthController::class, 'registerForm'])->name('memberFormRegister');
+        Route::post('register', [AuthController::class, 'register'])->name('memberRegister');
         Route::get('login', [AuthController::class, 'loginForm'])->name('memberFormLogin');
-        Route::post('login', [AuthController::class, 'login'])->name('memberLogin'); // Form submission\
-    
+        Route::post('login', [AuthController::class, 'login'])->name('memberLogin'); 
     });
 });
-// Auth
 
-// Profile
+
 Route::middleware('auth:customer')->group(function () {
+        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+        Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+        Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
     Route::get('/member/profile', [AuthController::class, 'showpro'])->name('member.profile');
     Route::post('/member/profile', [AuthController::class, 'updatepro'])->name('member.profile.update');
 });

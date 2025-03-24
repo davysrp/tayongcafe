@@ -12,75 +12,6 @@
                     <li class="nav-item active"><a href="{{url('/')}}" class="nav-link"
                             style="font-size: 15px;">ទំព័រដើម</a></li>
 
-                    {{--
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="room.htmls" id="dropdown04" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">មីនុយ</a> --}}
-
-
-                        {{--
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
-                            មីនុយ
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            @foreach($categories as $category)
-                            <a class="dropdown-item" href="/category/{{ $category->id }}">{{ $category->names }}</a>
-                            @endforeach
-                        </div>
-                    </li> --}}
-
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
-                            មីនុយ
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            @foreach($categories as $category)
-                            <a class="dropdown-item font-weight-bold" href="#">
-                                {{ $category->names }}
-                            </a>
-                            @if($category->products->count() > 0)
-                            @foreach($category->products as $product)
-                            <a class="dropdown-item pl-4" href="/product/{{ $product->id }}">
-                                - {{ $product->names }} <!-- Make sure 'names' is correct field -->
-                            </a>
-                            @endforeach
-                            @else
-                            <a class="dropdown-item pl-4 text-muted">No products available</a>
-                            @endif
-                            <div class="dropdown-divider"></div>
-                            @endforeach
-                        </div>
-                    </li> --}}
-
-
-                    {{-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
-                            មីនុយ
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown04">
-                            @foreach($categories as $category)
-                            <a class="dropdown-item font-weight-bold scroll-to-category"
-                                href="#category-{{ $category->id }}">
-                                {{ $category->names }}
-                            </a>
-                            @if($category->products->count() > 0)
-                            @foreach($category->products as $product)
-                            <a class="dropdown-item pl-4 scroll-to-category" href="#category-{{ $category->id }}">
-                                - {{ $product->names }}
-                            </a>
-                            @endforeach
-                            @else
-                            <a class="dropdown-item pl-4 text-muted">No products available</a>
-                            @endif
-                            <div class="dropdown-divider"></div>
-                            @endforeach
-                        </div>
-                    </li> --}}
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
@@ -96,9 +27,6 @@
                             @endforeach
                         </div>
                     </li>
-
-
-
 
                     <script>
                         document.addEventListener("DOMContentLoaded", function () {
@@ -127,22 +55,6 @@
 
 
 
-
-
-                    {{-- <div class="dropdown-menu" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="">កាហ្វេ-Coffee</a>
-                        <a class="dropdown-item" href="">តែទឹកដោះគោ-Milk Tea</a>
-                        <a class="dropdown-item" href="">ផាសិន-Passion</a>
-                        <a class="dropdown-item" href="">តែផ្លែឈើ-Fruit Tea</a>
-                        <a class="dropdown-item" href="">រស់់ជាតិ-Flavor</a>
-                        <a class="dropdown-item" href="">សូដា-Soda</a>
-                        <a class="dropdown-item" href="">ក្រឡុក-Smoothie</a>
-                    </div> --}}
-                    </li>
-                    {{-- <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">អំពីតាន់យ៉ុង</a></li>
-                    --}}
-
-
                     <li class="nav-item">
                         <a href="#about-section" class="nav-link scroll-to" style="font-size: 15px;">អំពីតាន់យ៉ុង</a>
                     </li>
@@ -166,8 +78,7 @@
                         });
                     </script>
 
-                    {{-- <li class="nav-item"><a href="" class="nav-link" style="font-size: 15px;">ទំនាក់ទំនង</a></li>
-                    --}}
+
                     <li class="nav-item">
                         <a href="#contact-section" class="nav-link scroll-to" style="font-size: 15px;">ទំនាក់ទំនង</a>
                     </li>
@@ -193,57 +104,25 @@
 
 
 
-                    {{-- <li class="nav-item"><a href="{{url('/login')}}" class="nav-link"
-                            style="font-size: 15px;">ចូលគណនី</a></li> --}}
-
-                    {{-- @guest
-                    <li class="nav-item">
-                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
-                    </li>
-                    @endguest --}}
-
-
-
-                    {{-- @guest
-                    <li class="nav-item">
-                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
-                    </li>
-                    @endguest --}}
-
-
-                    {{-- <li class="nav-item">
-                        <!-- Display for guests (not logged in) -->
-                        @guest
-                        <a href="{{ url('/member/login') }}" class="nav-link" style="font-size: 15px;">គណនី</a>
-                        @endguest --}}
-
 
                     <li class="nav-item dropdown">
                         @if (Auth::guard('customer')->check())
+                        
                         @if(Auth::guard('customer')->check())
                         <a href="{{ route('member.profile') }}" class="nav-link" style="font-size: 15px;">
                             គណនី {{-- Go to profile --}}
                         </a>
+
                     @else
                         <a href="{{ route('memberFormLogin') }}" class="nav-link" style="font-size: 15px;">
                             គណនី {{-- Go to login --}}
                         </a>
                     @endif
-                            <!-- Logged-in User Display -->
-                            {{-- <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px;">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">
-                                    {{ Auth::guard('customer')->user()->first_name }}
-                                    {{ Auth::guard('customer')->user()->last_name }}
-                                </span>
-                            </a>
 
-                            <img src="{{ asset('storage/' . Auth::guard('customer')->user()->userphoto) }}"
-                                alt="{{ Auth::guard('customer')->user()->userphoto ?? 'Guest' }}" width="30" height="30"> --}}
 
 
                             <!-- Dropdown Menu -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            {{-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
                                 <div class="dropdown-divider"></div>
                                 <!-- Logout Option -->
@@ -252,11 +131,8 @@
                                     {{ __('Logout') }}
                                 </a>
 
-                                <!-- Hidden Logout Form -->
-                                {{-- <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form> --}}
-                            </div>
+     
+                            </div> --}}
                         @else
                             <!-- Guest (Not Logged-in) Display -->
                             <li class="nav-item">

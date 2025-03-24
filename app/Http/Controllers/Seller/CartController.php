@@ -22,7 +22,7 @@ class CartController extends Controller
     public function index()
     {
 
-        $auth = \Auth::guard('seller')->user()->id;
+        $auth = \Auth::guard('customer')->user()->id;
         $balance = Account::where('seller_id', $auth)->first();
 
         $cart = session()->get('cart');

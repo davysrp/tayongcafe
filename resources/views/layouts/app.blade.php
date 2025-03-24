@@ -20,6 +20,16 @@
     <link rel="stylesheet" href="{{ asset('css/summernote.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
 
+
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Cart Styles -->
+    <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
+
+
     @isset($css)
         {!! $css !!}
     @endisset
@@ -51,23 +61,14 @@
                             </li>
                         @else
                             <li class="nav-item">
-                                <a class="nav-link btn btn-cart position-relative" href="{{ route('cartList') }}">
+                                <a class="nav-link btn btn-cart position-relative" href="{{ route('cart.index') }}">
                                     <i class="fas fa-cart-plus"></i> {{ __('Cart') }}
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                         {{ session('cart') ? count(session('cart')) : 0 }}
                                     </span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn nav-btn-login" href="{{ route('sellerprofile') }}">
-                                    <i class="fas fa-user"></i> {{ __('Account') }}
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn nav-btn-register" href="{{ route('sellerlogout') }}">
-                                    <i class="fas fa-lock"></i> {{ __('Sign Out') }}
-                                </a>
-                            </li>
+
                         @endguest
                     </ul>
                 </div>

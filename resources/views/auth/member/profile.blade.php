@@ -1,70 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+<!-- Bootstrap 5 CSS (Make sure this is included in your page) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
 
-    <style>
-        body {
-            background-color: #f9fcfd;
-        }
-        .profile-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        .btn-upload {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-upload:hover {
-            background-color: #218838;
-        }
-        .btn-logout {
-            border: 1px solid #dc3545;
-            color: #dc3545;
-            background: transparent;
-        }
-        .btn-logout:hover {
-            background: #dc3545;
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <!-- Profile Card -->
-                <div class="profile-card">
-                    <!-- Greeting Section -->
-                    @php
-                        $hour = now()->hour;
-                        if ($hour >= 5 && $hour < 12) {
-                            $greeting = 'អរុណសួស្តី';
-                        } elseif ($hour >= 12 && $hour < 18) {
-                            $greeting = 'ទិវាសួស្តី';
-                        } else {
-                            $greeting = 'រាត្រីសួស្តី';
-                        }
-                    @endphp
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body text-center p-4">
 
-                    <h2 class="mb-4 text-success fw-bold">{{ $greeting }}, {{ $customer->first_name }}!</h2>
+                    <!-- Profile Icon -->
+                    {{-- <div class="mb-3">
+                        <img src="{{ asset('storage/' . $customer->userphoto) }}" alt="Profile Photo" class="rounded-circle shadow" width="100" height="100" style="object-fit: cover;">
+                    </div> --}}
+
+
+                <!-- Avatar -->
+                <div class="mb-3">
+                    {{-- <label for="avatar" class="form-label">Profile Picture</label><br> --}}
+                    @if ($customer->userphoto)
+                        <img src="{{ asset('storage/' . $customer->userphoto) }}" alt="Profile Picture" class="rounded-circle mb-2" width="100" height="100" style="object-fit: cover;">
+                    @else
+                        <img src="{{ asset('storage/customer_pictures/defaultprofile.png') }}" alt="Default Profile Picture" class="rounded-circle mb-2" width="100" height="100" style="object-fit: cover;">
+                    @endif
+                    {{-- <input type="file" class="form-control mt-2" id="avatar" name="avatar"> --}}
+                </div>
+
+                             
+
+                    <!-- Greeting -->
+                    <h2 class="fw-bold mb-3">សួស្តី, {{ $customer->first_name }}!</h2>
 
                     <!-- Success Message -->
                     @if(session('success'))
@@ -74,69 +38,38 @@
                         </div>
                     @endif
 
-                    <!-- Profile Picture Upload Section -->
-                    <div class="d-flex align-items-center mb-4">
-                        <img id="profile-preview"
-                             src="{{ $customer->userphoto ? asset('storage/' . $customer->userphoto) : asset('storage/customer_pictures/customerdefaultprofile.png') }}"
-                             class="profile-picture me-3" alt="Profile Photo">
-
-                        <!-- Upload Form -->
-                        <form action="{{ route('member.profile.update.photo') }}" method="POST" enctype="multipart/form-data" id="upload-photo-form">
-                            @csrf
-                            <input type="file" name="photo" id="photo" class="form-control d-none"
-                                   onchange="previewImage(event); document.getElementById('upload-photo-form').submit();" accept="image/*">
-                            <label for="photo" class="btn btn-upload">Upload Photo</label>
-                        </form>
-                    </div>
-
-                    <!-- Profile Information Form -->
-                    <form action="{{ route('member.profile.update') }}" method="POST" enctype="multipart/form-data">
+                    <!-- Profile Update Form -->
+                    <form action="{{ route('member.profile.update') }}" method="POST" enctype="multipart/form-data" class="text-start">
                         @csrf
 
-                        <!-- Full Name -->
+                        <!-- Example: Uncomment if you want editable name -->
+                        <!--
                         <div class="mb-3">
-                            <label for="first_name" class="form-label">ឈ្មោះពេញ:</label>
-                            <input type="text" name="first_name" id="first_name" class="form-control" value="{{ $customer->first_name }}" required>
+                            <label for="first_name" class="form-label">ឈ្មោះ</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $customer->first_name }}" required>
                         </div>
+                        -->
 
-                        <!-- Phone Number -->
-                        <div class="mb-3">
-                            <label for="phone_number" class="form-label">លេខទូរសព្ទ:</label>
-                            <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{ $customer->phone_number }}">
-                        </div>
-
-                        <!-- Save Button -->
-                        <button type="submit" class="btn btn-dark w-100 fw-bold py-2">SAVE CHANGES</button>
+                        <!-- Submit button if form has fields -->
+                        {{-- <button type="submit" class="btn btn-primary w-100">Update Profile</button> --}}
                     </form>
 
-                    <!-- Logout -->
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="mt-3">
+                    <!-- Divider -->
+                    <hr class="my-4">
+
+                    <!-- Logout Button -->
+                    <button class="btn btn-outline-danger w-100" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        ចាកចេញ
+                    </button>
+
+                    <!-- Hidden Logout Form -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
-                        <button type="submit" class="btn btn-logout w-100">ចាកចេញ</button>
                     </form>
+
                 </div>
             </div>
+
         </div>
     </div>
-
-    <!-- Bootstrap Bundle JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Live Preview Script -->
-    <script>
-        function previewImage(event) {
-            const input = event.target;
-            const reader = new FileReader();
-
-            reader.onload = function () {
-                const preview = document.getElementById('profile-preview');
-                preview.src = reader.result;
-            }
-
-            if (input.files && input.files[0]) {
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
-</body>
-</html>
+</div>

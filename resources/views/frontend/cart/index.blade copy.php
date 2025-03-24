@@ -84,7 +84,7 @@
             <div class="row">
                 <div class="col-md-8 offset-md-4">
                     <div class="total-price">
-                        <h4>ចំនួនសរុប: ${{ $total }}</h4>
+                        <h4>Total: ${{ $total }}</h4>
                         <a href="{{ route('checkout') }}" class="btn btn-success">យល់ព្រមទិញ</a>
                     </div>
                 </div>
