@@ -10,7 +10,6 @@ use App\Models\Webpage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-
 class FrontendController extends Controller
 {
     public function index(Request $request, $category = null)
@@ -58,7 +57,45 @@ class FrontendController extends Controller
      */
 
 
-  
+    // public function addToCart(Request $request)
+    // {
+    //     // Validate the request
+    //     $request->validate([
+    //         'product_id' => 'required|exists:products,id',
+    //         'quantity' => 'required|integer|min:1',
+    //         'variant_id' => 'nullable|exists:product_variants,id', // Ensure this matches your table name
+    //     ]);
+
+    //     // Get the product and variant (if applicable)
+    //     $product = Product::findOrFail($request->input('product_id'));
+    //     $variant = $request->input('variant_id') ? ProductVariant::find($request->input('variant_id')) : null;
+
+    //     // Add the product to the cart (you can use session or a package like Laravel Cart)
+    //     $cart = session()->get('cart', []);
+
+    //     $cartItem = [
+    //         'product_id' => $product->id,
+    //         'name' => $product->name,
+    //         'price' => $variant ? $variant->variant_price : $product->price,
+    //         'quantity' => $request->input('quantity'),
+    //         'photo' => $product->photo,
+    //         'variant_id' => $variant ? $variant->id : null,
+    //         'variant_name' => $variant ? $variant->variant_name : null,
+    //     ];
+
+    //     // Add the item to the cart
+    //     $cart[] = $cartItem;
+    //     session()->put('cart', $cart);
+
+    //     // Return a success response
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Product added to cart successfully!',
+    //         'cart' => $cart,
+    //     ]);
+        
+    // }
+
     public function addToCart(Request $request)
     {
         // ✅ Validate incoming request
@@ -106,54 +143,5 @@ class FrontendController extends Controller
         ]);
     }
     
-    public function updateCart(Request $request)
-    {
-        $cart = session()->get('cart', []);
-    
-        if (!isset($cart[$request->id])) {
-            return response()->json(['success' => false, 'message' => 'Product not found in cart']);
-        }
-    
-        $cart[$request->id]['quantity'] = $request->quantity;
-        session()->put('cart', $cart);
-    
-        // Recalculate subtotal and total
-        $newSubtotal = $cart[$request->id]['price'] * $cart[$request->id]['quantity'];
-        $newTotal = collect($cart)->sum(function ($item) {
-            return $item['price'] * $item['quantity'];
-        });
-    
-        return response()->json([
-            'success' => true,
-            'newSubtotal' => $newSubtotal,
-            'newTotal' => $newTotal,
-        ]);
-    }
-    
-    
-    
-    public function removeFromCart(Request $request)
-    {
-        $cart = session()->get('cart', []);
-    
-        if (isset($cart[$request->id])) {
-            unset($cart[$request->id]);
-            session()->put('cart', $cart);
-    
-            $newTotal = collect($cart)->sum(function ($item) {
-                return $item['price'] * $item['quantity'];
-            });
-    
-            return response()->json([
-                'success' => true,
-                'newTotal' => $newTotal,
-            ]);
-        }
-    
-        return response()->json(['success' => false, 'message' => 'Product not found']);
-    }
-    
-
-
 
 }

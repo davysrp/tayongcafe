@@ -29,7 +29,17 @@
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    
+    
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- In your layout or Blade file -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('assets/js/script.js') }}"></script>
 
+    
     @isset($css)
         {!! $css !!}
     @endisset

@@ -54,12 +54,28 @@ use App\Http\Controllers\Frontend\CartController;
 
 
 
+
+
+
+
+
+
 Route::middleware('guest')->group(function () {
     Route::group(['prefix' => 'member'], function () {
         Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
         Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
-        Route::post('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
-        Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
+        // Route::post('/update-cart', [CartController::class, 'updateCart'])->name('cart.update');
+        // Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+
+        Route::post('/cart/update', [FrontendController::class, 'updateCart'])->name('cart.update');
+        Route::post('/cart/remove', [FrontendController::class, 'removeFromCart'])->name('cart.remove');
+     
+
+
+        // Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+        // Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
         Route::get('register', [AuthController::class, 'registerForm'])->name('memberFormRegister');
         Route::post('register', [AuthController::class, 'register'])->name('memberRegister');
         Route::get('login', [AuthController::class, 'loginForm'])->name('memberFormLogin');

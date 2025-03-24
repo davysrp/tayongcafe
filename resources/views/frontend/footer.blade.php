@@ -1,4 +1,4 @@
-<section class="ftco-appointment">
+{{-- <section class="ftco-appointment">
   <div class="overlay"></div>
   <div class="container-wrap">
     <div class="row no-gutters d-md-flex align-items-center">
@@ -12,7 +12,9 @@
       </div>
     </div>
   </div>
-</section>
+</section> --}}
+
+
 {{-- 
 <section class="ftco-appointment py-4">
   <div class="overlay"></div>

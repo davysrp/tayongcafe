@@ -202,6 +202,7 @@
 
 
                                     {{-- <img src="https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png" width="30" height="30" alt=""> --}}
+
                                     <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="{{ Auth::user()->photo ?? 'Guest' }}" width="30" height="30">
                                 
 
