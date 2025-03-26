@@ -26,10 +26,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Cart Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}"> --}}
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    <link href="{!! asset('assets/khqr/style.css?v='.time()) !!}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
 
 
     
@@ -95,7 +98,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{!! asset('assets/khqr/khqr-1.0.16.min.js') !!}"></script>
+    <script src="{!! asset('assets/khqr/request.js?v='.time()) !!}"></script>
+    <script src="{!! asset('assets/khqr/khqr-form.js') !!}"></script>
 
+
+    @if(isset($script))
+    {!! $script !!}
+@endif
     <script>
         $(document).ready(function () {
             @if(session('success'))

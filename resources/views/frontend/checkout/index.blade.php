@@ -4,7 +4,7 @@
 
         <!-- Cart Items -->
         <div class="mb-5">
-            <h4 class="mb-3 text-muted">🛒 Your Coffee Cart</h4>
+            <h4 class="mb-3 text-muted">🛒 Your Cart</h4>
             @forelse($cart as $id => $item)
                 <div class="card mb-3 bg-dark text-light border-0 shadow-sm rounded-3">
                     <div class="card-body">

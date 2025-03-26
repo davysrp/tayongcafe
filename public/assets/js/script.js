@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let qty = parseInt(input.value);
             if (button.dataset.type === 'minus' && qty > 1) {
                 // qty--;
-                qty=qty-1
+                qty = qty - 1
             }
 
             if (button.dataset.type === 'plus' && qty < 99) {
-                qty=qty+1
+                qty = qty + 1
                 // qty++;
             }
 
@@ -62,21 +62,41 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = button.dataset.id;
             const quantity = document.getElementById('quantity-' + id).value;
 
+            // fetch('/cart/update', {
+            //     method: 'POST',
+            //     headers: {
+            //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({ id, quantity })
+            // })
+            // .then(res => res.json())
+            // .then(data => {
+            //     if (data.success) {
+            //         document.getElementById('subtotal-' + id).textContent = data.newSubtotal.toFixed(2);
+            //         document.getElementById('total-amount').textContent = data.newTotal.toFixed(2);
+            //     }
+            // });
+
+
+            // Send update to server immediately
             fetch('/cart/update', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ id, quantity })
+                body: JSON.stringify({ id, quantity: qty })
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('subtotal-' + id).textContent = data.newSubtotal.toFixed(2);
-                    document.getElementById('total-amount').textContent = data.newTotal.toFixed(2);
-                }
-            });
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('subtotal-' + id).textContent = data.newSubtotal.toFixed(2);
+                        document.getElementById('total-amount').textContent = data.newTotal.toFixed(2);
+                    }
+                });
+
+
         });
     });
 
@@ -98,15 +118,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     },
                     body: JSON.stringify({ id })
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        const row = document.querySelector(`tr[data-id="${id}"]`);
-                        if (row) row.remove();
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            const row = document.querySelector(`tr[data-id="${id}"]`);
+                            if (row) row.remove();
 
-                        document.getElementById('total-amount').textContent = data.newTotal.toFixed(2);
-                    }
-                });
+                            document.getElementById('total-amount').textContent = data.newTotal.toFixed(2);
+                        }
+                    });
             }
         });
     });

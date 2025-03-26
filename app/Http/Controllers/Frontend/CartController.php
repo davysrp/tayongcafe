@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariant;
@@ -14,6 +15,7 @@ class CartController extends Controller
     // Display the cart page
     public function index()
     {
+      
         $cart = session()->get('cart', []);
         $total = 0;
 
@@ -21,7 +23,9 @@ class CartController extends Controller
             $total += $item['price'] * $item['quantity'];
         }
 
-        return view('frontend.cart.index', compact('cart', 'total'));
+        $paymentMethods=PaymentMethod::all();
+
+        return view('frontend.cart.index', compact('cart', 'paymentMethods','total'));
     }
 
     // Add a product to the cart

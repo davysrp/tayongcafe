@@ -161,3 +161,46 @@ body {
     text-align: center;
     font-size: 16px;
 }
+
+
+/*Check out /*
+
+
+/* Cart row spacing */
+.table tbody tr {
+    border-bottom: 1px solid #333;
+}
+
+/* Update button */
+.btn-primary {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+}
+
+/* Product thumbnail fallback styling */
+.cart-thumb {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 6px;
+}
+
+/* Payment radio group spacing */
+.form-check-label {
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+/* Highlight grand total */
+.table td:last-child {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Checkout button hover */
+#checkout:hover {
+    box-shadow: 0 0 10px rgba(210, 166, 121, 0.4);
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+}
+
