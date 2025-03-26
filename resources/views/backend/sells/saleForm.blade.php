@@ -65,7 +65,7 @@
                                     <option value="" disabled selected>Customer</option>
 
                                     @foreach($customers as $customer)
-                                        <option
+                                        <option @if($customer->is_general==1) selected @endif
                                             value="{{ $customer->id }}">{{ $customer->first_name }} {{ $customer->last_name }}</option>
                                     @endforeach
                                 </select>
@@ -113,7 +113,7 @@
                         @endif --}}
 
 
-                            <div class="row mt-2">
+                            <div class="row">
                                 <div class="col-md-12">
                                     @foreach($paymentMethods as $item)
                                         <div class="form-check form-check-inline">
@@ -126,7 +126,8 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="row mt-2">
+                            
+                            <div class="row">
                                 <div class="col-md-12">
                                     @foreach($category as $item)
                                         <button type="button"
@@ -143,10 +144,6 @@
                                     <div class="row mt-3" id="productItem"></div>
                                 </div>
                             </div>
-                        </div>
-
-                    </div>
-
                 </div>
 
 
@@ -169,7 +166,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
+                                {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
                             </div>
                         </div>
                     </div>
@@ -183,103 +180,6 @@
                 </x-slot>
                 <x-slot name="script">
 
-                {{-- Code alert  --}}
-
-                <!-- Include SweetAlert2 (CDN) -->
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-                    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-                    <script>
-                        document.getElementById("confirm-payment").addEventListener("click", function () {
-                            let orderId = "{{ $order->id ?? '' }}";
-
-                            if (!orderId) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Order Not Found!',
-                                    text: 'Please add items before confirming payment.',
-                                });
-                                return;
-                            }
-
-                            fetch("{{ route('confirm.payment') }}", {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                                },
-                                body: JSON.stringify({ order_id: orderId })
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Payment Successful 🎉',
-                                        html: `
-                                            <div style="text-align: left;">
-                                                <strong>TANYONG BBU-BMC.</strong><br>
-                                                Sereisophoan City, Banteay Meanchey Province.<br>
-                                                Phone: +855 93 444 498<br>
-                                                <strong>Date:</strong> ${data.date}<br><br>
-
-                                                <strong>Invoice №:</strong> ${data.invoice_no}<br>
-                                                <strong>Customer:</strong> ${data.customer}<br><br>
-
-                                                <table style="width:100%; border-collapse: collapse; text-align: left;">
-                                                    <tr>
-                                                        <th style="border-bottom: 1px solid #ccc;">Item</th>
-                                                        <th style="border-bottom: 1px solid #ccc;">Qty</th>
-                                                        <th style="border-bottom: 1px solid #ccc;">Price</th>
-                                                        <th style="border-bottom: 1px solid #ccc;">Total</th>
-                                                    </tr>
-                                                    ${data.items.map(item => `
-                                                        <tr>
-                                                            <td>${item.name}</td>
-                                                            <td>${item.qty}</td>
-                                                            <td>$${item.price}</td>
-                                                            <td>$${item.total}</td>
-                                                        </tr>
-                                                    `).join('')}
-                                                </table><br>
-
-                                                <strong>Subtotal:</strong> $${data.subtotal}<br>
-                                                <strong>Discount:</strong> $${data.discount}<br>
-                                                <strong>Grand Total:</strong> $${data.grand_total}<br><br>
-
-                                                <strong>Paid by:</strong> ${data.payment_method}<br><br>
-
-                                                <em>Thank you for shopping with us!<br>
-                                                Please visit again.</em>
-                                            </div>
-                                        `,
-                                        showCancelButton: true,
-                                        confirmButtonText: 'Download Invoice',
-                                        cancelButtonText: 'Close',
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.href = data.invoice_download;
-                                        }
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Payment Failed!',
-                                        text: data.message,
-                                    });
-                                }
-                            })
-                            .catch(error => {
-                                console.error("Payment Error:", error);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Unexpected Error!',
-                                    text: 'Something went wrong. Please try again!',
-                                });
-                            });
-                        });
-                    </script> --}}
 
 
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -424,6 +324,7 @@
 
                                         var i = 1;
                                         $.each(data.data.sell_detail, function (key, value) {
+                                            
                                             /*if (value.product_variant) {
                                                 html += '  <li class="list-group-item">' + value.product.names + '-' + value.product_variant.variant_name + ' - ( X '+value.qty + ' $'+  value.price+  ' )</li>';
                                             }else{
@@ -616,83 +517,7 @@
 
                             });
 
-                        
-
-                        // $(document).ready(function () {
-
-
-                        //     var md5 = null;
-
-                        //     $('#confirm-payment').on('click', function () {
-                        //         var table_id = $('#table_id').val();
-                        //         var grand_total = $('#textGrandTotal').val();
-                        //         var customer_id = $('#customer_id').val();
-                        //         if (grand_total == 0) grand_total = 0.01;
-                        //         var merchantInfoData = null;
-                        //         var optionalData_ = null;
-                        //         $('.home-amount').val(grand_total);
-                        //         const paymentMethod = $('input[name="payment_method_id"]:checked').val();
-
-                        //         if (paymentMethod) {
-                        //             Swal.fire({
-                        //                 title: "Do you want to confirm order?",
-                        //                 showDenyButton: true,
-                        //                 confirmButtonText: "Yes",
-                        //             }).then((result) => {
-                        //                 if (result.isConfirmed) {
-                        //                     // Show Loading Indicator
-                        //                     Swal.fire({
-                        //                         title: 'Processing Payment...',
-                        //                         text: 'Please wait while we process your payment.',
-                        //                         allowOutsideClick: false,
-                        //                         allowEscapeKey: false,
-                        //                         showConfirmButton: false,
-                        //                         didOpen: () => {
-                        //                             Swal.showLoading();
-                        //                         }
-                        //                     });
-
-                        //                     setTimeout(() => {
-                        //                         // Fetch payment method details
-                        //                         $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
-                        //                             if (data.success == true) {
-                        //                                 token = data.data.method.token;
-                        //                                 merchantInfoData = data.data.merchantInfoData;
-                        //                                 optionalData_ = data.data.optionalData_;
-                        //                             }
-                        //                         });
-
-                        //                         setTimeout(() => {
-                        //                             var orderLink = "{!! route('placeOrderAdmin') !!}";
-                        //                             var orderData = {
-                        //                                 payment_method_id: paymentMethod,
-                        //                                 invoice_no: optionalData_.billNumber,
-                        //                                 customer_id: customer_id,
-                        //                                 table_id: table_id,
-                        //                                 is_order: paymentMethod === 1 ? 0 : 1,
-                        //                             };
-                        //                             if (paymentMethod == 1) {
-                        //                                 $('.home-amount').text(grand_total);
-                        //                                 var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
-                        //                                 var qrUrl = generateQRCode(qrData.qr);
-                        //                                 md5 = qrData.md5;
-                        //                                 $('#qrCode').attr('src', qrUrl);
-                        //                                 $('body').addClass("modal-show");
-                        //                                 $('#KHqrModal').modal('show');
-                        //                                 updateCountdown(180);
-                        //                                 checkTransactionData(md5, orderData, optionalData_.billNumber);
-                        //                             } else {
-                        //                                 checkTransactionData(md5, orderData, optionalData_.billNumber);
-                        //                             }
-                        //                         }, 1000); // Small delay for request completion
-                        //                     }, 1000); // 5 seconds delay for "Processing Payment"
-                        //                 }
-                        //             });
-                        //         } else {
-                        //             Swal.fire("Please select a payment method before confirming payment");
-                        //         }
-                        //     });
-                            
+                                           
 
                             function checkTransactionData(md5, orderData, inv) {
                                 let intervalId;
@@ -711,7 +536,7 @@
                                             Swal.fire({
                                                 title: 'Payment Successful!',
                                                 
-                                                html: '<iframe src="{{ route('invoice.view', $order->id) }}?order_id=' + data.data.id + '" width="100%" height="400px" style="border: none;"></iframe>',
+                                                html: '<iframe src="{{ route('invoice.view', $order->id??0) }}?order_id=' + data.data.id + '" width="100%" height="400px" style="border: none;"></iframe>',
 
                                                 icon: 'success',
                                                 showCancelButton: true,
@@ -720,7 +545,7 @@
                                                 width: '600px'
                                             }).then((result) => {
                                                 if (result.isConfirmed) {
-                                                    window.location.href = "{{ route('invoice.download', $order->id) }}?order_id=" + data.data.id;
+                                                    window.location.href = "{{ route('invoice.download', $order->id??0) }}?order_id=" + data.data.id;
                                                 }
                                             });
 

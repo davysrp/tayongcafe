@@ -30,14 +30,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/cart.css') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    
-    
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- In your layout or Blade file -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
+
 
     
     @isset($css)
@@ -95,16 +88,13 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('frontend/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('frontend/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.min.js') }}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @isset($script)
-        {!! $script !!}
-    @endisset
+    <script src="{{ asset('assets/js/script.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -139,7 +129,22 @@
                     }
                 });
             @endif
+            
         });
+
+
+        // $(document).ready(function () {
+        //     $('body').delegate('.btn-plus','click',function(){
+        //         var id=$(this).data('id')
+        //         var qty=$('#quantity-'+id).val();
+        //         if (button.dataset.type === 'plus' && qty < 99) {
+        //             qty=qty+1
+        //             // qty++;
+        //         }
+
+        //         $('#quantity-'+id).val(qty);
+        //     })
+        // })
     </script>
 </body>
 </html>

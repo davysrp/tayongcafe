@@ -13,7 +13,7 @@
 
 
         <?php
-        $tables = \App\Models\Table::all();
+        $tables = \App\Models\Table::where('id','!=',1)->get();
 
         ?>
 

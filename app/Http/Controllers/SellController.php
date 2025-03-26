@@ -480,7 +480,7 @@ class SellController extends Controller
 
     public function applyCouponCode(Request $request)
     {
-        $sell = Sell::with(['sellDetail'])->where('table_id', $request->table_id)->first();
+        $sell = Sell::with(['sellDetail'])->where('table_id', $request->table_id)->orderBy('created_at','DESC')->first();
 
         if ($sell) {
             $couponCode = CouponCode::where('id', $request->coupon_code_id)->where('status', 'active')->first();

@@ -34,6 +34,7 @@ class InvoiceController extends Controller
                 break;
             }
         }
+        $sell->update(['q_number' => $queueNumber]);
         // Format the invoice details into a message
         $invoiceDetails = "Date: " . ($sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A') . "\n";
         $invoiceDetails .= "Queue No:" . str_pad($queueNumber, 1, STR_PAD_LEFT) . "\n";

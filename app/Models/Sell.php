@@ -31,7 +31,8 @@ class Sell extends Model
             'coupon_code_id',
             'invoice_no',
             'customer_id',
-            'table_id'
+            'table_id',
+            'q_number'
         ];
 
 

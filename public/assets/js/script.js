@@ -28,13 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const id = button.dataset.id;
             const input = document.getElementById('quantity-' + id);
             let qty = parseInt(input.value);
-
             if (button.dataset.type === 'minus' && qty > 1) {
-                qty--;
+                // qty--;
+                qty=qty-1
             }
 
             if (button.dataset.type === 'plus' && qty < 99) {
-                qty++;
+                qty=qty+1
+                // qty++;
             }
 
             input.value = qty;

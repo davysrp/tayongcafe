@@ -80,7 +80,7 @@
         Phone: +855 93 444 498<br>
         Date: {{ $sell->created_at ? $sell->created_at->format('d-m-Y h:i A') : 'N/A' }}
     </p>
-    <p><strong>Queue No:</strong> {{ $queueNumber ?? 'N/A' }}</p>
+    <p><strong>Queue No:</strong> {{ $sell->q_number ?? 'N/A' }}</p>
     <div class="divider"></div>
 
     <p><strong>Invoice <span style="font-family: DejaVu Sans;">№</span>: </strong> {{ $sell->invoice_no ?? 'N/A' }}</p>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 05, 2025 at 02:49 PM
+-- Generation Time: Mar 26, 2025 at 09:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -74,7 +74,7 @@ CREATE TABLE `coupon_codes` (
 
 INSERT INTO `coupon_codes` (`id`, `coupon_name`, `coupon_code`, `percentage`, `discount_cap`, `max_use`, `use_per_customer`, `start_date`, `expired_date`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (13, 'Apple', 'Apple', 10.00, 4.00, 100, 1, '2025-01-30', '2025-03-01', 'active', '2025-01-30 03:00:01', '2025-01-30 03:00:01', NULL),
-(14, 'Coffee25', 'Coffee25', 5.00, 3.00, 1000, 1, '2025-01-30', '2025-04-30', 'active', '2025-01-30 06:32:14', '2025-01-30 06:32:14', NULL);
+(14, 'Coffee25', 'Coffee25', 5.00, 1.00, 1000, 100, '2025-01-30', '2025-04-30', 'active', '2025-01-30 06:32:14', '2025-03-26 07:06:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,21 +85,30 @@ INSERT INTO `coupon_codes` (`id`, `coupon_name`, `coupon_code`, `percentage`, `d
 CREATE TABLE `customers` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `phone_number` varchar(15) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `phone_number` varchar(15) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(191) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `userphoto` varchar(255) DEFAULT 'customer_pictures/customerdefaultprofile.png',
+  `is_general` int(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`id`, `first_name`, `last_name`, `email`, `phone_number`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(16, 'Sophath', 'CT', 'sophathct999@gmail.com', '099330099', '2025-01-30 03:38:33', '2025-01-30 03:38:33', NULL),
-(17, 'Davy', 'CG', 'davyscg999@gmail.com', '099330122', '2025-01-30 03:40:37', '2025-01-30 03:40:37', NULL);
+INSERT INTO `customers` (`id`, `first_name`, `last_name`, `phone_number`, `email`, `password`, `created_at`, `updated_at`, `deleted_at`, `remember_token`, `userphoto`, `is_general`) VALUES
+(13, 'Sophath', '', '0987654321', NULL, '$2y$12$EttiAA9JW7yM.R42YhV9QOW8TYvE4sAJJiYHp9wgpXOFZFO9nglSO', '2025-03-23 06:26:05', '2025-03-23 06:26:05', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0),
+(14, 'Sanday', '', '098765444333', NULL, '$2y$12$g5lNBqKQCAcayB6dnEfKT.hetObhYcrJAAAuA.8wu1bNnHPeLz9Aq', '2025-03-23 08:03:13', '2025-03-23 08:03:13', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0),
+(15, 'davyksk', '', '087723423324', NULL, '$2y$12$cvdgSU4ZIEJOtn1yw6W3hu/6sf3o2tcjtxorMGDknpHjUM3vevVZ2', '2025-03-23 14:11:50', '2025-03-23 14:11:50', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0),
+(16, 'Saroth KSK', '', '0987655432', NULL, '$2y$12$4l0Bv0MhocGRQ7sT2nYvl.rRkzfG4Q6hyxPjVd/IS/AS4TEq96Sg.', '2025-03-23 17:22:26', '2025-03-23 17:22:26', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0),
+(17, 'Sophath', '', '0987623434324', NULL, '$2y$12$Asf/i9UIpCuROO8S8t8N7.Ax2YJ6gyIBZux.QaIgAtJBYm5C9tYR.', '2025-03-24 18:38:08', '2025-03-24 18:38:08', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0),
+(18, 'general', 'customer', '+85599330923', 'sophath_hhh@gmail.com', NULL, '2025-03-26 07:21:56', '2025-03-26 07:26:42', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 1),
+(42, 'ksk', '', '098766443', NULL, '$2y$12$R9kmTn5GvM7IDptlCkGojutaJdm/WltyrUr/Oz.TjJfPF1fXUVpxG', '2025-03-26 08:18:50', '2025-03-26 08:18:50', NULL, NULL, 'customer_pictures/customerdefaultprofile.png', 0);
 
 -- --------------------------------------------------------
 
@@ -138,26 +147,67 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2019_08_19_000000_create_failed_jobs_table', 1),
 (3, '2019_12_14_000001_create_personal_access_tokens_table', 1),
 (4, '2024_02_23_154841_create_permission_tables', 1),
-(5, '2025_01_24_193703_add_role_to_users_table', 1),
-(6, '2025_01_24_205230_create_sellerss_table', 2),
-(7, '2025_01_28_101612_create_customers_table', 3),
 (8, '2025_01_28_150146_create_coupon_codes_table', 4),
 (9, '2025_01_28_150527_create_coupon_code_table', 5),
-(10, '2025_01_28_151606_create_coupon_codes_table', 6),
 (11, '2025_01_28_220212_create_account_requests_table', 7),
 (12, '2025_01_28_220712_create_account_requests_table', 1),
 (13, '2025_01_28_221052_modify_users_id_column', 8),
-(14, '2025_01_28_235958_create_tables_table', 9),
 (15, '2025_01_30_003109_create_customers_table', 10),
 (16, '2025_01_30_005518_create_customers_table', 11),
 (17, '2025_01_30_010611_create_customers_table', 12),
 (18, '2025_01_30_083801_create_customers_table', 13),
-(19, '2025_01_30_084402_create_customers_table', 14),
-(20, '2025_01_30_111647_create_shipping_methods_table', 15),
-(21, '2025_01_30_111755_add_shipping_method_to_sells_table', 15),
-(22, '2025_01_30_120518_create_permission_roles_table', 16),
-(23, '2025_02_02_144115_create_webpages_table', 16),
-(24, '2025_02_15_112945_create_product_variants_table', 17);
+(28, '2025_03_22_005502_add_password_to_customers_table', 19),
+(30, '2025_01_24_193703_add_role_to_users_table', 20),
+(31, '2025_01_24_205230_create_sellerss_table', 20),
+(32, '2025_01_28_101612_create_customers_table', 20),
+(33, '2025_01_28_151606_create_coupon_codes_table', 20),
+(34, '2025_01_28_235958_create_tables_table', 20),
+(35, '2025_01_30_084402_create_customers_table', 21),
+(36, '2025_01_30_111647_create_shipping_methods_table', 21),
+(37, '2025_01_30_111755_add_shipping_method_to_sells_table', 21),
+(38, '2025_01_30_120518_create_permission_roles_table', 21),
+(39, '2025_02_02_144115_create_webpages_table', 21),
+(40, '2025_02_15_112945_create_product_variants_table', 21),
+(41, '2025_03_02_220107_create_orders_table', 21),
+(42, '2025_03_02_220108_create_order_items_table', 21),
+(43, '2025_03_21_210119_add_google_id_to_customers_table', 21),
+(44, '2025_03_22_015719_add_remember_token_to_customers_table', 22),
+(45, '2025_03_22_020222_create_customers_table', 23);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `total_amount` decimal(8,2) NOT NULL,
+  `status` varchar(191) NOT NULL DEFAULT 'pending',
+  `shipping_address` varchar(191) NOT NULL,
+  `payment_method` varchar(191) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `order_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `price` decimal(8,2) NOT NULL,
+  `variant_name` varchar(191) DEFAULT NULL,
+  `variant_size` varchar(191) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -196,153 +246,6 @@ CREATE TABLE `payment_methods` (
 INSERT INTO `payment_methods` (`names`, `id`, `created_at`, `updated_at`, `icon`, `small_line`, `token`, `token_expired`, `status`) VALUES
 ('KHQR', 1, '2024-05-05 14:49:44', '2025-01-29 14:36:25', 'ic_KHQR.png', 'Scan to pay with member bank app', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNGFmMTQ2ZGUwYWZiNDE2OSJ9LCJpYXQiOjE3MzgxNjE0ODAsImV4cCI6MTc0NTkzNzQ4MH0.V70EFTHaTy7Zhmze_GtLEDICfCKRv8Hknt2l4gBlQP8', '2024-05-25 10:46:55', 'active'),
 ('Cash', 6, '2025-01-29 14:34:42', '2025-01-29 14:34:42', NULL, NULL, 'f', NULL, 'active');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `permissions`
---
-
-CREATE TABLE `permissions` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `access_name` varchar(255) DEFAULT NULL,
-  `created_at` varchar(255) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `permissions`
---
-
-INSERT INTO `permissions` (`id`, `name`, `access_name`, `created_at`, `updated_at`) VALUES
-(1, 'Employee List', 'employee-list', NULL, NULL),
-(2, 'Create Employee', 'create-employee', NULL, NULL),
-(3, 'Update Employee', 'update-employee', NULL, NULL),
-(4, 'Delete Employee', 'delete-employee', NULL, NULL),
-(5, 'Service Type List', 'service-type-list', NULL, NULL),
-(6, 'Create Service Type', 'create-service-type', NULL, NULL),
-(7, 'Update Service Type', 'update-service-type', NULL, NULL),
-(8, 'Delete Service Type', 'delete-service-type', NULL, NULL),
-(9, 'Service Visa List', 'service-visa-list', NULL, NULL),
-(10, 'Create Service Visa', 'create-service-visa', NULL, NULL),
-(11, 'Update Service Visa', 'update-service-visa', NULL, NULL),
-(12, 'Delete Service Visa', 'delete-service-visa', NULL, NULL),
-(13, 'View Invoice Service Visa', 'view-service-visa-invoice', NULL, NULL),
-(14, 'Service WP List', 'service-wp-list', NULL, NULL),
-(15, 'Create Service WP', 'create-service-wp', NULL, NULL),
-(16, 'Update Service WP', 'update-service-wp', NULL, NULL),
-(17, 'Delete Service WP', 'delete-service-wp', NULL, NULL),
-(18, 'View Invoice Service WP', 'view-service-wp-invoice', NULL, NULL),
-(19, 'MIS Visa Service ', 'mis-visa-service-list', NULL, NULL),
-(20, 'Create MIS Visa Service ', 'create-mis-visa-service', NULL, NULL),
-(21, 'Update MIS Visa Service ', 'update-mis-visa-service', NULL, NULL),
-(22, 'Delete MIS Visa Service ', 'delete-mis-visa-service', NULL, NULL),
-(23, 'MIS WP Service ', 'mis-wp-service-list', NULL, NULL),
-(24, 'Create MIS WPService ', 'create-mis-wp-service', NULL, NULL),
-(25, 'Update MIS WP Service ', 'update-mis-wp-service', NULL, NULL),
-(26, 'Delete MIS WP Service ', 'delete-mis-wp-service', NULL, NULL),
-(27, 'User List', 'user-list', NULL, NULL),
-(28, 'Created User', 'create-user', NULL, NULL),
-(29, 'Update User', 'update-user', NULL, NULL),
-(30, 'Delete User', 'delete-user', NULL, NULL),
-(31, 'View Employee Detail', 'view-employee-detail', NULL, NULL),
-(32, 'View Service Visa', 'view-service-visa', NULL, NULL),
-(33, 'View Service WP', 'view-service-wp', NULL, NULL),
-(34, 'View MIS Service Visa', 'view-mis-service-visa', NULL, NULL),
-(35, 'View MIS Service WP', 'view-mis-service-wp', NULL, NULL),
-(36, 'Role List', 'role-list', NULL, NULL),
-(37, 'Create Role', 'create-role', NULL, NULL),
-(38, 'Update Role', 'update-role', NULL, NULL),
-(39, 'Delete Role', 'delete-role', NULL, NULL),
-(40, 'Receive Service List', 'receive-service-list-visa', NULL, NULL),
-(41, 'Create Receive Service', 'create-receive-service', NULL, NULL),
-(42, 'Update Receive Service', 'update-receive-service', NULL, NULL),
-(43, 'Delete Receive Service', 'delete-receive-service', NULL, NULL),
-(44, 'View Receive Sevice', 'view-receive-service', NULL, NULL),
-(45, 'Confirm Payment Visa', 'confirm-payment-wp', NULL, NULL),
-(46, 'Confirm Payment WP', 'confirm-payment-visa', NULL, NULL),
-(47, 'Import Employee', 'import-employee', NULL, NULL),
-(48, 'Summery Report', 'summery-report', NULL, NULL),
-(49, 'IMM Report', 'imm-report', NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `permission_role`
---
-
-CREATE TABLE `permission_role` (
-  `role_id` int(11) DEFAULT NULL,
-  `permission_id` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `permission_role`
---
-
-INSERT INTO `permission_role` (`role_id`, `permission_id`) VALUES
-(1, 1),
-(1, 18),
-(1, 5),
-(1, 2),
-(1, 6),
-(1, 9),
-(2, 31),
-(2, 1),
-(2, 2),
-(4, 1),
-(4, 4),
-(4, 7),
-(5, 1),
-(5, 2),
-(5, 3),
-(5, 4),
-(5, 5),
-(5, 6),
-(5, 7),
-(5, 8),
-(5, 9),
-(5, 10),
-(5, 11),
-(5, 12),
-(5, 13),
-(5, 14),
-(5, 15),
-(5, 16),
-(5, 17),
-(5, 18),
-(5, 19),
-(5, 20),
-(5, 21),
-(5, 22),
-(5, 23),
-(5, 24),
-(5, 25),
-(5, 26),
-(5, 27),
-(5, 28),
-(5, 29),
-(5, 30),
-(5, 31),
-(5, 32),
-(5, 33),
-(5, 34),
-(5, 35),
-(5, 36),
-(5, 37),
-(5, 38),
-(5, 39),
-(5, 40),
-(5, 41),
-(5, 42),
-(5, 43),
-(5, 44),
-(5, 45),
-(5, 46),
-(5, 47),
-(5, 48),
-(5, 49);
 
 -- --------------------------------------------------------
 
@@ -412,7 +315,7 @@ INSERT INTO `products` (`id`, `names`, `category_id`, `price`, `discount`, `deta
 (6, 'ទឹកស្តូបឺរី', 5, 1.00, 0.00, NULL, '88110620250216120046.jpg.jpg', NULL, 1, NULL, '2025-02-16 05:00:47', '2025-02-16 05:00:47', NULL, 'ZMb9TtfhKdvx4kulqmgo', 0),
 (7, 'បាយឆាយ', 6, 1.25, 0.00, NULL, '86786720250216120345.jpg.jpg', NULL, 1, NULL, '2025-02-16 05:03:46', '2025-02-16 05:03:46', NULL, 'CebZTtKyxYFqJAw36irz', 0),
 (8, 'មីឆា', 6, 1.25, 0.00, NULL, '88574620250216120428.jpg.jpg', NULL, 1, NULL, '2025-02-16 05:04:28', '2025-02-16 05:04:28', NULL, '6ZJDFCrHauefmtdK4UQL', 0),
-(9, 'លោតឆា', 6, 1.25, 0.00, NULL, '35530720250216120503.jpg.jpg', NULL, 1, NULL, '2025-02-16 05:05:04', '2025-02-16 05:05:04', NULL, '2Ga0edToZALvV8WJlmwP', 0);
+(9, 'លោតឆា', 6, 1.25, 0.00, NULL, '36187220250315103134.jpg', NULL, 1, NULL, '2025-02-16 05:05:04', '2025-03-15 03:31:34', NULL, '2Ga0edToZALvV8WJlmwP', 0);
 
 -- --------------------------------------------------------
 
@@ -462,47 +365,6 @@ INSERT INTO `product_variants` (`id`, `product_id`, `variant_code`, `variant_nam
 -- --------------------------------------------------------
 
 --
--- Table structure for table `roles`
---
-
-CREATE TABLE `roles` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `roles`
---
-
-INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', '2025-01-02 13:10:32', '2025-01-02 13:57:21'),
-(2, 'Account VISA', '2025-01-02 13:10:34', '2025-01-02 13:10:41'),
-(3, 'Admin WP', '2025-01-02 13:10:36', '2025-01-02 13:10:43'),
-(4, 'sophathssss', '2025-01-30 05:16:23', '2025-01-30 05:16:30'),
-(5, 'superadmin', '2025-01-30 05:58:39', '2025-01-30 05:58:39');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sellerss`
---
-
-CREATE TABLE `sellerss` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(191) NOT NULL,
-  `email` varchar(191) NOT NULL,
-  `phone` varchar(191) DEFAULT NULL,
-  `address` varchar(191) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `sells`
 --
 
@@ -522,17 +384,54 @@ CREATE TABLE `sells` (
   `payment_method_id` int(11) DEFAULT NULL,
   `invoice_no` varchar(100) DEFAULT NULL,
   `table_id` int(11) DEFAULT NULL,
-  `customer_id` int(11) DEFAULT NULL
+  `customer_id` int(11) DEFAULT NULL,
+  `q_number` int(10) DEFAULT NULL,
+  `shipping_addr` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `sells`
 --
 
-INSERT INTO `sells` (`id`, `total`, `promo_code`, `discount`, `grand_total`, `status`, `created_at`, `updated_at`, `deleted_at`, `coupon_code_id`, `shipping_method_id`, `remark`, `payment_method_id`, `invoice_no`, `table_id`, `customer_id`) VALUES
-(148, 0.25, NULL, NULL, 0.25, 'paid', '2025-01-30 18:12:49', '2025-01-30 18:14:09', NULL, NULL, NULL, NULL, 6, '782F-1FE6', 1, NULL),
-(149, 19.5, NULL, NULL, 19.5, 'paid', '2025-02-16 03:20:22', '2025-02-16 03:20:38', NULL, NULL, NULL, NULL, 6, '71AA-9AEA', 1, NULL),
-(150, 8000, NULL, NULL, 8000, 'paid', '2025-02-16 04:45:13', '2025-02-22 08:15:46', NULL, NULL, NULL, NULL, 6, '6863-4944', 1, NULL);
+INSERT INTO `sells` (`id`, `total`, `promo_code`, `discount`, `grand_total`, `status`, `created_at`, `updated_at`, `deleted_at`, `coupon_code_id`, `shipping_method_id`, `remark`, `payment_method_id`, `invoice_no`, `table_id`, `customer_id`, `q_number`, `shipping_addr`) VALUES
+(151, 0.5, NULL, 0, 0, 'paid', '2025-03-11 13:12:30', '2025-03-26 06:47:29', NULL, '14', NULL, NULL, 6, '34C1-5426', 1, NULL, NULL, NULL),
+(154, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-11 14:24:07', '2025-03-11 14:24:13', NULL, NULL, NULL, NULL, 6, '7DAA-183D', 1, NULL, NULL, NULL),
+(155, 1.25, NULL, NULL, 1.25, 'paid', '2025-03-11 14:24:49', '2025-03-11 14:24:52', NULL, NULL, NULL, NULL, 6, '6001-3DCF', 1, NULL, NULL, NULL),
+(156, 1.5, NULL, NULL, 1.5, 'paid', '2025-03-11 14:25:20', '2025-03-11 14:25:24', NULL, NULL, NULL, NULL, 6, '473D-F57C', 1, NULL, NULL, NULL),
+(157, 1.5, NULL, NULL, 1.5, 'paid', '2025-03-11 14:25:36', '2025-03-11 14:25:42', NULL, NULL, NULL, NULL, 6, 'BBE5-B244', 1, NULL, NULL, NULL),
+(158, 0.25, NULL, NULL, 0.25, 'paid', '2025-03-14 02:47:33', '2025-03-14 02:48:24', NULL, NULL, NULL, NULL, 6, '9894-DD98', 1, NULL, NULL, NULL),
+(159, 1.75, NULL, NULL, 1.75, 'paid', '2025-03-14 02:50:30', '2025-03-14 02:50:54', NULL, NULL, NULL, NULL, 12, '8317-3FE2', 1, NULL, NULL, NULL),
+(160, 3, NULL, NULL, 3, 'paid', '2025-03-14 02:51:38', '2025-03-14 02:51:56', NULL, NULL, NULL, NULL, 12, '7EEB-33CA', 1, NULL, NULL, NULL),
+(161, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-14 02:53:04', '2025-03-15 02:51:51', NULL, NULL, NULL, NULL, 12, '7B09-7617', 1, NULL, NULL, NULL),
+(162, 1.5, NULL, NULL, 1.5, 'paid', '2025-03-15 02:53:29', '2025-03-15 02:53:44', NULL, NULL, NULL, NULL, 6, '821E-6FC1', 1, NULL, NULL, NULL),
+(163, 0.25, NULL, NULL, 0.25, 'paid', '2025-03-16 02:24:35', '2025-03-16 02:24:42', NULL, NULL, NULL, NULL, 13, '6505-F225', 1, NULL, NULL, NULL),
+(164, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-16 02:26:31', '2025-03-16 02:44:13', NULL, NULL, NULL, NULL, 6, '4F67-A79E', 1, NULL, NULL, NULL),
+(165, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-16 02:56:30', '2025-03-16 02:56:36', NULL, NULL, NULL, NULL, 6, '7CC3-D074', 1, NULL, NULL, NULL),
+(166, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-16 08:29:32', '2025-03-19 03:40:26', NULL, NULL, NULL, NULL, 6, '6515-C299', 1, NULL, NULL, NULL),
+(167, 0.25, NULL, NULL, 0.25, 'paid', '2025-03-19 03:40:52', '2025-03-23 15:15:52', NULL, NULL, NULL, NULL, 6, 'A0EA-AA9F', 1, NULL, NULL, NULL),
+(168, 2.5, NULL, NULL, 2.5, 'paid', '2025-03-23 15:16:29', '2025-03-26 05:14:36', NULL, NULL, NULL, NULL, 6, 'C22A-ED9D', 1, NULL, NULL, NULL),
+(169, NULL, NULL, NULL, NULL, 'pending', '2025-03-23 15:51:11', '2025-03-23 15:51:11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(170, NULL, NULL, NULL, NULL, 'pending', '2025-03-23 15:51:12', '2025-03-23 15:51:12', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(171, NULL, NULL, NULL, NULL, 'pending', '2025-03-23 15:52:50', '2025-03-23 15:52:50', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(172, NULL, NULL, NULL, NULL, 'pending', '2025-03-23 15:56:34', '2025-03-23 15:56:34', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(173, NULL, NULL, NULL, NULL, 'pending', '2025-03-23 17:23:42', '2025-03-23 17:23:42', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(174, NULL, NULL, NULL, NULL, 'pending', '2025-03-24 18:38:39', '2025-03-24 18:38:39', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(175, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 03:47:59', '2025-03-26 03:47:59', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(176, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 03:52:07', '2025-03-26 03:52:07', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(177, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 03:58:30', '2025-03-26 03:58:30', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(178, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 04:00:44', '2025-03-26 04:00:44', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(179, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 04:06:29', '2025-03-26 04:06:29', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(180, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 04:41:28', '2025-03-26 04:41:28', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(181, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 04:42:23', '2025-03-26 04:42:23', NULL, NULL, NULL, NULL, 6, NULL, NULL, 17, NULL, NULL),
+(182, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 04:54:00', '2025-03-26 04:54:00', NULL, NULL, NULL, NULL, 1, NULL, NULL, 17, NULL, NULL),
+(183, 1.5, NULL, NULL, 1.5, 'paid', '2025-03-26 05:34:41', '2025-03-26 05:34:49', NULL, NULL, NULL, NULL, 6, 'B1EF-79E2', 1, NULL, NULL, NULL),
+(184, 2, NULL, NULL, 2, 'paid', '2025-03-26 05:35:14', '2025-03-26 05:35:18', NULL, NULL, NULL, NULL, 6, 'E5CC-1DD8', 1, NULL, NULL, NULL),
+(185, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-26 05:36:02', '2025-03-26 05:36:07', NULL, NULL, NULL, NULL, 6, '6B32-1F0E', 1, NULL, NULL, NULL),
+(186, 2, NULL, NULL, 2, 'paid', '2025-03-26 05:37:26', '2025-03-26 05:37:31', NULL, NULL, NULL, NULL, 6, '4192-385B', 1, NULL, NULL, NULL),
+(187, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-26 06:43:01', '2025-03-26 07:01:54', NULL, NULL, NULL, NULL, 6, '05DC-ED66', 1, NULL, 13, NULL),
+(188, 0.5, NULL, NULL, 0.5, 'paid', '2025-03-26 07:01:48', '2025-03-26 07:01:52', NULL, NULL, NULL, NULL, 6, '925D-85E5', 1, NULL, NULL, NULL),
+(189, NULL, NULL, 0.175, 3.325, 'pending', '2025-03-26 07:05:08', '2025-03-26 07:09:54', NULL, '14', NULL, NULL, NULL, '52C3-2E66', 1, NULL, NULL, NULL),
+(190, NULL, NULL, NULL, NULL, 'pending', '2025-03-26 08:19:14', '2025-03-26 08:19:14', NULL, NULL, NULL, NULL, 1, NULL, NULL, 42, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -557,78 +456,56 @@ CREATE TABLE `sell_details` (
 --
 
 INSERT INTO `sell_details` (`id`, `sell_id`, `product_id`, `product_variant_id`, `qty`, `price`, `total`, `created_at`, `updated_at`) VALUES
-(6, 105, 11, NULL, 17, 3434.00, '58378', '2025-01-27 09:03:22', '2025-01-28 08:29:13'),
-(8, 105, 1, 17, 11, 2.00, '22', '2025-01-27 09:13:19', '2025-01-28 08:36:37'),
-(9, 105, 1, 16, 6, 1.50, '9', '2025-01-27 09:16:29', '2025-01-28 01:17:11'),
-(10, 105, 4, NULL, 2, 0.01, '0.02', '2025-01-27 09:17:25', '2025-01-27 09:19:05'),
-(11, 105, 5, NULL, 1, 0.01, '0.01', '2025-01-27 09:51:55', '2025-01-27 09:51:55'),
-(12, 106, 1, 17, 1, NULL, '0', '2025-01-28 08:18:28', '2025-01-28 08:18:28'),
-(13, 106, 7, NULL, 4, 3.00, '12', '2025-01-28 08:20:19', '2025-01-29 02:10:01'),
-(14, 106, 8, NULL, 4, 5.00, '20', '2025-01-28 08:20:21', '2025-01-29 02:16:19'),
-(16, 107, 2, 19, 1, 2.00, '2', '2025-01-29 02:11:20', '2025-01-29 02:11:20'),
-(17, 107, 8, NULL, 2, 5.00, '10', '2025-01-29 02:17:24', '2025-01-29 02:17:47'),
-(18, 107, 7, NULL, 1, 3.00, '3', '2025-01-29 02:17:56', '2025-01-29 02:17:56'),
-(20, 107, 1, 16, 1, 1.50, '1.5', '2025-01-29 02:19:29', '2025-01-29 02:19:29'),
-(23, 108, 1, 17, 1, 2.00, '2', '2025-01-29 04:11:02', '2025-01-29 04:11:02'),
-(24, 109, 14, 22, 1, 1.00, '1', '2025-01-29 14:31:53', '2025-01-29 14:31:53'),
-(25, 109, 16, 24, 1, 1.00, '1', '2025-01-29 14:32:12', '2025-01-29 14:32:12'),
-(45, 111, 12, 20, 1, 1.50, '1.5', '2025-01-30 07:25:54', '2025-01-30 07:25:54'),
-(30, 110, 14, 22, 1, 4.25, '4.25', '2025-01-30 03:40:54', '2025-01-30 03:40:54'),
-(31, 112, 17, 41, 1, NULL, '0', '2025-01-30 03:41:23', '2025-01-30 03:41:23'),
-(32, 113, 14, 22, 1, NULL, '0', '2025-01-30 04:29:24', '2025-01-30 04:29:24'),
-(35, 114, 14, 22, 1, 4.25, '4.25', '2025-01-30 04:58:19', '2025-01-30 04:58:19'),
-(37, 115, 12, 20, 1, 1.50, '1.5', '2025-01-30 06:50:06', '2025-01-30 06:50:06'),
-(38, 116, 12, 20, 1, NULL, '0', '2025-01-30 07:08:32', '2025-01-30 07:08:32'),
-(40, 117, 13, 21, 1, 0.25, '0.25', '2025-01-30 07:17:42', '2025-01-30 07:17:42'),
-(42, 118, 14, 22, 1, 4.25, '4.25', '2025-01-30 07:22:51', '2025-01-30 07:22:51'),
-(44, 119, 13, 21, 1, 0.25, '0.25', '2025-01-30 07:23:31', '2025-01-30 07:23:31'),
-(47, 120, 13, 21, 1, 0.25, '0.25', '2025-01-30 07:27:02', '2025-01-30 07:27:02'),
-(48, 121, 12, 20, 1, NULL, '0', '2025-01-30 07:28:29', '2025-01-30 07:28:29'),
-(49, 122, 12, 20, 1, NULL, '0', '2025-01-30 07:30:16', '2025-01-30 07:30:16'),
-(51, 123, 13, 21, 1, 0.25, '0.25', '2025-01-30 07:42:00', '2025-01-30 07:42:00'),
-(53, 124, 13, 21, 1, 0.25, '0.25', '2025-01-30 07:44:25', '2025-01-30 07:44:25'),
-(57, 128, 15, 23, 1, NULL, '0', '2025-01-30 07:53:19', '2025-01-30 07:53:19'),
-(59, 130, 13, 21, 1, NULL, '0', '2025-01-30 08:01:13', '2025-01-30 08:01:13'),
-(66, 131, 13, 21, 1, 0.25, '0.25', '2025-01-30 08:14:11', '2025-01-30 08:14:11'),
-(68, 132, 13, 21, 1, 0.25, '0.25', '2025-01-30 13:01:38', '2025-01-30 13:01:38'),
-(70, 133, 13, 21, 1, 0.25, '0.25', '2025-01-30 13:18:02', '2025-01-30 13:18:02'),
-(73, 135, 15, 23, 1, 0.25, '0.25', '2025-01-30 14:23:31', '2025-01-30 14:23:31'),
-(75, 136, 13, 21, 1, 0.25, '0.25', '2025-01-30 14:24:15', '2025-01-30 14:24:15'),
-(77, 137, 12, 20, 1, 1.50, '1.5', '2025-01-30 14:42:37', '2025-01-30 14:42:37'),
-(79, 138, 12, 20, 1, 1.50, '1.5', '2025-01-30 15:01:15', '2025-01-30 15:01:15'),
-(80, 138, 13, 21, 1, 0.25, '0.25', '2025-01-30 15:01:20', '2025-01-30 15:01:20'),
-(82, 139, 13, 21, 1, 0.25, '0.25', '2025-01-30 17:03:57', '2025-01-30 17:03:57'),
-(84, 140, 12, 20, 1, 1.50, '1.5', '2025-01-30 17:11:53', '2025-01-30 17:11:53'),
-(86, 141, 12, 20, 1, 1.50, '1.5', '2025-01-30 17:19:21', '2025-01-30 17:19:21'),
-(89, 142, 14, 22, 1, 4.25, '4.25', '2025-01-30 17:26:02', '2025-01-30 17:26:02'),
-(93, 144, 13, 21, 1, 0.25, '0.25', '2025-01-30 17:43:43', '2025-01-30 17:43:43'),
-(95, 145, 12, 20, 1, 1.50, '1.5', '2025-01-30 17:48:11', '2025-01-30 17:48:11'),
-(97, 146, 13, 21, 1, 0.25, '0.25', '2025-01-30 17:52:01', '2025-01-30 17:52:01'),
-(102, 148, 13, 21, 1, 0.25, '0.25', '2025-01-30 18:12:59', '2025-01-30 18:12:59'),
-(100, 147, 13, 21, 1, 0.25, '0.25', '2025-01-30 17:53:57', '2025-01-30 17:53:57'),
-(103, 149, 12, 20, 3, 1.50, '4.5', '2025-02-16 03:20:22', '2025-02-16 03:20:31'),
+(108, 153, 1, 2, 1, 0.50, '0.5', '2025-03-11 13:22:07', '2025-03-11 13:22:07'),
+(107, 152, 1, 1, 1, 0.25, '0.25', '2025-03-11 13:14:43', '2025-03-11 13:14:43'),
 (104, 149, 29, 45, 1, 15.00, '15', '2025-02-16 03:20:28', '2025-02-16 03:20:28'),
-(105, 150, 1, 2, 4, 2000.00, '8000', '2025-02-16 04:45:13', '2025-02-22 08:15:36');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `settings`
---
-
-CREATE TABLE `settings` (
-  `id` int(11) NOT NULL,
-  `commission` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `settings`
---
-
-INSERT INTO `settings` (`id`, `commission`, `created_at`, `updated_at`) VALUES
-(1, '10', NULL, NULL);
+(105, 150, 1, 2, 4, 2000.00, '8000', '2025-02-16 04:45:13', '2025-02-22 08:15:36'),
+(109, 154, 1, 2, 1, 0.50, '0.5', '2025-03-11 14:24:07', '2025-03-11 14:24:07'),
+(111, 156, 8, 18, 1, 1.50, '1.5', '2025-03-11 14:25:20', '2025-03-11 14:25:20'),
+(112, 157, 7, 16, 1, 1.50, '1.5', '2025-03-11 14:25:36', '2025-03-11 14:25:36'),
+(115, 159, 2, 4, 3, 0.50, '1.5', '2025-03-14 02:50:30', '2025-03-14 02:50:43'),
+(116, 159, 2, 3, 1, 0.25, '0.25', '2025-03-14 02:50:44', '2025-03-14 02:50:44'),
+(117, 160, 1, 1, 4, 0.25, '1', '2025-03-14 02:51:38', '2025-03-14 02:51:43'),
+(121, 161, 1, 2, 1, 0.50, '0.5', '2025-03-15 02:51:41', '2025-03-15 02:51:41'),
+(122, 162, 8, 18, 1, 1.50, '1.5', '2025-03-15 02:53:29', '2025-03-15 02:53:29'),
+(123, 163, 1, 1, 1, 0.25, '0.25', '2025-03-16 02:24:35', '2025-03-16 02:24:35'),
+(125, 164, 1, 2, 1, 0.50, '0.5', '2025-03-16 02:44:08', '2025-03-16 02:44:08'),
+(126, 165, 1, 2, 1, 0.50, '0.5', '2025-03-16 02:56:30', '2025-03-16 02:56:30'),
+(144, 175, 2, 4, 1, 0.50, '0.5', '2025-03-26 03:47:59', '2025-03-26 03:47:59'),
+(133, 169, 8, 0, 1, 1.25, '1.25', '2025-03-23 15:51:11', '2025-03-23 15:51:11'),
+(134, 169, 5, 0, 2, 1.00, '2', '2025-03-23 15:51:11', '2025-03-23 15:51:11'),
+(135, 169, 4, 0, 1, 1.00, '1', '2025-03-23 15:51:11', '2025-03-23 15:51:11'),
+(136, 172, 2, 0, 1, 0.25, '0.25', '2025-03-23 15:56:34', '2025-03-23 15:56:34'),
+(137, 172, 3, 0, 1, 0.25, '0.25', '2025-03-23 15:56:34', '2025-03-23 15:56:34'),
+(138, 172, 1, 0, 1, 0.25, '0.25', '2025-03-23 15:56:34', '2025-03-23 15:56:34'),
+(139, 173, 2, 0, 1, 0.25, '0.25', '2025-03-23 17:23:42', '2025-03-23 17:23:42'),
+(140, 173, 3, 0, 1, 0.25, '0.25', '2025-03-23 17:23:42', '2025-03-23 17:23:42'),
+(141, 173, 4, 0, 1, 1.00, '1', '2025-03-23 17:23:42', '2025-03-23 17:23:42'),
+(142, 174, 6, 15, 1, 1.50, '1.5', '2025-03-24 18:38:39', '2025-03-24 18:38:39'),
+(143, 174, 4, 8, 1, 1.25, '1.25', '2025-03-24 18:38:39', '2025-03-24 18:38:39'),
+(145, 175, 7, 17, 1, 2.00, '2', '2025-03-26 03:47:59', '2025-03-26 03:47:59'),
+(146, 175, 4, 9, 1, 1.50, '1.5', '2025-03-26 03:47:59', '2025-03-26 03:47:59'),
+(147, 175, 5, 11, 1, 1.25, '1.25', '2025-03-26 03:47:59', '2025-03-26 03:47:59'),
+(148, 176, 1, 2, 1, 0.50, '0.5', '2025-03-26 03:52:07', '2025-03-26 03:52:07'),
+(149, 176, 2, 3, 1, 0.25, '0.25', '2025-03-26 03:52:07', '2025-03-26 03:52:07'),
+(150, 176, 5, 10, 1, 1.00, '1', '2025-03-26 03:52:07', '2025-03-26 03:52:07'),
+(151, 177, 5, 12, 1, 1.50, '1.5', '2025-03-26 03:58:30', '2025-03-26 03:58:30'),
+(152, 177, 7, 16, 1, 1.50, '1.5', '2025-03-26 03:58:30', '2025-03-26 03:58:30'),
+(153, 178, 1, 2, 1, 0.50, '0.5', '2025-03-26 04:00:44', '2025-03-26 04:00:44'),
+(154, 178, 3, 5, 1, 0.25, '0.25', '2025-03-26 04:00:44', '2025-03-26 04:00:44'),
+(155, 179, 5, 12, 1, 1.50, '1.5', '2025-03-26 04:06:29', '2025-03-26 04:06:29'),
+(156, 180, 5, 12, 1, 1.50, '1.5', '2025-03-26 04:41:28', '2025-03-26 04:41:28'),
+(157, 181, 5, 11, 1, 1.25, '1.25', '2025-03-26 04:42:23', '2025-03-26 04:42:23'),
+(158, 181, 1, 2, 1, 0.50, '0.5', '2025-03-26 04:42:23', '2025-03-26 04:42:23'),
+(159, 182, 6, 15, 1, 1.50, '1.5', '2025-03-26 04:54:00', '2025-03-26 04:54:00'),
+(162, 168, 5, 11, 2, 1.25, '2.5', '2025-03-26 05:14:03', '2025-03-26 05:14:03'),
+(165, 185, 2, 4, 2, 0.50, '1', '2025-03-26 05:36:02', '2025-03-26 05:37:02'),
+(166, 186, 8, 19, 1, 2.00, '2', '2025-03-26 05:37:26', '2025-03-26 05:37:26'),
+(169, 187, 1, 2, 1, 0.50, '0.5', '2025-03-26 06:50:33', '2025-03-26 06:50:33'),
+(170, 188, 2, 4, 1, 0.50, '0.5', '2025-03-26 07:01:48', '2025-03-26 07:01:48'),
+(171, 189, 9, 21, 1, 2.00, '2', '2025-03-26 07:05:08', '2025-03-26 07:05:08'),
+(172, 189, 9, 20, 1, 1.50, '1.5', '2025-03-26 07:05:10', '2025-03-26 07:05:10'),
+(173, 190, 8, 19, 1, 2.00, '2', '2025-03-26 08:19:14', '2025-03-26 08:19:14');
 
 -- --------------------------------------------------------
 
@@ -649,8 +526,8 @@ CREATE TABLE `shipping_methods` (
 --
 
 INSERT INTO `shipping_methods` (`id`, `name`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Pickup from store', 'active', '2025-01-30 04:54:29', '2025-01-30 04:54:29'),
-(2, 'Get it delivered to you', 'active', '2025-01-30 04:54:47', '2025-01-30 04:54:56');
+(1, 'Pickup from store', 'active', NULL, NULL),
+(2, 'Get it delivered', 'active', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -686,26 +563,36 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `role` varchar(191) NOT NULL DEFAULT 'sellers',
+  `role` varchar(191) NOT NULL DEFAULT 'user',
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL
+  `role_id` int(11) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT 'defaultprofile.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `role`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `role_id`) VALUES
-(5, 'mradmin', 'mradmin@dd.com', 'seller', '$2y$12$.42c.Yq3mgxuKqXKhrf01ufsAWmabZidJf8SKlfeN5cCHpQmWzKaa', NULL, '2024-04-04 23:14:06', '2024-04-04 23:14:06', NULL, NULL),
-(6, 'Beauty & Health', 'davysrp@gmail.com', 'customer', '$2y$12$GYtA8godCnjt/c2mNlkUuuZaIkCMHroNtbI6qiho.LfIQqvGMqkQq', NULL, '2024-12-13 07:36:46', '2024-12-13 07:36:46', NULL, NULL),
-(7, 'Beauty & Health', 'davysrpdddd@gmail.com', 'buyer', '$2y$12$2hFKjwaZ8BTTp8Ctha/8w.LiMOI8ZynHzYiDI0LICw/OoguOKfj3.', NULL, '2024-12-13 07:37:43', '2024-12-13 07:38:24', '2024-12-13 07:38:24', NULL),
-(8, 'sophth', 'sophath@gmail.com', 'sellers', '$2y$12$ArT6zcLX3/Hgm.RwdCQUWe2m3lolnDKCfMZM/8V9FbBxKoFEzZp/u', NULL, '2025-01-25 09:26:24', '2025-01-25 09:26:24', NULL, NULL),
-(9, 'sarothkh', 'sarothkh@gmail.com', 'buyer', '$2y$12$YA45LUjl3vzMQIPvj7KjJeHDv2x3r739Y7xjuwAgUPHCl1lab5deG', NULL, '2025-01-25 09:57:26', '2025-01-30 02:05:55', NULL, NULL),
-(10, 'Lenghai', 'lenghai@gmaail.com', 'sellers', '$2y$12$nGhNlVHtOJtgVIBU6gJ0vu1uARXmmOWPVXnD4kBji4KLUBSOO6XEq', NULL, '2025-01-28 10:08:38', '2025-01-28 10:08:38', NULL, NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `role`, `password`, `remember_token`, `created_at`, `updated_at`, `deleted_at`, `role_id`, `photo`) VALUES
+(5, 'mradmin', 'mradmin@dd.com', 'user', '$2y$12$.42c.Yq3mgxuKqXKhrf01ufsAWmabZidJf8SKlfeN5cCHpQmWzKaa', NULL, '2024-04-04 23:14:06', '2025-03-15 04:10:48', '2025-03-15 04:10:48', NULL, NULL),
+(7, 'Beauty & Health', 'davysrpdddd@gmail.com', 'user', '$2y$12$2hFKjwaZ8BTTp8Ctha/8w.LiMOI8ZynHzYiDI0LICw/OoguOKfj3.', NULL, '2024-12-13 07:37:43', '2024-12-13 07:38:24', '2024-12-13 07:38:24', NULL, NULL),
+(8, 'sophth', 'sophath@gmail.com', 'user', '$2y$12$ArT6zcLX3/Hgm.RwdCQUWe2m3lolnDKCfMZM/8V9FbBxKoFEzZp/u', NULL, '2025-01-25 09:26:24', '2025-01-25 09:26:24', NULL, NULL, 'defaultprofile.png'),
+(9, 'sarothkh', 'sarothkh@gmail.com', 'user', '$2y$12$YA45LUjl3vzMQIPvj7KjJeHDv2x3r739Y7xjuwAgUPHCl1lab5deG', NULL, '2025-01-25 09:57:26', '2025-01-30 02:05:55', NULL, NULL, 'Saroth.jpg'),
+(10, 'Lenghai', 'lenghai@gmaail.com', 'user', '$2y$12$nGhNlVHtOJtgVIBU6gJ0vu1uARXmmOWPVXnD4kBji4KLUBSOO6XEq', NULL, '2025-01-28 10:08:38', '2025-03-15 04:10:41', '2025-03-15 04:10:41', NULL, NULL),
+(11, 'dara', 'dara@gmail.com', 'user', '$2y$12$2GeSX2oiHRvtSW6tZEBnY.GMe/lla/cSN8uaYIH1x/mwxT.Fe/wIO', NULL, '2025-03-12 07:09:08', '2025-03-15 04:10:36', '2025-03-15 04:10:36', NULL, NULL),
+(12, '0jh', 'dara@gmail.com', 'user', '$2y$12$9LFWB/ZoJ1DvIsOmoSRNke9xv4Zx1xXz0gvjYKmkV/5APeTj6AJ7O', NULL, '2025-03-12 07:09:50', '2025-03-12 07:10:46', '2025-03-12 07:10:46', NULL, NULL),
+(13, 'dara', 'dara@gmail.com', 'user', '$2y$12$HQ2ly5SR7xXtyVraPVGLCeRU82DvH/LlSpC.YRi.8dqFKKLIy0bji', NULL, '2025-03-12 07:11:04', '2025-03-15 04:10:33', '2025-03-15 04:10:33', NULL, NULL),
+(14, 'dara', 'dara@gmail.com', 'user', '$2y$12$uY1JF//3lNpgt.ubwXI6Se4Xguej66v9l4FU0WgQbdmOy.iEY4nFC', NULL, '2025-03-12 07:11:19', '2025-03-15 04:10:27', '2025-03-15 04:10:27', NULL, NULL),
+(15, 'LoveYou', 'loveyou@gmail.com', 'user', '$2y$12$cO6o0vjHAXUlaaMtUgR0Uup97UbL6rwoBq4R3D7GmA.PhwEUpQnji', NULL, '2025-03-15 04:11:14', '2025-03-15 04:11:14', NULL, NULL, 'defaultprofile.png'),
+(16, 'sarika', 'sarika@gmail.com', 'user', '$2y$12$3QymH9DEXpC44IHea6UnGuZtEJiSph.Cl5xP9MsnMWmF9T6/OVCfe', NULL, '2025-03-15 04:14:13', '2025-03-15 04:14:13', NULL, NULL, 'defaultprofile.png'),
+(17, 'KaKiss', 'kaki@gmail.com', 'user', '$2y$12$S9Y59mv8C.8fzPlpyczZ3.LdvdupqNs0hkcD/UemvGpVSZbUMozAm', NULL, '2025-03-15 04:17:36', '2025-03-15 05:31:15', NULL, NULL, 'defaultprofile.png'),
+(18, 'KSK', 'loveyou2@gmail.com', 'user', '$2y$12$7vpTGDTM5rzsdzYeKZ5yaelP4c41KMkPSQij/Sc9.VqbOGKMg1PiG', NULL, '2025-03-16 02:29:19', '2025-03-23 07:58:35', '2025-03-23 07:58:35', NULL, 'defaultprofile.png'),
+(19, 'POPO', 'popo@gmail.com', 'user', '$2y$12$nFulYH9pfpBAyPVTkfbdDuy7Q8ORTm4YBMR19.ttNaJAtiAM0IByG', NULL, '2025-03-20 13:31:25', '2025-03-20 13:31:25', NULL, NULL, 'defaultprofile.png'),
+(20, 'loveksks', 'loveksks@gmail.com', 'user', '$2y$12$Ysd7gYKspBUvwan9G5mgkuEszKFFWXttgSe/gB2XEzmCTzvW3ygYm', NULL, '2025-03-21 07:27:53', '2025-03-21 07:27:53', NULL, NULL, 'defaultprofile.png');
 
 -- --------------------------------------------------------
 
@@ -755,6 +642,7 @@ ALTER TABLE `coupon_codes`
 --
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `customers_phone_number_unique` (`phone_number`),
   ADD UNIQUE KEY `customers_email_unique` (`email`);
 
 --
@@ -771,6 +659,21 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `orders_user_id_foreign` (`user_id`);
+
+--
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_items_order_id_foreign` (`order_id`),
+  ADD KEY `order_items_product_id_foreign` (`product_id`);
+
+--
 -- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
@@ -780,12 +683,6 @@ ALTER TABLE `password_reset_tokens`
 -- Indexes for table `payment_methods`
 --
 ALTER TABLE `payment_methods`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `permissions`
---
-ALTER TABLE `permissions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -816,19 +713,6 @@ ALTER TABLE `product_variants`
   ADD KEY `product_variants_product_id_foreign` (`product_id`);
 
 --
--- Indexes for table `roles`
---
-ALTER TABLE `roles`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `sellerss`
---
-ALTER TABLE `sellerss`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `sellerss_email_unique` (`email`);
-
---
 -- Indexes for table `sells`
 --
 ALTER TABLE `sells`
@@ -839,13 +723,8 @@ ALTER TABLE `sells`
 -- Indexes for table `sell_details`
 --
 ALTER TABLE `sell_details`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `settings`
---
-ALTER TABLE `settings`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_sell_details_sell` (`sell_id`);
 
 --
 -- Indexes for table `shipping_methods`
@@ -879,7 +758,7 @@ ALTER TABLE `webpages`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `coupon_codes`
@@ -891,7 +770,7 @@ ALTER TABLE `coupon_codes`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -903,19 +782,25 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `payment_methods`
 --
 ALTER TABLE `payment_methods`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `permissions`
---
-ALTER TABLE `permissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `permission_roles`
@@ -942,40 +827,22 @@ ALTER TABLE `product_variants`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `roles`
---
-ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- AUTO_INCREMENT for table `sellerss`
---
-ALTER TABLE `sellerss`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `sells`
 --
 ALTER TABLE `sells`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `sell_details`
 --
 ALTER TABLE `sell_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
-
---
--- AUTO_INCREMENT for table `settings`
---
-ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
 
 --
 -- AUTO_INCREMENT for table `shipping_methods`
 --
 ALTER TABLE `shipping_methods`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tables`
@@ -984,14 +851,33 @@ ALTER TABLE `tables`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
 -- AUTO_INCREMENT for table `webpages`
 --
 ALTER TABLE `webpages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `product_variants`

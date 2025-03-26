@@ -4,82 +4,87 @@ namespace App\Http\Controllers;
 
 use App\Models\Sell;
 use App\Models\SellDetail;
+use App\Models\ShippingMethod;
+use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
-
-    // Display the checkout page
+    // Show the checkout page
     public function index()
     {
-        // Get cart data from the session
-        $cart = session('cart', []);
+        $cart = session()->get('cart', []);
+        $total = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
 
-        // Calculate the total price
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        $shippingMethods = ShippingMethod::where('status', 'active')->get();
+        $paymentMethods = PaymentMethod::where('status', 'active')->get();
+
+        $customer = Auth::guard('customer')->user();
+
+        if (!$customer) {
+            return redirect()->route('login')->with('error', 'Please log in to continue.');
         }
 
-        // Pass cart data and total to the view
-        return view('frontend.checkout.index', [
-            'cart' => $cart,
-            'total' => $total,
-        ]);
+        return view('frontend.checkout.index', compact(
+            'cart', 'total', 'shippingMethods', 'paymentMethods', 'customer'
+        ));
     }
 
-    // Process the checkout
+    // Handle order submission
     public function process(Request $request)
     {
-
-        // Validate the request
+        // Validate
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'address' => 'required|string|max:255',
-            'payment_method' => 'required|string|in:credit_card,paypal,cash_on_delivery',
+            'customer_id' => 'required|exists:customers,id',
+            'shipping_method_id' => 'required|exists:shipping_methods,id',
+            'payment_method_id' => 'required|exists:payment_methods,id',
         ]);
 
-        // Get cart data from the session
         $cart = session('cart', []);
 
-        // Calculate the total price
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        if (empty($cart)) {
+            return redirect()->back()->with('error', 'Cart is empty.');
         }
 
-        // Save the order to the database (example logic)
+        $total = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
+
+        // Save the order
         $order = Sell::create([
-            'total_amount' => $total,
-            'status' => 'pending',
-            'shipping_address' => $request->input('address'),
-            'payment_method' => $request->input('payment_method'),
+            'customer_id'       => $request->customer_id,
+            'total_amount'      => $total,
+            'status'            => 'pending',
+            'shipping_method_id'=> $request->shipping_method_id,
+            'payment_method_id' => $request->payment_method_id,
         ]);
 
-        // Add order items to the database
-        foreach ($cart as $id => $item) {
+        // Save order details
+        foreach ($cart as $item) {
             SellDetail::create([
-                'sell_id' => $order->id,
-                'product_id' => $item['product_id'],
-                'qty' => $item['quantity'],
-                'price' => (float)$item['price'],
-                'total' => (float) $item['price'] *  (int)$item['quantity'],
-                'product_variant_id' =>(int) $item['variant_id'],
+                'sell_id'            => $order->id,
+                'product_id'         => $item['product_id'],
+                'qty'                => $item['quantity'],
+                'price'              => (float) $item['price'],
+                'total'              => (float) $item['price'] * (int) $item['quantity'],
+                'product_variant_id' => (int) $item['variant_id'],
             ]);
         }
 
-        // Clear the cart session
+        // Clear cart
         session()->forget('cart');
 
-        // Redirect to a thank-you page or order confirmation page
         return redirect()->route('checkout.success')->with('success', 'Your order has been placed successfully!');
     }
 
-    // Display the success page
+    // Show success message
     public function success()
     {
+
+        
         return view('frontend.checkout.success');
     }
 }

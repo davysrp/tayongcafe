@@ -84,11 +84,8 @@
 
     @push('scripts')
     
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- In your layout or Blade file -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
 
-
+</script>
     @endpush
 </x-app-layout>

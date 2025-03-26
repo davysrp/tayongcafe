@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductVariant;
 
+
+
+
 class CartController extends Controller
 {
     // Display the cart page
@@ -149,6 +152,7 @@ class CartController extends Controller
             'newTotal' => number_format($newTotal, 2),
         ]);
     }
+
 
 
 
