@@ -8,8 +8,6 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Frontend\CartController;
 
 
-
-
 Route::middleware('guest')->group(function () {
     Route::group(['prefix' => 'member'], function () {
         Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -19,19 +17,23 @@ Route::middleware('guest')->group(function () {
         Route::get('register', [AuthController::class, 'registerForm'])->name('memberFormRegister');
         Route::post('register', [AuthController::class, 'register'])->name('memberRegister');
         Route::get('login', [AuthController::class, 'loginForm'])->name('memberFormLogin');
-        Route::post('login', [AuthController::class, 'login'])->name('memberLogin'); 
+        Route::post('login', [AuthController::class, 'login'])->name('memberLogin');
     });
 });
 
 
 Route::middleware('auth:customer')->group(function () {
+    Route::group(['prefix' => 'member'], function () {
         Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
         Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
         Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-    Route::get('/member/profile', [AuthController::class, 'showpro'])->name('member.profile');
-    Route::post('/member/profile', [AuthController::class, 'updatepro'])->name('member.profile.update');
+        Route::get('getPaymentMethod', [SellController::class, 'getPaymentMethod'])->name('getPaymentMethodUser');
+        Route::post('checkTransactionOrder', [CheckoutController::class, 'checkTransactionOrder'])->name('checkTransactionOrderUser');
+        Route::get('/member/profile', [AuthController::class, 'showpro'])->name('member.profile');
+        Route::post('/member/profile', [AuthController::class, 'updatepro'])->name('member.profile.update');
+    });
 });
 
 

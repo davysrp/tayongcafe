@@ -2,23 +2,21 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ __('Tanyong Cafe') }}</title>
-
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Koh+Santepheap:wght@100;300;400;700;900&display=swap" rel="stylesheet">
 
-    <!-- Styles -->
+{{--    <!-- Styles -->--}}
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
-    <link rel="stylesheet" href="{{ asset('css/summernote.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('css/summernote.min.css') }}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">--}}
 
 
 
@@ -31,11 +29,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <link href="{!! asset('assets/khqr/style.css?v='.time()) !!}" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
 
 
-    
     @isset($css)
         {!! $css !!}
     @endisset
@@ -93,15 +90,14 @@
     <!-- Scripts -->
     <script src="{{ asset('frontend/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('frontend/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    {{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script> --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
-    <script src="{!! asset('assets/khqr/khqr-1.0.16.min.js') !!}"></script>
-    <script src="{!! asset('assets/khqr/request.js?v='.time()) !!}"></script>
-    <script src="{!! asset('assets/khqr/khqr-form.js') !!}"></script>
 
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
 
     @if(isset($script))
     {!! $script !!}
@@ -139,7 +135,7 @@
                     }
                 });
             @endif
-            
+
         });
 
 

@@ -17,7 +17,7 @@
                 <!-- Avatar -->
                 <div class="mb-3">
                     {{-- <label for="avatar" class="form-label">Profile Picture</label><br> --}}
-                    @if ($customer->userphoto)
+                    @if (isset($customer->userphoto))
                         <img src="{{ asset('storage/' . $customer->userphoto) }}" alt="Profile Picture" class="rounded-circle mb-2" width="100" height="100" style="object-fit: cover;">
                     @else
                         <img src="{{ asset('storage/customer_pictures/defaultprofile.png') }}" alt="Default Profile Picture" class="rounded-circle mb-2" width="100" height="100" style="object-fit: cover;">
@@ -25,7 +25,7 @@
                     {{-- <input type="file" class="form-control mt-2" id="avatar" name="avatar"> --}}
                 </div>
 
-                             
+
 
                     <!-- Greeting -->
                     <h2 class="fw-bold mb-3">សួស្តី, {{ $customer->first_name }}!</h2>

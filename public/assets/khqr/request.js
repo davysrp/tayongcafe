@@ -3,8 +3,6 @@
     const {SourceInfo} = window.BakongKHQR;
 
     function generateKhqr(amountData,merchantInfoData,optionalData_,orderLink) {
-
-
         const {BakongKHQR, khqrData, MerchantInfo} = window.BakongKHQR;
         const {SourceInfo} = window.BakongKHQR;
 
