@@ -17,9 +17,7 @@
 
     @endphp
     <div class="card shadow mb-4">
-        {{-- <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">List</h6>
-        </div> --}}
+
         <div class="card-body">
 
             {!! \App\Models\Helper::datatable($fields,'webpage_list',1,route('web-pages.create')) !!}
@@ -28,7 +26,18 @@
     </div>
 
 
-
+    {{-- <div class="card shadow mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Web Pages</h5>
+            <a href="{{ route('web-pages.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create New Page
+            </a>
+        </div>
+        <div class="card-body">
+            {!! \App\Models\Helper::datatable($fields,'webpage_list',1,route('web-pages.create')) !!}
+        </div>
+    </div> --}}
+    
 
     <x-slot name="script">
         <script>
@@ -127,6 +136,8 @@
                     $('#createFormModal').resetForm();
                 });
             })
+
+            
         </script>
     </x-slot>
 </x-admin-layout>

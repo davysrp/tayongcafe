@@ -190,6 +190,8 @@ class UserController extends Controller
                 })
                 ->escapeColumns([])
                 ->make(true);
+
+                
         }
         return view('backend.users.index');
     }
@@ -248,6 +250,7 @@ class UserController extends Controller
             'email' => ['required', 'email', 'regex:/^[^@]+@gmail\.com$/', 'unique:users,email,' . $id],
             'password' => 'nullable|string|min:6',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            
         ]);
 
         $user = User::findOrFail($id);

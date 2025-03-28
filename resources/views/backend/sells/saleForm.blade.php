@@ -156,7 +156,7 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                         <div class="modal-content ">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalCenterTitle"></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -459,22 +459,62 @@
                                         confirmButtonText: "Yes",
                                     }).then((result) => {
                                         /* Read more about isConfirmed, isDenied below */
+                                        // if (result.isConfirmed) {
+                                        // // Show Loading Indicator
+
+                                        // Swal.fire({
+
+                                        //     title: 'Processing Payment...',
+                                        //     text: 'Please wait while we process your payment.',
+                                        //     allowOutsideClick: false,
+                                        //     allowEscapeKey: false,
+                                        //     showConfirmButton: false,
+                                        //     didOpen: () => {
+                                        //         Swal.showLoading();
+                                        //     }
+                                        // });
+
+                                        //     $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
+                                        //         if (data.success == true) {
+                                        //             token = data.data.method.token;
+                                        //             merchantInfoData = data.data.merchantInfoData;
+                                        //             optionalData_ = data.data.optionalData_;
+                                        //         }
+                                        //     });
+
+                                        //     sleep(1000).then(() => {
+                                        //         var orderLink = "{!! route('placeOrderAdmin') !!}";
+                                        //         var orderData = {
+                                        //             payment_method_id: paymentMethod,
+                                        //             invoice_no: optionalData_.billNumber,
+                                        //             customer_id: customer_id,
+                                        //             table_id: table_id,
+                                        //             is_order: paymentMethod === 1 ? 0 : 1,
+                                        //         };
+                                        //         if (paymentMethod == 1) {
+                                        //             $('.home-amount').text(grand_total);
+                                        //             var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
+                                        //             var qrUrl = generateQRCode(qrData.qr)
+                                        //             md5 = qrData.md5
+                                        //             $('#qrCode').attr('src', qrUrl)
+                                        //             $('body').addClass("modal-show");
+                                        //             $('#KHqrModal').modal('show')
+                                        //             updateCountdown(180);
+                                        //             // Call the function to initiate the process
+                                        //             checkTransactionData(md5, orderData, optionalData_.billNumber);
+                                        //         } else {
+                                        //             checkTransactionData(md5, orderData, optionalData_.billNumber);
+                                        //         }
+                                        //     });
+                                        // }
+
+
+
                                         if (result.isConfirmed) {
-                                        // Show Loading Indicator
+                                            
 
-                                        Swal.fire({
 
-                                            title: 'Processing Payment...',
-                                            text: 'Please wait while we process your payment.',
-                                            allowOutsideClick: false,
-                                            allowEscapeKey: false,
-                                            showConfirmButton: false,
-                                            didOpen: () => {
-                                                Swal.showLoading();
-                                            }
-                                        });
-
-                                            $.get("{!! route('getPaymentMethodAdmin') !!}", {id: paymentMethod}, function (data) {
+                                            $.get("{!! route('getPaymentMethodAdmin') !!}", { id: paymentMethod }, function (data) {
                                                 if (data.success == true) {
                                                     token = data.data.method.token;
                                                     merchantInfoData = data.data.merchantInfoData;
@@ -491,22 +531,38 @@
                                                     table_id: table_id,
                                                     is_order: paymentMethod === 1 ? 0 : 1,
                                                 };
+                                            
                                                 if (paymentMethod == 1) {
+                                                    // KHQR selected — skip Swal loading and show KHQR modal instead
                                                     $('.home-amount').text(grand_total);
                                                     var qrData = generateKhqr(grand_total, merchantInfoData, optionalData_);
                                                     var qrUrl = generateQRCode(qrData.qr)
-                                                    md5 = qrData.md5
-                                                    $('#qrCode').attr('src', qrUrl)
+                                                    md5 = qrData.md5;
+                                                    $('#qrCode').attr('src', qrUrl);
                                                     $('body').addClass("modal-show");
-                                                    $('#KHqrModal').modal('show')
+                                                    $('#KHqrModal').modal('show');
                                                     updateCountdown(180);
-                                                    // Call the function to initiate the process
                                                     checkTransactionData(md5, orderData, optionalData_.billNumber);
+                                                
                                                 } else {
+                                                    // Not KHQR — show Swal loading
+                                                    Swal.fire({
+                                                        title: 'Processing Payment...',
+                                                        text: 'Please wait while we process your payment.',
+                                                        allowOutsideClick: false,
+                                                        allowEscapeKey: false,
+                                                        showConfirmButton: false,
+                                                        didOpen: () => {
+                                                            Swal.showLoading();
+                                                        }
+                                                    });
+                                                
                                                     checkTransactionData(md5, orderData, optionalData_.billNumber);
                                                 }
                                             });
-                                        }
+                                            }
+
+
                                     });
 
 

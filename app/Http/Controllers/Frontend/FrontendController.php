@@ -80,7 +80,8 @@ class FrontendController extends Controller
     
         return response()->json([
             'success' => true,
-            'message' => 'Product added to cart successfully!',
+            // 'message' => 'Product added to cart successfully!',
+            'message' => 'ទំនិញបានដាក់ចូលកន្រ្តកជោគជ័យ',
             'cart' => $cart,
         ]);
     }

@@ -13,11 +13,11 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr class="text-center">
-                            <th align="center">No</th>
-                            <th align="center">Product Name</th>
-                            <th align="center">Price</th>
-                            <th align="center">Qty</th>
-                            <th align="center">Total</th>
+                            <th align="center">ល.រ</th>
+                            <th align="center">ឈ្មោះផលិតផល</th>
+                            <th align="center">តម្លៃ</th>
+                            <th align="center">ចំនួន</th>
+                            <th align="center">តម្លៃ</th>
                             <th align="center">#</th>
                         </tr>
                         </thead>

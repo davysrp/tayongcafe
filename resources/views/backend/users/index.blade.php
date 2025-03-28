@@ -11,7 +11,7 @@
                [ 'name'=>'id', 'label'=>'ID','width'=>'', ],
                [ 'name'=>'name', 'label'=>'Name','width'=>'' ],
                [ 'name'=>'email', 'label'=>'Email','width'=>'' ],
-               [ 'name'=>'status', 'label'=>'Status','width'=>'' ],
+            //    [ 'name'=>'status', 'label'=>'Status','width'=>'' ],
                [ 'name'=>'created_at', 'label'=>'Created_at','width'=>'' ],
                [ 'name'=>'updated_at', 'label'=>'Updated_at','width'=>'' ],
                [ 'name'=>'action', 'label'=>'Action','width'=>'' ],

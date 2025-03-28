@@ -35,6 +35,13 @@
 
         </div>
     </div>
+
+    {{-- <div class="col-12 mb-3">
+        <label for="status" class="form-label fw-bold">Status</label>
+        {!! Form::select('status', [1 => 'Active', 0 => 'Inactive'], $model->status ?? 1, ['class' => 'form-control']) !!}
+    </div> --}}
+    
+
 </div>
 
 {{-- @if(isset($model) && $model->photo)

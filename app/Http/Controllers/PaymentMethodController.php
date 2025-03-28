@@ -53,11 +53,23 @@ class PaymentMethodController extends Controller
                             </div>';
                     return $html;
                 })
+
                 ->editColumn('status',function ($model){
                     return $model->status ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">Inactive</span>';
                 })
+
+                // ->editColumn('status', function ($model) {
+                //     return $model->status
+                //         ? '<span class="badge badge-success">Active</span>'
+                //         : '<span class="badge badge-danger">Inactive</span>';
+                // })
+                
+
                 ->escapeColumns([])
                 ->make(true);
+
+
+
         }
         return view('backend.payment_method.index');
     }
@@ -116,8 +128,10 @@ class PaymentMethodController extends Controller
         $data = $this->validate($request, [
             'names' => 'required',
             'status' => 'required',
+            // 'status' => 'required|in:0,1',
             'token' => 'nullable',
             'token_expired' => 'nullable',
+            
         ]);
         return $data;
 
