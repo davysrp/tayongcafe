@@ -147,10 +147,14 @@
                     <input type="hidden" name="discount" value="{{ $price['discount_price'] ?? 0 }}">
                     <input type="hidden" name="grand_total" value="{{ $price['grand_total'] ?? $total }}">
                     <input type="hidden" name="coupon_code_id" value="{{ $price['coupon_id'] ?? null }}">
+
                     <button class="btn btn-checkout" id="checkout" type="button">
                         <i class="fas fa-check"></i> Proceed to Checkout
+                        
                     </button>
                     {!! Form::close() !!}
+
+                    
                 </div>
             </div>
         </div>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+
     // Show the checkout page
     public function index()
     {
@@ -29,7 +30,11 @@ class CheckoutController extends Controller
         }
 
         return view('frontend.checkout.index', compact(
-            'cart', 'total', 'shippingMethods', 'paymentMethods', 'customer'
+            'cart',
+            'total',
+            'shippingMethods',
+            'paymentMethods',
+            'customer'
         ));
     }
 
@@ -58,7 +63,7 @@ class CheckoutController extends Controller
             'customer_id'       => $request->customer_id,
             'total_amount'      => $total,
             'status'            => 'pending',
-            'shipping_method_id'=> $request->shipping_method_id,
+            'shipping_method_id' => $request->shipping_method_id,
             'payment_method_id' => $request->payment_method_id,
         ]);
 
@@ -86,9 +91,81 @@ class CheckoutController extends Controller
         return view('frontend.checkout.success');
     }
 
+
+
+    public function updateCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        $id = $request->input('id');
+
+        // Handle quantity whether it comes as array or direct value
+        $quantityInput = $request->input('quantity');
+        $quantity = is_array($quantityInput) ? (int)($quantityInput[$id] ?? 1) : (int)$quantityInput;
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $quantity;
+            session()->put('cart', $cart);
+
+            $price = (float)$cart[$id]['price'];
+            $newSubtotal = $price * $quantity;
+
+            // Calculate total safely
+            $total = 0;
+            foreach ($cart as $item) {
+                $itemPrice = (float)($item['price'] ?? 0);
+                $itemQty = (int)($item['quantity'] ?? 0);
+                $total += $itemPrice * $itemQty;
+            }
+
+            return response()->json([
+                'success' => true,
+                'newSubtotal' => number_format($newSubtotal, 2),
+                'newTotal' => number_format($total, 2),
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Item not found']);
+    }
+
+
+    public function removeFromCart(Request $request)
+    {
+        try {
+            $request->validate(['id' => 'required|string']);
+
+            $cart = session()->get('cart', []);
+            $id = $request->id;
+
+            if (!isset($cart[$id])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Item not found in cart'
+                ], 404);
+            }
+
+            unset($cart[$id]);
+            session()->put('cart', $cart);
+
+            $newTotal = array_reduce($cart, function ($sum, $item) {
+                return $sum + ($item['price'] * $item['quantity']);
+            }, 0);
+
+            return response()->json([
+                'success' => true,
+                'newTotal' => number_format($newTotal, 2),
+                'cartCount' => count($cart)
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function checkTransactionOrder(Request $request)
     {
-        if ($request->payment_method_id==1) {
+        if ($request->payment_method_id == 1) {
             $model = PaymentMethod::find($request->payment_method_id);
             $reqs = \Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -97,7 +174,6 @@ class CheckoutController extends Controller
                 'md5' => $request->md5
             ]);
             if ($reqs->failed()) {
-
             }
             $data = json_decode($reqs->body());
 
@@ -118,7 +194,7 @@ class CheckoutController extends Controller
                     'customer_id'       => $request->customer_id,
                     'total_amount'      => $total,
                     'status'            => 'pending',
-                    'shipping_method_id'=> $request->shipping_method_id,
+                    'shipping_method_id' => $request->shipping_method_id,
                     'payment_method_id' => $request->payment_method_id,
                 ]);
 
@@ -142,7 +218,6 @@ class CheckoutController extends Controller
                     'message' => true,
                     'data' => $order,
                 ];
-
             } elseif ($data->responseCode == 1 && $data->errorCode == 6) {
                 $req = \Http::post('https://api-bakong.nbc.gov.kh/v1/renew_token', [
                     'email' => 'phansophat2020@gmail.com'
@@ -166,7 +241,7 @@ class CheckoutController extends Controller
                 'customer_id'       => $request->customer_id,
                 'total_amount'      => $total,
                 'status'            => 'pending',
-                'shipping_method_id'=> $request->shipping_method_id,
+                'shipping_method_id' => $request->shipping_method_id,
                 'payment_method_id' => $request->payment_method_id,
             ]);
 
@@ -212,8 +287,5 @@ class CheckoutController extends Controller
                 'data' => []
             ]);
         }
-
     }
-
-
 }

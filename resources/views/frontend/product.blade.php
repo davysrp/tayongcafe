@@ -8,14 +8,19 @@
         <div class="row d-md-flex">
             <div class="col-lg-12 ftco-animate p-md-5">
                 <div class="row">
-                    
+
                     <!-- Category Tabs -->
                     <div class="col-md-12 nav-link-wrap mb-5">
-                        <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
                             <!-- Add an "All" tab to show all products -->
-                            <a class="nav-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all" role="tab" aria-controls="v-pills-all" aria-selected="true">ទាំងអស់</a>
+                            <a class="nav-link active" id="v-pills-all-tab" data-toggle="pill" href="#v-pills-all"
+                                role="tab" aria-controls="v-pills-all" aria-selected="true">ទាំងអស់</a>
                             @foreach($categories as $category)
-                                <a class="nav-link" id="v-pills-{{ $category->id }}-tab" data-toggle="pill" href="#v-pills-{{ $category->id }}" role="tab" aria-controls="v-pills-{{ $category->id }}" aria-selected="false">{{ $category->names }}</a>
+                                <a class="nav-link" id="v-pills-{{ $category->id }}-tab" data-toggle="pill"
+                                    href="#v-pills-{{ $category->id }}" role="tab"
+                                    aria-controls="v-pills-{{ $category->id }}"
+                                    aria-selected="false">{{ $category->names }}</a>
                             @endforeach
                         </div>
                     </div>
@@ -24,20 +29,27 @@
                     <div class="col-md-12 d-flex align-items-left">
                         <div class="tab-content ftco-animate" id="v-pills-tabContent">
                             <!-- Tab pane for "All" products -->
-                            <div class="tab-pane fade show active" id="v-pills-all" role="tabpanel" aria-labelledby="v-pills-all-tab">
+                            <div class="tab-pane fade show active" id="v-pills-all" role="tabpanel"
+                                aria-labelledby="v-pills-all-tab">
                                 <div class="row">
                                     @foreach($products as $product)
-                                        <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}" data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->productVariant->toJson() }}">
+                                        <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}"
+                                            data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}"
+                                            data-variants="{{ $product->productVariant->toJson() }}">
                                             <div class="menu-wrap">
-                                                <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
+                                                <a href="#" class="menu-img img mb-4"
+                                                    style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
                                                 <div class="text">
-                                                    <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a></h3>
+                                                    <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a>
+                                                    </h3>
                                                     <p>{{ $product->detail }}</p>
-                                                    <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
+                                                    <p class="price"><span>{{ number_format($product->price, 2) }} $</span>
+                                                    </p>
                                                     <p>
                                                         <input type="hidden" name="quantity" value="1">
                                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                        <button type="button" class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
+                                                        <button type="button"
+                                                            class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -48,22 +60,29 @@
 
                             <!-- Tab panes for individual categories -->
                             @foreach($categories as $category)
-                                <div class="tab-pane fade" id="v-pills-{{ $category->id }}" role="tabpanel" aria-labelledby="v-pills-{{ $category->id }}-tab">
+                                <div class="tab-pane fade" id="v-pills-{{ $category->id }}" role="tabpanel"
+                                    aria-labelledby="v-pills-{{ $category->id }}-tab">
                                     <div class="row">
                                         @if($category->products->isNotEmpty())
                                             @foreach($category->products as $product)
-                                                <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}" data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}" data-variants="{{ $product->productVariant->toJson() }}">
+                                                <div class="col-md-4 text-center mb-4 product" data-product-id="{{ $product->id }}"
+                                                    data-has-variants="{{ $product->productVariant->isNotEmpty() ? 'true' : 'false' }}"
+                                                    data-variants="{{ $product->productVariant->toJson() }}">
                                                     <div class="menu-wrap">
-                                                        <a href="#" class="menu-img img mb-4" style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
+                                                        <a href="#" class="menu-img img mb-4"
+                                                            style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
 
                                                         <div class="text">
-                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a></h3>
+                                                            <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a>
+                                                            </h3>
                                                             <p>{{ $product->detail }}</p>
-                                                            <p class="price"><span>{{ number_format($product->price, 2) }} $</span></p>
+                                                            <p class="price"><span>{{ number_format($product->price, 2) }} $</span>
+                                                            </p>
                                                             <p>
                                                                 <input type="hidden" name="quantity" value="1">
                                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                                <button type="button" class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
+                                                                <button type="button"
+                                                                    class="btn btn-primary buy-button">ដាក់ចូលកន្ត្រក</button>
                                                             </p>
                                                         </div>
 
@@ -90,10 +109,12 @@
 <!-- Modal for selecting product variants -->
 <div id="variantModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="background-color: black; color: #fff; font-family: 'Khmer OS Siemreap', sans-serif;">
+        <div class="modal-content"
+            style="background-color: black; color: #fff; font-family: 'Khmer OS Siemreap', sans-serif;">
             <div class="modal-header">
                 <h5 class="modal-title" style="font-size: 24px; font-weight: normal;">ជ្រើសរើសតាមប្រភេទ</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff; font-size: 24px;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="color: #fff; font-size: 24px;">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -103,8 +124,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="font-size: 18px;">បិទ</button>
-                <button type="button" class="btn btn-primary" id="confirmVariant" style="font-size: 18px;">បញ្ជាក់</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                    style="font-size: 18px;">បិទ</button>
+                <button type="button" class="btn btn-primary" id="confirmVariant"
+                    style="font-size: 18px;">បញ្ជាក់</button>
             </div>
         </div>
     </div>
@@ -219,21 +242,29 @@
                 },
                 body: formData,
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server Response:', data);  // Log the server response
-                if (data.success) {
-                    alert('Product added to cart successfully!');
-                    // window.location.href = "{{ route('cart.index') }}";  // Redirect to the cart page
-                } else {
-                    alert('Failed to add product to cart: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while adding the product to the cart.');
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Server Response:', data);  // Log the server response
+                    if (data.success) {
+                        alert('Product added to cart successfully!');
+                        // window.location.href = "{{ route('cart.index') }}";  // Redirect to the cart page
+                    } else {
+                        alert('Failed to add product to cart: ' + data.message);
+                    }
+                })
+                // .catch(error => {
+                //     console.error('Error:', error);
+                //     alert('អ្នកមិនទាន់បាន Log in គណនី.');
+                // });
+
+                
+                .catch(error => {
+                    console.error('Error:', error);
+                    window.location.href = "{{ route('memberFormLogin') }}";
+                });
+
+
         }
     });
-    
+
 </script>

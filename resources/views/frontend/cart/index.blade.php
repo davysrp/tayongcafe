@@ -1,196 +1,242 @@
 <x-app-layout>
 
-    <div class="container">
-        <div class="product-wrap">
-
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="trending-title">
-                        <h1><i class="fas fa-cart-plus"></i> Cart List</h1>
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-shopping-cart me-2"></i> Your Shopping Cart</h3>
                     </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="5%" class="text-center">#</th>
+                                        <th width="35%">Product</th>
+                                        <th width="15%" class="text-center">Price</th>
+                                        <th width="20%" class="text-center">Quantity</th>
+                                        <th width="15%" class="text-center">Subtotal</th>
+                                        <th width="10%" class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $total = 0; ?>
+                                    @if(session('cart'))
+                                        <?php
+                                        $card = session('cart');
+                                        $price = session('price_cart');
+                                        $i = 1;
+                                        ?>
+                                        @foreach(session('cart') as $id => $details)
+                                            <tr data-id="{{ $id }}" class="cart-item">
+                                                <td class="text-center">{!! $i !!}</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img 
+                                                            src="{{ isset($details['photo']) ? asset('storage/product/' . $details['photo']) : asset('images/default-product.png') }}"
+                                                            alt="{{ $details['name'] ?? 'Product image' }}"
+                                                            class="rounded me-3"
+                                                            width="60"
+                                                            height="60">
+                                                        <div>
+                                                            <h6 class="mb-1">{{ $details['name'] ?? '' }}</h6>
+                                                            @if(!empty($details['variant_name'] ?? null))
+                                                                <small class="text-muted d-block">Variant: {{ $details['variant_name'] }}</small>
+                                                                <small class="text-muted">Size: {{ $details['variant_size'] ?? '' }}</small>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">${{ number_format($details['price'], 2) }}</td>
+                                                <td>
+                                                    {!! Form::open(['route'=>'cart.update', 'method'=>'POST', 'class'=>'mb-0 update-form']) !!}
+                                                    <div class="input-group input-group-sm">
+                                                        <button type="button" class="btn btn-outline-secondary btn-number" 
+                                                                data-type="minus" data-id="{{ $id }}">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <input type="number" name="quantity"
+                                                               class="form-control form-control-sm input-number text-center"
+                                                               value="{{ $details['quantity'] }}" min="1" max="10">
+                                                        <button type="button" class="btn btn-outline-primary btn-number" 
+                                                                data-type="plus" data-id="{{ $id }}">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                    {!! Form::hidden('id', $id) !!}
+                                                    {!! Form::close() !!}
+                                                </td>
+                                                <td class="text-center subtotal" data-th="Subtotal">
+                                                    ${{ number_format($details['price'] * $details['quantity'], 2) }}
+                                                </td>
 
 
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr class="text-center">
-                            <th align="center">ល.រ</th>
-                            <th align="center">ឈ្មោះផលិតផល</th>
-                            <th align="center">តម្លៃ</th>
-                            <th align="center">ចំនួន</th>
-                            <th align="center">តម្លៃ</th>
-                            <th align="center">#</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php $total = 0; ?>
-                        @if(session('cart'))
-                            <?php
-                            $card = session('cart');
-                            $price = session('price_cart');
-                            $i = 1;
+                                                {{-- <td class="text-center">
+                                                    <button class="btn btn-danger btn-sm remove-from-cart"
+                                                            data-id="{{ $id }}"
+                                                            data-url="{{ route('cart.remove') }}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td> --}}
 
-                            ?>
-                            @foreach(session('cart') as $id => $details)
-                                {{--                                @php $total += $details['price'] * $details['quantity'] @endphp--}}
-                                <tr data-id="{{ $id }}">
-                                    <td align="center">{!! $i !!}</td>
-                                    <td data-th="Product" align="center">
-                                    <td class="text-start">
-                                        <div class="d-flex align-items-center">
-                                            <img
-                                                src="{{ isset($details['photo']) ? asset('storage/product/' . $details['photo']) : asset('images/default-product.png') }}"
-                                                alt="{{ $details['name'] ?? 'Product image' }}"
-                                                class="product-thumb me-3"
-                                                width="80"
-                                                height="80">
-                                            <div>
-                                                <strong>{{ $details['name'] ?? '' }}</strong><br>
-                                                @if(!empty($details['variant_name'] ?? null))
-                                                    <small
-                                                        class="text-muted">Variant: {{ $details['variant_name'] }}</small>
-                                                    <br>
-                                                    <small
-                                                        class="text-muted">Size: {{ $details['variant_size'] ?? '' }}</small>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </td>
-                                    </td>
-                                    <td data-th="Price" align="center">${{ $details['price'] }}</td>
-                                    <td data-th="Quantity" align="center" width="25%">
-                                        {!! Form::open(['route'=>'cart.update','id'=>'','method'=>'POST']) !!}
-                                        <div class="input-group">
-                <span class="input-group-prepend">
-                    <button type="button" class="btn btn-outline-secondary btn-sm btn-number" disabled="disabled"
-                            data-type="minus" data-field="quantity[{!! $id !!}]">
-                        <span class="fa fa-minus"></span>
-                    </button>
-                </span>
-                                            <input type="text" name="quantity[{!! $id !!}]"
-                                                   class="form-control form-control-sm input-number text-center"
-                                                   value="{{ $details['quantity'] }}" min="1" max="10">
-                                            <span class="input-group-append">
+                                                <td class="text-center">
+                                                    <button type="button"
+                                                            class="btn-delete remove-from-cart"
+                                                            data-id="{{ $id }}"
+                                                            data-url="{{ route('cart.remove') }}">
+                                                        <img src="{{ asset('assets/img/delete.png') }}" width="30" height="30" alt="Delete">
+                                                    </button>
+                                                </td>
 
-
-                              <button type="submit"
-                                      class="btn btn-primary btn-sm">
-                                             Update
-                                        </button>
-
-                </span>
-                                        </div>
-
-
-                                        {!! Form::hidden('id',$id,['class'=>'form-control','id'=>'id']) !!}
-
-
-
-                                        {!! Form::close() !!}
-                                    </td>
-                                    <td data-th="Subtotal" class="text-center" align="center">
-                                        ${{ $details['price'] * $details['quantity'] }}</td>
-                                    <td class="actions" data-th="" align="center">
-                                        <button data-href="{!! route('cart.remove',$id) !!}"
-                                                class="btn btn-danger btn-sm remove-from-cart"><i
-                                                class="fas fa-trash-alt"></i></button>
-
-                                    </td>
-                                </tr>
-
-                                <?php
-                                $total = $total + ($details['price'] * $details['quantity']);
-                                $i++ ?>
-
-                            @endforeach
-                        @endif
-
-
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <div class="col-md-4">
-                    <div class="trending-title">
-                        <h1><i class="fas fa-window-maximize"></i> Order Summary</h1>
-                    </div>
-                    <?php
-
-                    ?>
-                    <table class="table table-responsive table-bordered">
-                        <tr>
-                            <td>Cart Total:</td>
-                            <td>${!! number_format($total,2) !!}</td>
-                        </tr>
-                        <tr>
-                            <td>Total Discount (<b>{!! $price['coupon_code'] ?? null !!}</b>):</td>
-                            <td>
-                                ${!!  isset($price['discount_price']) ? number_format($price['discount_price'],2): 0 !!}</td>
-                        </tr>
-                        <tr>
-                            <td>Grand Total:</td>
-                            <td>
-                                ${!! isset($price['grand_total']) ?  number_format($price['grand_total'],2) : $total!!}</td>
-                        </tr>
-                    </table>
-
-                    {{-- {!! Form::open(['route'=>'applyCouponCode']) !!}
-                    <h4 class="coupon-title">Apply Coupon code</h4>
-                    <div class="input-group mb-3">
-
-                        <input type="text" class="form-control" placeholder="Coupon code"
-                               aria-label="Recipient's username" name="coupon_code" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="input-group-text btn-apply" id="basic-addon2"><i
-                                    class="far fa-check-circle"></i> Apply
-                            </button>
+                                            </tr>
+                                            <?php
+                                            $total = $total + ($details['price'] * $details['quantity']);
+                                            $i++ ?>
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    {!! Form::close() !!} --}}
-                    {!! Form::open(['route'=>'checkout.process']) !!}
+                </div>
+            </div>
+    
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0"><i class="fas fa-receipt me-2"></i> Order Summary</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <strong>$<span id="cart-subtotal">{{ number_format($total, 2) }}</span></strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Discount ({!! $price['coupon_code'] ?? 'No coupon' !!}):</span>
+                            <strong class="text-danger">-$<span id="cart-discount">{{ isset($price['discount_price']) ? number_format($price['discount_price'], 2) : '0.00' }}</span></strong>
+                        </div>
+                        <hr>
 
-                    @foreach($paymentMethods as $method)
-                        <div class="form-check">
-                            <input class="form-check-input payment_method_id " type="radio" name="payment_method_id"
-                                   value="{!! $method->id !!}"
-                                   id="{!! $method->id !!}" {!! $method->id==4? 'checked':null !!}>
-                            <label class="form-check-label w-100" for="{!! $method->id !!}">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="icon-box"
-                                             style="background: url({!! asset('photo/'.$method->icon) !!})"></div>
+                        {{-- <div class="d-flex justify-content-between mb-3">
+                            <span class="h5">Total:</span>
+                            <span class="h5 text-primary">
+                                <strong>$<span id="grand-total">{{ isset($price['grand_total']) ? number_format($price['grand_total'], 2) : number_format($total, 2) }}</span></strong>
+                            </span>
+                        </div> --}}
+
+<!-- In your order summary section -->
+<div class="d-flex justify-content-between mb-3">
+    <span class="h5">Total:</span>
+    <span class="h5 text-primary">
+        <strong>$<span id="grand-total">{{ number_format($total, 2) }}</span></strong>
+    </span>
+</div>
+
+<!-- Cart count badge somewhere in your layout -->
+<span id="cart-count" class="badge bg-primary">
+    {{ count(session('cart', [])) }}
+</span>
+
+    
+                        {!! Form::open(['route'=>'checkout.process', 'class'=>'mt-4']) !!}
+                        <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i> Payment Method</h5>
+                        
+                        <div class="list-group mb-4">
+                            @foreach($paymentMethods as $method)
+                            <label class="list-group-item list-group-item-action rounded mb-2">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        <input class="form-check-input me-1 payment_method_id" type="radio" 
+                                               name="payment_method_id" value="{!! $method->id !!}"
+                                               {!! $method->id==4? 'checked':null !!}>
                                     </div>
-                                    <div class="col-md-9">
-                                        <b>{!! $method->names !!}</b>
-                                        <p>{!! $method->small_line !!}</p>
+                                    <img src="{!! asset('photo/'.$method->icon) !!}" alt="{!! $method->names !!}" 
+                                         width="40" class="me-3">
+                                    <div>
+                                        <h6 class="mb-1">{!! $method->names !!}</h6>
+                                        <small class="text-muted">{!! $method->small_line !!}</small>
                                     </div>
                                 </div>
                             </label>
+                            @endforeach
                         </div>
+    
+                        <input type="hidden" value="1" name="table_id" id="table_id">
+                        <input type="hidden" value="{!! $total !!}" name="total" id="total">
+                        <input type="hidden" value="{!! isset($price['discount_price']) ? $price['discount_price']: 0 !!}"
+                               name="discount" id="discount">
+                        <input type="hidden" value="{!! isset($price['grand_total']) ? $price['grand_total'] : $total !!}"
+                               name="grand_total" id="grand_total">
+                        <input type="hidden" value="{!! isset($price['coupon_id']) ? $price['coupon_id'] : null !!}"
+                               name="coupon_code_id" id="coupon_code_id">
+    
+                        <button class="btn btn-primary btn-lg w-100 py-3" id="checkout" type="submit">
+                            <i class="fas fa-check-circle me-2"></i> Proceed to Checkout
+                        </button>
 
-                    @endforeach
+                        {{-- <div class="text-end mt-3">
+                            <h5><strong>Total:</strong> $<span id="total-amount">{{ number_format($total, 2) }}</span></h5>
+                            <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+                        </div> --}}
 
-                    <input type="hidden" value="1" name="table_id" id="table_id">
-                    <input type="hidden" value="{!!  $total !!}" name="total" id="total">
-                    <input type="hidden" value="{!!  isset($price['discount_price']) ? $price['discount_price']: 0 !!}"
-                           name="discount" id="discount">
-                    <input type="hidden" value="{!! isset($price['grand_total']) ?  $price['grand_total'] : $total !!} "
-                           name="grand_total" id="grand_total">
-                    <input type="hidden" value="{!! isset($price['coupon_id']) ?  $price['coupon_id'] : null !!} "
-                           name="coupon_code_id" id="coupon_code_id">
 
-                    <button class="btn btn-primary w-100" id="checkout" type="button"><i class="fas fa-check"></i>
-                        Proceed to
-                        checkout
-                    </button>
-                    {!! Form::close() !!}
-
+                        {!! Form::close() !!}
+                    </div>
                 </div>
             </div>
-
-
         </div>
     </div>
+{{--     
+    <style>
+        .cart-item:hover {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-header {
+            border-radius: 0 !important;
+        }
+        .table th {
+            border-top: none;
+        }
+        .input-group-sm {
+            width: 120px;
+        }
+        .list-group-item {
+            cursor: pointer;
+        }
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+        .form-check-input:checked + .list-group-item {
+            border-color: #0d6efd;
+            background-color: #f0f7ff;
+        }
+
+
+        .btn-delete {
+
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .btn-delete img {
+            transition: transform 0.2s;
+        }
+
+        .btn-delete:hover img {
+            transform: scale(1.1);
+        }
+
+
+        
+    </style> --}}
+    
 
 
     @include('frontend.cart.khqr')

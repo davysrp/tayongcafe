@@ -166,7 +166,9 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
                                 {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                                
                             </div>
                         </div>
                     </div>
@@ -458,6 +460,7 @@
                                         showDenyButton: true,
                                         confirmButtonText: "Yes",
                                     }).then((result) => {
+                                        
                                         /* Read more about isConfirmed, isDenied below */
                                         // if (result.isConfirmed) {
                                         // // Show Loading Indicator
