@@ -104,7 +104,9 @@
                     </div>
                 </div>
             </div>
-
+            <?php
+            $price_cart = session()->get('price_cart');
+            ?>
             <div class="col-lg-4">
                 <div class="card shadow-sm sticky-top" style="top: 20px;">
                     <div class="card-header bg-primary text-white">
@@ -116,35 +118,44 @@
                             <strong>$<span id="cart-subtotal">{{ number_format($total, 2) }}</span></strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>Discount ({!! $price['coupon_code'] ?? 'No coupon' !!}):</span>
+                            <span>Discount ({!! $price_cart['coupon_code'] ?? 'No coupon' !!}):</span>
                             <strong class="text-danger">-$<span
-                                    id="cart-discount">{{ isset($price['discount_price']) ? number_format($price['discount_price'], 2) : '0.00' }}</span></strong>
+                                    id="cart-discount">{{ isset($price_cart['discount_price']) ? number_format($price_cart['discount_price'], 2) : '0.00' }}</span></strong>
                         </div>
                         <hr>
 
-                    {{-- <div class="d-flex justify-content-between mb-3">
-                        <span class="h5">Total:</span>
-                        <span class="h5 text-primary">
-                            <strong>$<span id="grand-total">{{ isset($price['grand_total']) ? number_format($price['grand_total'], 2) : number_format($total, 2) }}</span></strong>
-                        </span>
-                    </div> --}}
 
-                    <!-- In your order summary section -->
+                        <!-- In your order summary section -->
                         <div class="d-flex justify-content-between mb-3">
                             <span class="h5">Total:</span>
                             <span class="h5 text-primary">
         <strong>$<span id="grand-total">{{ number_format($total, 2) }}</span></strong>
     </span>
                         </div>
-
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="h5">Grand Total:</span>
+                            <span class="h5 text-primary">
+                            <strong>$<span
+                                    id="grand-total">{{ isset($price_cart['grand_total']) ? number_format($price_cart['grand_total'], 2) : number_format($total, 2) }}</span></strong>
+                        </span>
+                        </div>
                         <!-- Cart count badge somewhere in your layout -->
-                        <span id="cart-count" class="badge bg-primary">
-    {{ count(session('cart', [])) }}
-</span>
+                        <span id="cart-count" class="badge bg-primary"> {{ count(session('cart', [])) }} </span>
+                        {!! Form::open(['route' => 'applyCouponCustomer', 'method' => 'POST']) !!}
+                        <h4 class="coupon-title">Apply Coupon Code</h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Coupon code" name="coupon_code">
+                            <div class="input-group-append">
+                                <button class="input-group-text btn-apply" type="submit">
+                                    <i class="far fa-check-circle"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+                        {!! Form::close() !!}
+
 
 
                         {!! Form::open(['route'=>'checkout.process', 'class'=>'mt-4','id'=>'CheckoutForm']) !!}
-{{--                        <form class="mt-4" id="CheckoutForm" >--}}
                         <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i> Payment Method</h5>
 
                         <div class="list-group mb-4">
@@ -170,24 +181,18 @@
                         <input type="hidden" value="1" name="table_id" id="table_id">
                         <input type="hidden" value="{!! $total !!}" name="total" id="total">
                         <input type="hidden"
-                               value="{!! isset($price['discount_price']) ? $price['discount_price']: 0 !!}"
+                               value="{!! isset($price_cart['discount_price']) ? $price_cart['discount_price']: 0 !!}"
                                name="discount" id="discount">
                         <input type="hidden"
-                               value="{!! isset($price['grand_total']) ? $price['grand_total'] : $total !!}"
+                               value="{!! isset($price_cart['grand_total']) ? $price_cart['grand_total'] : $total !!}"
                                name="grand_total" id="grand_total">
-                        <input type="hidden" value="{!! isset($price['coupon_id']) ? $price['coupon_id'] : null !!}"
+                        <input type="hidden"
+                               value="{!! isset($price['coupon_id']) ? $price_cart['coupon_id'] : null !!}"
                                name="coupon_code_id" id="coupon_code_id">
 
-                        <button class="btn btn-primary btn-lg w-100 py-3"  type="submit">
+                        <button class="btn btn-primary btn-lg w-100 py-3" type="submit">
                             <i class="fas fa-check-circle me-2"></i> Proceed to Checkout
                         </button>
-
-                        {{-- <div class="text-end mt-3">
-                            <h5><strong>Total:</strong> $<span id="total-amount">{{ number_format($total, 2) }}</span></h5>
-                            <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
-                        </div> --}}
-
-{{--                        </form>--}}
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -253,20 +258,20 @@
         <script>
             $(document).ready(function () {
                 var md5 = null;
-               /* $('#checkout').on('click', function () {
-                    var table_id = $('#table_id').val();
-                    var grand_total = $('#grand_total').val();
-                    var customer_id = $('#customer_id').val();
-                    // var grand_total = 0.01;
-                    // if (grand_total == 0) grand_total = 0.01;
-                    grand_total = parseFloat(grand_total)
-                    var merchantInfoData = null
-                    var optionalData_ = null
-                    $('.home-amount').val(grand_total)
-                    const paymentMethod = $('input[name="payment_method_id"]:checked').val();
-                    if (paymentMethod) {
-                        if (confirm("Are you sure want to checkout?") == true) {
-                            $.get("{!! route('getPaymentMethodUser') !!}", {id: paymentMethod}, function (data) {
+                /* $('#checkout').on('click', function () {
+                     var table_id = $('#table_id').val();
+                     var grand_total = $('#grand_total').val();
+                     var customer_id = $('#customer_id').val();
+                     // var grand_total = 0.01;
+                     // if (grand_total == 0) grand_total = 0.01;
+                     grand_total = parseFloat(grand_total)
+                     var merchantInfoData = null
+                     var optionalData_ = null
+                     $('.home-amount').val(grand_total)
+                     const paymentMethod = $('input[name="payment_method_id"]:checked').val();
+                     if (paymentMethod) {
+                         if (confirm("Are you sure want to checkout?") == true) {
+                             $.get("{!! route('getPaymentMethodUser') !!}", {id: paymentMethod}, function (data) {
                                 if (data.success == true) {
                                     token = data.data.method.token;
                                     merchantInfoData = data.data.merchantInfoData;
@@ -315,22 +320,15 @@
                 $('#CheckoutForm').on('submit', function (e) {
                     e.preventDefault(); // Stop form from submitting normally
                     var formData = $(this).serialize();
-                    /*$.post('{!! route('checkTransactionOrderUser') !!}', formData,function () {
 
-                    })
-                        .done(function (data) {
-                            $('#response').html('<p style="color:green;">' + data.message + '</p>');
-                        })
-                        .fail(function (xhr) {
-                            let errorMsg = xhr.responseJSON?.message || 'Something went wrong!';
-                            $('#response').html('<p style="color:red;">' + errorMsg + '</p>');
-                        });*/
                     var table_id = $('#table_id').val();
                     var grand_total = $('#grand_total').val();
                     var customer_id = $('#customer_id').val();
                     // var grand_total = 0.01;
                     // if (grand_total == 0) grand_total = 0.01;
                     grand_total = parseFloat(grand_total)
+                    grand_total=grand_total.toFixed(2);
+                    console.log(grand_total);
                     var merchantInfoData = null
                     var optionalData_ = null
                     $('.home-amount').val(grand_total)

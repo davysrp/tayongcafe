@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CouponCode;
 use App\Models\Sell;
 use App\Models\SellDetail;
 use App\Models\ShippingMethod;
 use App\Models\PaymentMethod;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
@@ -270,6 +272,44 @@ class CheckoutController extends Controller
 
 
         return $request->all();
+    }
+
+    public function applyCouponCode(Request $request)
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+        $coupon = CouponCode::where('coupon_code', $request->coupon_code)
+            ->whereDate('start_date', '<=', $currentDate)
+            ->whereDate('expired_date', '>=', $currentDate)->whereStatus(1)->first();
+
+        if ($coupon) {
+            $cart = session()->get('cart');
+            $total = 0;
+            foreach ($cart as $item) {
+                $itemTotal = $item['quantity'] * $item['price'];
+                $total = $total + $itemTotal;
+            }
+            $discountPrice = ($total * ($coupon->percentage / 100));
+            if ($discountPrice > $coupon->discount_cap) {
+                $discountPrice = $coupon->discount_cap;
+            }
+
+            $grandTotal = $total - $discountPrice;
+
+            $price = session()->get('price_cart');
+            if (!$price) {
+                session()->put('price_cart', [
+                    'grand_total' => $grandTotal,
+                    'discount_price' => $discountPrice,
+                    'coupon_code' => $request->coupon_code,
+                    'coupon_id' => $coupon->id
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Coupon Code apply successful!');
+        }
+
+        return redirect()->back()->with('error', 'Coupon Code is invalid!');
+
     }
     public function telegramNotification(Request $request)
     {
