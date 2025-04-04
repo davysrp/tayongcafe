@@ -165,6 +165,7 @@ class CheckoutController extends Controller
 
     public function checkTransactionOrder(Request $request)
     {
+        $customer_id = Auth::guard()->user()->id;
         if ($request->payment_method_id == 1) {
             $model = PaymentMethod::find($request->payment_method_id);
             $reqs = \Http::withHeaders([
@@ -191,7 +192,7 @@ class CheckoutController extends Controller
 
                 // Save the order
                 $order = Sell::create([
-                    'customer_id'       => $request->customer_id,
+                    'customer_id'       => $customer_id,
                     'total_amount'      => $total,
                     'status'            => 'pending',
                     'shipping_method_id' => $request->shipping_method_id,
@@ -238,7 +239,7 @@ class CheckoutController extends Controller
 
             // Save the order
             $order = Sell::create([
-                'customer_id'       => $request->customer_id,
+                'customer_id'       => $customer_id,
                 'total_amount'      => $total,
                 'status'            => 'pending',
                 'shipping_method_id' => $request->shipping_method_id,
