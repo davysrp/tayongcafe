@@ -246,7 +246,9 @@
                 .then(data => {
                     console.log('Server Response:', data);  // Log the server response
                     if (data.success) {
-                        alert('Product added to cart successfully!');
+                        // alert('Product added to cart successfully!');
+                        alert('ទំនិញបានដាក់ចូលកន្ត្រកជោគជ័យ!');
+
                         // window.location.href = "{{ route('cart.index') }}";  // Redirect to the cart page
                     } else {
                         alert('Failed to add product to cart: ' + data.message);

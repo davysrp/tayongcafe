@@ -38,7 +38,12 @@ Route::middleware('auth:customer')->group(function () {
         Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
         // Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-        Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+        Route::get('/cart', [CheckoutController::class, 'index'])->name('cart.index');
+
+
+        // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
         Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
         Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
         Route::post('apply-coupon', [CheckoutController::class, 'applyCouponCode'])->name('applyCouponCustomer');

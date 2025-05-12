@@ -15,30 +15,71 @@ class CheckoutController extends Controller
 {
 
     // Show the checkout page
+    // public function index()
+    // {
+    //     $cart = session()->get('cart', []);
+    //     $total = array_sum(array_map(function ($item) {
+    //         return $item['price'] * $item['quantity'];
+    //     }, $cart));
+
+    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
+    //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
+
+    //     $customer = Auth::guard('customer')->user();
+
+    //     if (!$customer) {
+    //         return redirect()->route('login')->with('error', 'Please log in to continue.');
+    //     }
+
+    //     return view('frontend.checkout.index', compact(
+    //         // 'cart',
+    //         // 'total',
+    //         // 'shippingMethods',
+    //         // 'paymentMethods',
+    //         // 'customer'
+            
+    //         'cart',
+    //         'total',
+    //         'shippingMethods',
+    //         'paymentMethods',
+    //         'customer'
+
+    //     ));  
+
+    // }
+
+
     public function index()
     {
         $cart = session()->get('cart', []);
         $total = array_sum(array_map(function ($item) {
             return $item['price'] * $item['quantity'];
         }, $cart));
-
+    
         $shippingMethods = ShippingMethod::where('status', 'active')->get();
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-
+    
         $customer = Auth::guard('customer')->user();
-
+    
         if (!$customer) {
             return redirect()->route('login')->with('error', 'Please log in to continue.');
         }
+    
+        // ✅ make sure you're rendering frontend.cart.index
+        // return view('frontend.cart.index', compact(
+        //     'cart',
+        //     'total',
+        //     'shippingMethods',
+        //     'paymentMethods',
+        //     'customer'
+        // ));
 
-        return view('frontend.checkout.index', compact(
-            'cart',
-            'total',
-            'shippingMethods',
-            'paymentMethods',
-            'customer'
+        return view('frontend.cart.index', compact(
+            'cart', 'total', 'shippingMethods', 'paymentMethods', 'customer'
         ));
+
     }
+    
 
     // Handle order submission
     public function process(Request $request)
@@ -309,7 +350,6 @@ class CheckoutController extends Controller
         }
 
         return redirect()->back()->with('error', 'Coupon Code is invalid!');
-
     }
     public function telegramNotification(Request $request)
     {

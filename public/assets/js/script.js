@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
             
-            if (!confirm('Are you sure you want to remove this item?')) return;
+            if (!confirm('តើអ្នកចង់លុបផលិតផលនេះមែនទេ? ')) return;
     
             const id = this.dataset.id;
             const url = this.dataset.url;
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 // 4. Show success message
-                alert('Item removed successfully');
+                alert('លុបជោគជ័យ');
                 
                 // 5. Reload if cart is empty
                 if (data.cartCount === 0 || Object.keys(data.cart).length === 0) {
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
             } catch (error) {
                 console.error('Error removing item:', error);
-                alert('Error: ' + error.message);
+                // alert('Error: ' + error.message);
             }
         });
     });

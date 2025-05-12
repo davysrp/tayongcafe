@@ -113,6 +113,10 @@
                             </button>
                         </div>
                     </div>
+
+
+
+                    
                     {!! Form::close() !!}
 
                     {!! Form::open(['route' => 'placeOrder']) !!}

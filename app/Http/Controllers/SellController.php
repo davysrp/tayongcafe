@@ -205,6 +205,8 @@ class SellController extends Controller
             'pay_method' => 'required|string',
             'grand_total' => 'required|numeric',
             'status' => 'required|in:0,1',
+
+            
         ]);
 
         // Create the sell record
@@ -219,6 +221,11 @@ class SellController extends Controller
             'pay_method' => $request->input('pay_method'),
             'grand_total' => $request->input('grand_total'),
             'status' => $request->input('status'),
+
+
+            'shipping_method_id' => $request->input('shipping_method_id'),
+            'remark' => $request->input('remark'),
+
         ]);
 
         // Return a JSON response

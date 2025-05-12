@@ -63,7 +63,7 @@
                                                     </button>
                                                     <input type="number" name="quantity"
                                                            class="form-control form-control-sm input-number text-center"
-                                                           value="{{ $details['quantity'] }}" min="1" max="100">
+                                                           value="{{ $details['quantity'] }}" min="1" max="10">
                                                     <button type="button" class="btn btn-outline-primary btn-number"
                                                             data-type="plus" data-id="{{ $id }}">
                                                         <i class="fas fa-plus"></i>
@@ -135,9 +135,9 @@
                             <strong class="text-danger">-$<span
                                     id="cart-discount">{{ isset($price_cart['discount_price']) ? number_format($price_cart['discount_price'], 2) : '0.00' }}</span></strong>
                         </div>
-
-
                         <hr>
+
+
                         <!-- In your order summary section -->
                         <div class="d-flex justify-content-between mb-3">
                             <span class="h5">តម្លៃ :</span>
@@ -155,9 +155,9 @@
                         
                         <!-- Cart count badge somewhere in your layout -->                        
                     
-                        
                         <!-- Payment Method -->
-                        {{-- <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i>វិធីទូទាត់ប្រាក់</h5>
+                        <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i>វិធីទូទាត់ប្រាក់</h5>
+                    
                         <div class="list-group mb-4">
                             @foreach($paymentMethods as $method)
                                 <label class="list-group-item list-group-item-action rounded mb-2">
@@ -177,31 +177,8 @@
                                     </div>
                                 </label>
                             @endforeach
-                        </div> --}}
-
-
-                    {!! Form::open(['route'=>'checkout.process', 'class'=>'mt-4','id'=>'CheckoutForm']) !!}
-                        <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i> Payment Method</h5>
-
-                        <div class="list-group mb-4">
-                            @foreach($paymentMethods as $method)
-                                <label class="list-group-item list-group-item-action rounded mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-3">
-                                            <input class="form-check-input me-1 payment_method_id" type="radio"
-                                                   name="payment_method_id" value="{!! $method->id !!}"
-                                                {!! $method->id==4? 'checked':null !!}>
-                                        </div>
-                                        <img src="{!! asset('photo/'.$method->icon) !!}" alt="{!! $method->names !!}"
-                                             width="40" class="me-3">
-                                        <div>
-                                            <h6 class="mb-1">{!! $method->names !!}</h6>
-                                            <small class="text-muted">{!! $method->small_line !!}</small>
-                                        </div>
-                                    </div>
-                                </label>
-                            @endforeach
                         </div>
+
 
                         <!-- Remark -->
                         <div class="mb-3">
