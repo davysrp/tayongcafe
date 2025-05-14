@@ -23,7 +23,8 @@ Route::middleware('guest')->group(function () {
     });
 });
 
-
+Route::post('/otp-request', [\App\Http\Controllers\OtpController::class, 'sendOtp'])->name('otp.request');
+Route::post('/otp-verify', [\App\Http\Controllers\OtpController::class, 'verifyOtp'])->name('otp.verify');
 
 Route::middleware('auth:customer')->group(function () {
     Route::group(['prefix' => 'member'], function () {
