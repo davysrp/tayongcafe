@@ -44,8 +44,14 @@ Route::middleware('auth:customer')->group(function () {
 
         // Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+
+
+        // Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+        // Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
         Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
         Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
         Route::post('apply-coupon', [CheckoutController::class, 'applyCouponCode'])->name('applyCouponCustomer');
 
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');

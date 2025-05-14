@@ -37,7 +37,7 @@ class CheckoutController extends Controller
     //         // 'shippingMethods',
     //         // 'paymentMethods',
     //         // 'customer'
-            
+
     //         'cart',
     //         'total',
     //         'shippingMethods',
@@ -55,16 +55,16 @@ class CheckoutController extends Controller
         $total = array_sum(array_map(function ($item) {
             return $item['price'] * $item['quantity'];
         }, $cart));
-    
+
         $shippingMethods = ShippingMethod::where('status', 'active')->get();
         $paymentMethods = PaymentMethod::where('status', 'active')->get();
-    
+
         $customer = Auth::guard('customer')->user();
-    
+
         if (!$customer) {
             return redirect()->route('login')->with('error', 'Please log in to continue.');
         }
-    
+
         // ✅ make sure you're rendering frontend.cart.index
         // return view('frontend.cart.index', compact(
         //     'cart',
@@ -75,11 +75,14 @@ class CheckoutController extends Controller
         // ));
 
         return view('frontend.cart.index', compact(
-            'cart', 'total', 'shippingMethods', 'paymentMethods', 'customer'
+            'cart',
+            'total',
+            'shippingMethods',
+            'paymentMethods',
+            'customer'
         ));
-
     }
-    
+
 
     // Handle order submission
     public function process(Request $request)
@@ -123,17 +126,49 @@ class CheckoutController extends Controller
         }
 
         // Clear cart
-        session()->forget('cart');
+        // session()->forget('cart');
+
+        session()->put('last_order_id', $order->id);
+
 
         return redirect()->route('checkout.success')->with('success', 'Your order has been placed successfully!');
+
+        // return view('frontend.cart.Success', [
+        //     'sell' => Sell::with('sellDetail.product')->latest()->first()
+        // ]);
     }
 
     // Show success message
+    // public function success()
+    // {
+    //     return view('frontend.card.checkout.success');
+    // }
+
+
     public function success()
     {
-        return view('frontend.checkout.success');
+        $orderId = session('last_order_id');
+
+        if (!$orderId) {
+            return redirect()->route('homePage')->with('error', 'Order not found.');
+        }
+
+        $sell = \App\Models\Sell::with('sellDetail.product')->findOrFail($orderId);
+        return view('frontend.cart.Success', compact('sell'));
     }
 
+
+
+    // public function success(Request $request)
+    // {
+    //     $orderId = session('last_order_id'); // You stored this in process()
+    //     if (!$orderId) {
+    //         return redirect()->route('homePage')->with('error', 'Order not found.');
+    //     }
+
+    //     $sell = Sell::with('sellDetail.product')->findOrFail($orderId);
+    //     return view('frontend.cart.orderSuccess', compact('sell'));
+    // }
 
 
     public function updateCart(Request $request)

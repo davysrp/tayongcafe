@@ -4,18 +4,15 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="card shadow-sm mb-4">
-
-
                     <div class="card-header bg-dark text-white">
                         <h3 class="mb-0"><i class="fas fa-shopping-cart me-2"></i>ការបញ្ជាទិញរបស់អ្នក</h3>
                     </div>
-                    
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                 <tr>
-                                    <th width="5%" class="text-center">#</th>
+                                   <th width="5%" class="text-center">#</th>
                                     <th width="35%">ផលិតផល</th>
                                     <th width="15%" class="text-center">តម្លៃ</th>
                                     <th width="20%" class="text-center">ចំនួន</th>
@@ -63,7 +60,7 @@
                                                     </button>
                                                     <input type="number" name="quantity"
                                                            class="form-control form-control-sm input-number text-center"
-                                                           value="{{ $details['quantity'] }}" min="1" max="100">
+                                                           value="{{ $details['quantity'] }}" min="1" max="10">
                                                     <button type="button" class="btn btn-outline-primary btn-number"
                                                             data-type="plus" data-id="{{ $id }}">
                                                         <i class="fas fa-plus"></i>
@@ -75,15 +72,6 @@
                                             <td class="text-center subtotal" data-th="Subtotal">
                                                 ${{ number_format($details['price'] * $details['quantity'], 2) }}
                                             </td>
-
-
-                                            {{-- <td class="text-center">
-                                                <button class="btn btn-danger btn-sm remove-from-cart"
-                                                        data-id="{{ $id }}"
-                                                        data-url="{{ route('cart.remove') }}">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td> --}}
 
                                             <td class="text-center">
                                                 <button type="button"
@@ -110,78 +98,94 @@
             <?php
             $price_cart = session()->get('price_cart');
             ?>
+            
             <div class="col-lg-4">
-                <div class="card shadow-sm sticky-top" style="top: 20px;">
-{{-- 
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="mb-0"><i class="fas fa-receipt me-2"></i> Order Summary</h3>
-                    </div> --}}
-
-
-                    <div class="card-header bg-dark text-white">
-                        <h3 class="mb-0"><i class="fas fa-receipt me-2"></i> Order Summary</h3>
+                <div class="card-header bg-dark text-white" style="top: 20px;">
+                    {{-- <div class="card-header bg-primary text-white"> --}}
+                        <h3 class="mb-0"><i class="fas fa-receipt me-2"></i>កន្លែងទូទាត់សាច់ប្រាក់</h3>
                     </div>
-
-                    {{-- <div class="card-body"> --}}
-
-                        <div class="card shadow-sm sticky-top bg-dark text-white" style="top: 20px;">
-
+                    <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
-                            <span>តម្លៃ​ :</span>
+                            <span>តម្លៃសរុប :</span>
                             <strong>$<span id="cart-subtotal">{{ number_format($total, 2) }}</span></strong>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
-                            <span>បញ្ចុះតម្លៃ ({!! $price_cart['coupon_code'] ?? 'មិនមានកូដបញ្ចុះតម្លៃ' !!}):</span>
+                            <span>ប្រមូដកូដ ({!! $price_cart['coupon_code'] ?? 'មិនមាន' !!}):</span>
                             <strong class="text-danger">-$<span
                                     id="cart-discount">{{ isset($price_cart['discount_price']) ? number_format($price_cart['discount_price'], 2) : '0.00' }}</span></strong>
                         </div>
-
-
                         <hr>
+
+
                         <!-- In your order summary section -->
                         <div class="d-flex justify-content-between mb-3">
-                            <span class="h5">តម្លៃ :</span>
+                            <span class="h5">តម្លៃដើម :</span>
                             <span class="h5 text-primary">
         <strong>$<span id="grand-total">{{ number_format($total, 2) }}</span></strong>
     </span>
                         </div>
                         <div class="d-flex justify-content-between mb-3">
-                            <span class="h5">តម្លៃសរុប :</span>
+                            <span class="h5">ទឹកប្រាក់ត្រូវបង់សរុប :</span>
                             <span class="h5 text-primary">
                             <strong>$<span
                                     id="grand-total">{{ isset($price_cart['grand_total']) ? number_format($price_cart['grand_total'], 2) : number_format($total, 2) }}</span></strong>
                         </span>
                         </div>
                         
-                        <!-- Cart count badge somewhere in your layout -->                        
+                        <!-- Cart count badge somewhere in your layout -->
+                        {{-- <span id="cart-count" class="badge bg-primary"> {{ count(session('cart', [])) }} </span> --}}
+
+                        {{-- {!! Form::open(['route' => 'applyCouponCustomer', 'method' => 'POST']) !!}
+                        <h4 class="coupon-title">បញ្ចូលកូដបញ្ចុះតម្លៃ</h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Coupon code" name="coupon_code">
+                            <div class="input-group-append">
+                                <button class="input-group-text btn-apply" type="submit">
+                                    <i class="far fa-check-circle"></i> បញ្ជាក់
+                                </button>
+                            </div>
+                        </div>
+                        {!! Form::close() !!} --}}
+                                            
+                                    
+
+                        {!! Form::open(['route' => 'applyCouponCustomer', 'method' => 'POST']) !!}
+                        <div class="form-inline">
+                            {{-- <label class="mr-2 font-weight-bold">បញ្ចូលកូដបញ្ចុះតម្លៃ</label> --}}
+                            {{-- <input type="text" class="form-control mr-2" name="coupon_code" placeholder="Coupon code"> --}}
+                             <input type="text" class="form-control mr-2" name="coupon_code" placeholder="បញ្ចូលកូដបញ្ចុះតម្លៃ">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="far fa-check-circle"></i> បញ្ជាក់
+                            </button>
+                        </div>
+                        {!! Form::close() !!}
+
+
+                    <!-- Remark -->
+                        <div class="mb-3">
+                            <label for="remark" class="form-label">កំណត់ចំណាំសម្រាប់ហាង (មិនមានក៏បាន)</label>
+                            <textarea name="remark" id="remark" class="form-control" rows="2"></textarea>
+                        </div>
                     
+                        <div class="mb-4">
+                            <label for="shipping_method_id" class="form-label fw-semibold text-white">
+                                <i class="fas fa-shipping-fast me-2"></i>មធ្យោបាយទទួលទំនិញ
+                            </label>
+                            <select name="shipping_method_id"
+                                    id="shipping_method_id"
+                                    class="form-select bg-dark text-white border border-secondary shadow-sm"
+                                    required>
+                                <option value="" disabled selected>ទទួលទំនិញ</option>
+                                @foreach($shippingMethods as $method)
+                                    <option value="{{ $method->id }}">{{ $method->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
                         
-                        <!-- Payment Method -->
-                        {{-- <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i>វិធីទូទាត់ប្រាក់</h5>
-                        <div class="list-group mb-4">
-                            @foreach($paymentMethods as $method)
-                                <label class="list-group-item list-group-item-action rounded mb-2">
-                                    <div class="d-flex align-items-center">
-                                        <input class="form-check-input me-3" type="radio"
-                                               name="payment_method_id" value="{{ $method->id }}"
-                                            {{ $method->id == 4 ? 'checked' : '' }}>
-                                        
-                                        @if(strpos(strtolower($method->names), 'khqr') !== false)
-                                            <img src="{{ asset('photo/'.$method->icon) }}" alt="{{ $method->names }}" width="40" class="me-3">
-                                        @endif
-                                        
-                                        <div>
-                                            <h6 class="mb-1">{{ $method->names }}</h6>
-                                            <small class="text-muted">{{ $method->small_line }}</small>
-                                        </div>
-                                    </div>
-                                </label>
-                            @endforeach
-                        </div> --}}
-
-
-                    {!! Form::open(['route'=>'checkout.process', 'class'=>'mt-4','id'=>'CheckoutForm']) !!}
-                        <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i> Payment Method</h5>
+                        {!! Form::open(['route'=>'checkout.process', 'class'=>'mt-4','id'=>'CheckoutForm']) !!}
+                        <h5 class="mb-3"><i class="fas fa-credit-card me-2"></i>វិធីទូទាត់សាច់ប្រាក់</h5>
 
                         <div class="list-group mb-4">
                             @foreach($paymentMethods as $method)
@@ -203,61 +207,31 @@
                             @endforeach
                         </div>
 
-                        <!-- Remark -->
-                        <div class="mb-3">
-                            <label for="remark" class="form-label">កំណត់ចំណាំសម្រាប់ហាង (មិនមានក៏បាន)</label>
-                            <textarea name="remark" id="remark" class="form-control" rows="2"></textarea>
-                        </div>
-                    
-                        <div class="mb-4">
-                            <label for="shipping_method_id" class="form-label fw-semibold text-white">
-                                <i class="fas fa-shipping-fast me-2"></i>មធ្យោបាយ
-                            </label>
-                            <select name="shipping_method_id"
-                                    id="shipping_method_id"
-                                    class="form-select bg-dark text-white border border-secondary shadow-sm"
-                                    required>
-                                <option value="" disabled selected>ទទួលទំនិញ</option>
-                                @foreach($shippingMethods as $method)
-                                    <option value="{{ $method->id }}">{{ $method->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
-                        {{-- <span id="cart-count" class="badge bg-primary"> {{ count(session('cart', [])) }} </span> --}}
-                        
-                        {!! Form::open(['route' => 'applyCouponCustomer', 'method' => 'POST']) !!}
-                        
-                        <h4 class="coupon-title">បញ្ចូលកូដបញ្ចុះតម្លៃ</h4>
-                        
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Coupon code" name="coupon_code">
-                            <div class="input-group-append">
-                                <button class="input-group-text btn-apply" type="submit">
-                                    <i class="far fa-check-circle"></i> Apply
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Hidden values -->
-                        <input type="hidden" name="table_id" value="1">
-                        <input type="hidden" name="total" value="{{ $total }}">
-                        <input type="hidden" name="discount" value="{{ $price_cart['discount_price'] ?? 0 }}">
-                        <input type="hidden" name="grand_total" value="{{ $price_cart['grand_total'] ?? $total }}">
-                        <input type="hidden" name="coupon_code_id" value="{{ $price_cart['coupon_id'] ?? null }}">
-                    
+
+                        <input type="hidden" value="1" name="table_id" id="table_id">
+                        <input type="hidden" value="{!! $total !!}" name="total" id="total">
+                        <input type="hidden"
+                               value="{!! isset($price_cart['discount_price']) ? $price_cart['discount_price']: 0 !!}"
+                               name="discount" id="discount">
+                        <input type="hidden"
+                               value="{!! isset($price_cart['grand_total']) ? $price_cart['grand_total'] : $total !!}"
+                               name="grand_total" id="grand_total">
+                        <input type="hidden"
+                               value="{!! isset($price['coupon_id']) ? $price_cart['coupon_id'] : null !!}"
+                               name="coupon_code_id" id="coupon_code_id">
+
                         <button class="btn btn-primary btn-lg w-100 py-3" type="submit">
                             <i class="fas fa-check-circle me-2"></i> យល់ព្រមទិញ
                         </button>
-                    
-                    {!! Form::close() !!}
-                    
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    
         
     @include('frontend.cart.khqr')
     <x-slot name="script">
@@ -269,6 +243,7 @@
         <script>
             $(document).ready(function () {
                 var md5 = null;
+
 
                 $('#CheckoutForm').on('submit', function (e) {
                     e.preventDefault(); // Stop form from submitting normally
@@ -287,7 +262,7 @@
                     $('.home-amount').val(grand_total)
                     const paymentMethod = $('input[name="payment_method_id"]:checked').val();
                     if (paymentMethod) {
-                        if (confirm("Are you sure want to checkout?") == true) {
+                        if (confirm("តើអ្នកយល់ព្រមក្នុងការទូរទាត់សាច់ប្រាក់នេះឬ?") == true) {
                             $.get("{!! route('getPaymentMethodUser') !!}", {id: paymentMethod}, function (data) {
                                 if (data.success == true) {
                                     token = data.data.method.token;
@@ -328,7 +303,7 @@
 
                     } else {
                         // alert('Please select Payment method before confirm payment')
-                        alert('Please select Payment method before confirm payment')
+                        alert('សូមជ្រើសរើសវិធីទូទាត់!')
                     }
                 });
 
