@@ -10,7 +10,7 @@
             <a href="{!! route('memberFormLogin',['type'=>'simple']) !!}" type="button" id="btnPasswordLogin"
                class="underline text-blue-600 me-4">ចូលដោយពាក្យសម្ងាត់</a>
             <a type="button" href="{!! route('memberFormLogin',['type'=>'phone']) !!}" id="btnOtpLogin"
-               class="underline text-green-600">ចូលដោយ OTP</a>
+               class="underline text-green-600">ប្រើលេខទូរស័ព្ទ</a>
         </div>
         @if(\Illuminate\Support\Facades\Request::get('type')!='phone')
         <!-- 🔐 Password Login Form -->
@@ -53,25 +53,31 @@
             <!-- Phone Input -->
                 <div>
                     <x-input-label for="phone" :value="__('លេខទូរស័ព្ទ')"/>
-                    <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" required/>
+                    <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" value="855" required/>
                     <x-input-error :messages="$errors->get('phone')" class="mt-2"/>
                 </div>
 
                 @if (!session('otp_sent'))
                     <div class="grid items-center justify-center mt-4">
                         <x-primary-button formaction="{{ route('otp.request') }}" class="w-100 text-center">
-                            ផ្ញើ OTP
+                            ផ្ញើលេខកូដ "OTP"
                         </x-primary-button>
                     </div>
                 @endif
 
                 @if (session('otp_sent'))
-
+                  
                     <div class="mt-4">
-                        <x-input-label for="otp" :value="__('បញ្ចូលលេខ OTP')"/>
+                        <x-input-label for="otp" :value="__('បញ្ចូលលេខ OTP')"/> 
                         <x-text-input id="otp" class="block mt-1 w-full" type="text" name="otp" required/>
                         <x-input-error :messages="$errors->get('otp')" class="mt-2"/>
                     </div>
+
+                    {{-- <div class="grid items-center justify-center mt-4" style="display: none">
+                        <x-primary-button formaction="{{ route('otp.request') }}" class="w-100 text-center">
+                           ផ្ញើលេខកូដ "OTP" ម្តងទៀត
+                        </x-primary-button>
+                    </div> --}}
                     <div class="grid items-center justify-center mt-4">
                         <x-primary-button class="w-100 text-center">ផ្ទៀងផ្ទាត់</x-primary-button>
                     </div>
@@ -82,6 +88,7 @@
             តើលោកអ្នកមិនទាន់មានគណនីទេឬ? <a href="{{ route('memberFormRegister') }}">បង្កើតថ្មី</a>
         </p>
     </div>
+
 
 
 </x-guest-layout>

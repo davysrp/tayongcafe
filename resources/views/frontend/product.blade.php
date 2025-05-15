@@ -38,7 +38,7 @@
                                             data-variants="{{ $product->productVariant->toJson() }}">
                                             <div class="menu-wrap">
                                                 <a href="#" class="menu-img img mb-4"
-                                                    style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
+                                                    style="background-image: url('{{ asset('storage/product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
                                                 <div class="text">
                                                     <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a>
                                                     </h3>
@@ -70,7 +70,7 @@
                                                     data-variants="{{ $product->productVariant->toJson() }}">
                                                     <div class="menu-wrap">
                                                         <a href="#" class="menu-img img mb-4"
-                                                            style="background-image: url('{{ Storage::url('product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
+                                                            style="background-image: url('{{ asset('storage/product/' . $product->photo) }}'); height: 300px; width: 300px;background-size: cover;"></a>
 
                                                         <div class="text">
                                                             <h3><a href="#" class="menu-warp-name-product">{{ $product->names }}</a>

@@ -13,6 +13,8 @@ class OtpController extends Controller
     {
         $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $private_key = 'u7bGcvT23XFw_weHxOWOwVT5OpQDvv3MTEGNTuYsDU_q0xu9EUSVYXaS73CbUYC4ax4fCUSWPxrlE0l6S80q0A';
+  // start send SMS
+
         $reps = Http::withHeaders([
             'Content-Type' => 'application/json',
             'X-Secret' => '$5$rounds=535000$2yLi0cbXNbEB/3.s$qYTTC70xy/71CkEyvK1vtNqxcTf/OWtXlWl.dndKp2/',
@@ -20,17 +22,21 @@ class OtpController extends Controller
             ->withOptions(['verify' => base_path() . '/public/plasgate-ca-bundle.crt'])
             ->post('https://cloudapi.plasgate.com/rest/send?private_key=' . $private_key,
                 [
+                   
+                   
                     'sender' => 'PlasGateUAT',
                     'to' => $request->phone,
                     'content' => 'Your TANTONG OTP is ' . $otp . '.',
                 ]
             );
+
+            // End send SMS
         \Session::put('otp_sent', true);
         \Session::put('otp', $otp);
         \Session::put('otp_phone', $request->phone);
-        \Session::put('otp_expires_at', now()->addMinutes(5));
+        \Session::put('otp_expires_at', now()->addMinutes(3));
 
-        return back()->with('status', 'OTP ត្រូវបានផ្ញើ' . $otp);
+        return back()->with('status', 'លេខកូដសម្រាប់ផ្ទៀតផ្ទាត់ ');
 
     }
 
@@ -51,7 +57,7 @@ class OtpController extends Controller
             \Session::forget(['otp', 'otp_sent', 'otp_phone', 'otp_expires_at']);
             return redirect()->intended()->with('success', 'ចូលដោយ OTP ជោគជ័យ');
         }
-        return back()->withErrors(['otp' => 'OTP មិនត្រឹមត្រូវ ឬ หมดអายุ']);
+        return back()->withErrors(['otp' => 'OTP មិនត្រឹមត្រូវ ']);
 
     }
 

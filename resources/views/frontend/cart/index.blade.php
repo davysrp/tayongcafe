@@ -320,6 +320,7 @@
                             if (data.success == true) {
                                 $('#KHqrModal').modal('hide');
                                 clearInterval(intervalId);
+                               window.location.href = '{{ route("checkout.success") }}'; 
                             }
                         });
                     }

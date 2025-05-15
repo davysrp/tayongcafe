@@ -160,6 +160,14 @@ class ProductController extends Controller
             $model->update($data);
     
             // Update or create product variants
+
+
+            
+
+            ProductVariant::where('product_id', $model->id)
+            ->where(function($query) use($request){
+               if($request->variant_id) $query->whereNotIn('id',$request->variant_id);
+            })->delete();
             if ($request->variant_code) {
                 foreach ($request->variant_code as $key => $vCode) {
                     $variantData = [

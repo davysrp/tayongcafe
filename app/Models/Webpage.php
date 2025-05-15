@@ -8,9 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Webpage extends Model
 {
-    use HasFactory,SoftDeletes;
+    // use HasFactory,SoftDeletes;
+
+    // protected $fillable = [
+    //     'names', 'detail','image','status'
+    // ];
+
+    use SoftDeletes;
 
     protected $fillable = [
-        'names', 'detail','image','status'
+        'names', 'detail', 'image', 'status'
     ];
+
 }
+

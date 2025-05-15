@@ -139,23 +139,23 @@ class CheckoutController extends Controller
     }
 
     // Show success message
-    // public function success()
-    // {
-    //     return view('frontend.card.checkout.success');
-    // }
-
-
     public function success()
     {
-        $orderId = session('last_order_id');
-
-        if (!$orderId) {
-            return redirect()->route('homePage')->with('error', 'Order not found.');
-        }
-
-        $sell = \App\Models\Sell::with('sellDetail.product')->findOrFail($orderId);
-        return view('frontend.cart.Success', compact('sell'));
+        return view('frontend.checkout.Success');
     }
+
+
+    // public function success()
+    // {
+    //     $orderId = session('last_order_id');
+
+    //     if (!$orderId) {
+    //         return redirect()->route('homePage')->with('error', 'Order not found.');
+    //     }
+
+    //     $sell = \App\Models\Sell::with('sellDetail.product')->findOrFail($orderId);
+    //     return view('frontend.cart.Success', compact('sell'));
+    // }
 
 
 
