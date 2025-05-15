@@ -26,7 +26,7 @@
     @foreach ($webpages as $page)
         <div class="slider-item"
              style="background-image: url('{{ $page->image ? asset('storage/' . $page->image) : asset('images/') }}'); 
-                    height: 600px; 
+                    height: 100%; 
                     background-size: cover; 
                     background-position: center;">
             

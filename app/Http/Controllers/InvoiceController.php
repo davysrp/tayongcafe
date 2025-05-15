@@ -78,6 +78,8 @@ class InvoiceController extends Controller
         return view('backend.sells.invoice', compact('sell','queueNumber'));
     }
 
+
+    
     // Download Invoice as PDF
     public function downloadInvoice($sellId)
     {

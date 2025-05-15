@@ -208,8 +208,6 @@
                         </div>
 
 
-
-
                         <input type="hidden" value="1" name="table_id" id="table_id">
                         <input type="hidden" value="{!! $total !!}" name="total" id="total">
                         <input type="hidden"

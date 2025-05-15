@@ -85,6 +85,5 @@ class Sell extends Model
     {
         return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
     }
-
 }
 

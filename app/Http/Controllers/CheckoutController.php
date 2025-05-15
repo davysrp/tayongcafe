@@ -13,42 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
-
-    // Show the checkout page
-    // public function index()
-    // {
-    //     $cart = session()->get('cart', []);
-    //     $total = array_sum(array_map(function ($item) {
-    //         return $item['price'] * $item['quantity'];
-    //     }, $cart));
-
-    //     $shippingMethods = ShippingMethod::where('status', 'active')->get();
-    //     $paymentMethods = PaymentMethod::where('status', 'active')->get();
-
-    //     $customer = Auth::guard('customer')->user();
-
-    //     if (!$customer) {
-    //         return redirect()->route('login')->with('error', 'Please log in to continue.');
-    //     }
-
-    //     return view('frontend.checkout.index', compact(
-    //         // 'cart',
-    //         // 'total',
-    //         // 'shippingMethods',
-    //         // 'paymentMethods',
-    //         // 'customer'
-
-    //         'cart',
-    //         'total',
-    //         'shippingMethods',
-    //         'paymentMethods',
-    //         'customer'
-
-    //     ));  
-
-    // }
-
-
     public function index()
     {
         $cart = session()->get('cart', []);
@@ -64,15 +28,6 @@ class CheckoutController extends Controller
         if (!$customer) {
             return redirect()->route('login')->with('error', 'Please log in to continue.');
         }
-
-        // ✅ make sure you're rendering frontend.cart.index
-        // return view('frontend.cart.index', compact(
-        //     'cart',
-        //     'total',
-        //     'shippingMethods',
-        //     'paymentMethods',
-        //     'customer'
-        // ));
 
         return view('frontend.cart.index', compact(
             'cart',
@@ -112,6 +67,8 @@ class CheckoutController extends Controller
             'shipping_method_id' => $request->shipping_method_id,
             'payment_method_id' => $request->payment_method_id,
         ]);
+        session()->put('last_order_id', $order->id); // ✅ ADD THIS
+
 
         // Save order details
         foreach ($cart as $item) {
@@ -126,49 +83,77 @@ class CheckoutController extends Controller
         }
 
         // Clear cart
-        // session()->forget('cart');
+
+        session()->forget('cart');
 
         session()->put('last_order_id', $order->id);
 
 
         return redirect()->route('checkout.success')->with('success', 'Your order has been placed successfully!');
-
-        // return view('frontend.cart.Success', [
-        //     'sell' => Sell::with('sellDetail.product')->latest()->first()
-        // ]);
     }
 
     // Show success message
+    // public function success()
+    // {
+    //     return view('frontend.checkout.Success');
+    // }
+
+
+    // Working .......
+    // public function success()
+    // {
+    //     $orderId = session()->get('last_order_id');
+    //     $order = Sell::with(['sellDetail.product', 'sellDetail.productVariant'])->find($orderId);
+
+    //     return view('frontend.checkout.success', compact('order'));
+    // }
+
+
     public function success()
     {
-        return view('frontend.checkout.Success');
+        $orderId = session()->get('last_order_id');
+        $order = null;
+        $shippingMethods = [];
+
+        if ($orderId) {
+            $order = Sell::with([
+                'sellDetail.product',
+                'sellDetail.productVariant',
+                'customer',
+                'paymentMethod',
+                'shippingMethod' // make sure this relation exists
+                
+            ])->find($orderId);
+
+            $shippingMethods = ShippingMethod::where('status', 'active')->get();
+
+            // Calculate subtotal and discount as before
+            $subtotal = 0;
+            foreach ($order->sellDetail as $item) {
+                $subtotal += $item->price * $item->qty;
+            }
+
+            $priceSession = session('price_cart');
+            $discount = $priceSession['discount_price'] ?? 0;
+            $grandTotal = $subtotal - $discount;
+
+            $order->subtotal = $subtotal;
+            $order->discount = $discount;
+            $order->grand_total = $grandTotal;
+
+            session()->forget([
+                'cart',
+                'price_cart',
+                'coupon_code',
+                'last_order_id',
+            ]);
+        }
+
+        return view('frontend.checkout.success', compact('order', 'shippingMethods'));
     }
 
 
-    // public function success()
-    // {
-    //     $orderId = session('last_order_id');
 
-    //     if (!$orderId) {
-    //         return redirect()->route('homePage')->with('error', 'Order not found.');
-    //     }
-
-    //     $sell = \App\Models\Sell::with('sellDetail.product')->findOrFail($orderId);
-    //     return view('frontend.cart.Success', compact('sell'));
-    // }
-
-
-
-    // public function success(Request $request)
-    // {
-    //     $orderId = session('last_order_id'); // You stored this in process()
-    //     if (!$orderId) {
-    //         return redirect()->route('homePage')->with('error', 'Order not found.');
-    //     }
-
-    //     $sell = Sell::with('sellDetail.product')->findOrFail($orderId);
-    //     return view('frontend.cart.orderSuccess', compact('sell'));
-    // }
 
 
     public function updateCart(Request $request)
@@ -275,7 +260,10 @@ class CheckoutController extends Controller
                     'status'            => 'pending',
                     'shipping_method_id' => $request->shipping_method_id,
                     'payment_method_id' => $request->payment_method_id,
+                    
                 ]);
+                session()->put('last_order_id', $order->id); // ✅ ADD THIS
+
 
                 // Save order details
                 foreach ($cart as $item) {
@@ -291,7 +279,9 @@ class CheckoutController extends Controller
 
                 // Clear cart
                 session()->forget('cart');
-                $this->telegramNotification($request);
+                // $this->telegramNotification($request);
+                $this->telegramNotification($order);
+
                 return [
                     'success' => true,
                     'message' => true,
@@ -323,6 +313,8 @@ class CheckoutController extends Controller
                 'shipping_method_id' => $request->shipping_method_id,
                 'payment_method_id' => $request->payment_method_id,
             ]);
+            session()->put('last_order_id', $order->id); // ✅ ADD THIS
+
 
             // Save order details
             foreach ($cart as $item) {
@@ -338,7 +330,9 @@ class CheckoutController extends Controller
 
             // Clear cart
             session()->forget('cart');
-            $this->telegramNotification($request);
+            //$this->telegramNotification($request);
+            $this->telegramNotification($order);
+
             return [
                 'success' => true,
                 'message' => true,
@@ -386,22 +380,93 @@ class CheckoutController extends Controller
 
         return redirect()->back()->with('error', 'Coupon Code is invalid!');
     }
-    public function telegramNotification(Request $request)
+    // public function telegramNotification(Request $request)
+    // {
+    //     try {
+    //         $apiToken = env('TELEGRAM_BOT_TOKEN');
+    //         $text = '🚀 Payment Successful! Your order is confirmed.';
+
+    //         $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
+
+    //         return $response->body();
+    //     } catch (\Exception $exception) {
+    //         return response()->json([
+    //             'statusCode' => 200,
+    //             'message' => 'Failed Notification',
+    //             'success' => false,
+    //             'data' => []
+    //         ]);
+    //     }
+    // }
+
+
+    public function telegramNotification($order)
     {
         try {
+            $sell = Sell::with(['sellDetail.product', 'sellDetail.productVariant', 'customer', 'paymentMethod','shippingMethod'])->find($order->id);
+
+            if (!$sell) return;
+
+            if (!$sell->invoice_no) {
+                $sell->invoice_no = 'INV-' . str_pad($sell->id, 6, '0', STR_PAD_LEFT);
+                $sell->save();
+            }
+
+            $salesForTheDay = Sell::whereDate('created_at', $sell->created_at->toDateString())
+                ->orderBy('created_at', 'asc')->get();
+
+            $queueNumber = 1;
+            foreach ($salesForTheDay as $index => $sale) {
+                if ($sale->id == $sell->id) {
+                    $queueNumber = $index + 1;
+                    break;
+                }
+            }
+
+            $sell->update(['q_number' => $queueNumber]);
+
+            $invoiceDetails = "🧾 *Invoice Details*\n";
+            $invoiceDetails .= "Date: " . $sell->created_at->format('d-m-Y h:i A') . "\n";
+            $invoiceDetails .= "Queue No: $queueNumber\n";
+            $invoiceDetails .= "Invoice №: " . $sell->invoice_no . "\n";
+            $invoiceDetails .= "Customer: " . ($sell->customer ? $sell->customer->first_name . ' ' . $sell->customer->last_name : 'Guest') . "\n\n";
+
+
+            $invoiceDetails .= "Item\tQty\tPrice\tTotal\n";
+            $invoiceDetails .= "--------------------------------\n";
+
+            // 👉 Calculate subtotal
+            $subtotal = 0;
+
+            foreach ($sell->sellDetail as $detail) {
+                $itemName = $detail->product ? $detail->product->names : 'Unknown';
+                if ($detail->productVariant) {
+                    $itemName .= ' ' . $detail->productVariant->variant_name;
+                }
+
+                $itemTotal = ($detail->qty ?? 1) * ($detail->price ?? 0);
+                $subtotal += $itemTotal;
+
+                $invoiceDetails .= $itemName . "\t" . $detail->qty . "\t$" . number_format($detail->price, 2) . "\t$" . number_format($itemTotal, 2) . "\n";
+            }
+
+            // 👉 Get discount from session
+            $priceSession = session('price_cart');
+            $discount = isset($priceSession['discount_price']) ? $priceSession['discount_price'] : 0;
+            $grandTotal = $subtotal - $discount;
+
+            $invoiceDetails .= "\nSubtotal: $" . number_format($subtotal, 2) . "\n";
+            $invoiceDetails .= "Discount: $" . number_format($discount, 2) . "\n";
+            $invoiceDetails .= "Grand Total: $" . number_format($grandTotal, 2) . "\n";
+            $invoiceDetails .= "Paid by: " . ($sell->paymentMethod ? $sell->paymentMethod->names : 'N/A') . "\n";
+
+            $text = urlencode($invoiceDetails);
             $apiToken = env('TELEGRAM_BOT_TOKEN');
-            $text = '🚀 Payment Successful! Your order is confirmed.';
+            $chatId = env('TELEGRAM_CHAT_CHANEL');
 
-            $response = \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=" . env('TELEGRAM_CHAT_CHANEL') . '&text=' . $text);
-
-            return $response->body();
+            \Http::get("https://api.telegram.org/bot$apiToken/sendMessage?chat_id=$chatId&text=$text&parse_mode=Markdown");
         } catch (\Exception $exception) {
-            return response()->json([
-                'statusCode' => 200,
-                'message' => 'Failed Notification',
-                'success' => false,
-                'data' => []
-            ]);
+            \Log::error("Telegram Notification Error: " . $exception->getMessage());
         }
     }
 }
