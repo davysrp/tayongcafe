@@ -60,7 +60,7 @@
                                                     </button>
                                                     <input type="number" name="quantity"
                                                            class="form-control form-control-sm input-number text-center"
-                                                           value="{{ $details['quantity'] }}" min="1" max="10">
+                                                           value="{{ $details['quantity'] }}" min="1" max="100">
                                                     <button type="button" class="btn btn-outline-primary btn-number"
                                                             data-type="plus" data-id="{{ $id }}">
                                                         <i class="fas fa-plus"></i>

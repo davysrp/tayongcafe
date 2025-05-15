@@ -15,8 +15,8 @@
                 <div class="card-body">
 
                     <div class="text-center mb-4">
-                        <h4 class="text-success fw-bold">✅ Order Placed Successfully!</h4>
-                        <p class="text-muted">Thank you for your purchase.</p>
+                        <h4 class="text-success fw-bold">✅ ការបញ្ជាទិញជោគជ័យ!</h4>
+                        <p class="text-muted">ឆាតាន់យ៉ុង ក្រុងសិរីសោភ័ណ</p>
                     </div>
 
 @if($order)
@@ -84,20 +84,20 @@
     </style>
 
     <div class="invoice-box" id="invoice">
-        <h6>🧾 Invoice Details</h6>
-        <p><strong>Date:</strong> {{ $order->created_at->format('d-m-Y h:i A') }}</p>
-        <p><strong>Queue No:</strong> {{ $order->q_number ?? '-' }}</p>
-        <p><strong>Invoice №:</strong> {{ $order->invoice_no ?? 'N/A' }}</p>
-        <p><strong>Customer:</strong> {{ $order->customer->first_name ?? 'Guest' }} {{ $order->customer->last_name ?? '' }}</p>
+        {{-- <h6>🧾 Invoice Details</h6> --}}
+        <p><strong>កាលបរិច្ឆេទកុម៉ុង់:</strong> {{ $order->created_at->format('d-m-Y h:i A') }}</p>
+        <p><strong>លេខរៀង:</strong> {{ $order->q_number ?? '-' }}</p>
+        <p><strong>លេខ​វិក្កយបត្រ​ №:</strong> {{ $order->invoice_no ?? 'N/A' }}</p>
+        <p><strong>ឈ្មោះអតិថិជន:</strong> {{ $order->customer->first_name ?? 'Guest' }} {{ $order->customer->last_name ?? '' }}</p>
         {{-- <p><strong>Shipping Method:</strong> {{ $order->shippingMethod->name ?? 'N/A' }}</p> --}}
 
         <table>
             <thead>
                 <tr>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>Total</th>
+                    <th>ទំនិញ</th>
+                    <th>ចំនួន</th>
+                    <th>តម្លៃ</th>
+                    <th>តម្លៃសរុប</th>
                 </tr>
             </thead>
             <tbody>
@@ -134,16 +134,16 @@
 
 
         <div class="invoice-summary">
-            <div><span><strong>Subtotal:</strong></span><span>${{ number_format($subtotal, 2) }}</span></div>
-            <div><span><strong>Discount:</strong></span><span>${{ number_format($discount, 2) }}</span></div>
-            <div><span><strong>Grand Total:</strong></span><span><strong>${{ number_format($grandTotal, 2) }}</strong></span></div>
-            <div><span><strong>Paid by:</strong></span><span>{{ $order->paymentMethod->names ?? 'N/A' }}</span></div>
+            <div><span><strong>តម្លៃ:</strong></span><span>${{ number_format($subtotal, 2) }}</span></div>
+            <div><span><strong>បញ្ចុះតម្លៃ:</strong></span><span>${{ number_format($discount, 2) }}</span></div>
+            <div><span><strong>សរុប:</strong></span><span><strong>${{ number_format($grandTotal, 2) }}</strong></span></div>
+            <div><span><strong>វិធីទូទាត់ប្រាក់</strong></span><span>{{ $order->paymentMethod->names ?? 'N/A' }}</span></div>
         </div>
     </div>
 
     <div class="action-buttons">
-        <a href="{{ url('/') }}">🏠 Back to Home</a>
-        <button onclick="printInvoice()">🖨️ Download Invoice</button>
+        <a href="{{ url('/') }}">🏠 ចុចកុម៉ុងទិញម្តងទៀត</a>
+        <button onclick="printInvoice()">🖨️ ទាញយកវិក័យបត្រ</button>
     </div>
 
     <script>
@@ -172,7 +172,7 @@
 
 @else
     <div class="alert alert-warning text-center">
-        ⚠ No recent order found.
+        ⚠រកមិនឃើញការបញ្ជាទិញថ្មីៗទេ!
     </div>
 @endif
 

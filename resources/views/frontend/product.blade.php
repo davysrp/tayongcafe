@@ -92,7 +92,7 @@
                                         @else
                                             <div class="col-md-12 text-center">
                                                 {{-- <p>No products available in this category.</p> --}}
-                                                <p>ផលិតផលអស់ពីស្តុក</p>
+                                                <p>ប្រភេទនេះមិនទាន់មានផលិតផលទេ!</p>
                                             </div>
                                         @endif
                                     </div>
