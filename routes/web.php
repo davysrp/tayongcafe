@@ -27,6 +27,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [FrontendController::class, 'index'])->name('homePage');
 Route::get('/page/{category}', [FrontendController::class, 'index'])->name('productCategory');
 
+Route::post('/admin/accept-sell-order/{id}', function ($id) {
+    \App\Models\Sell::where('id', $id)->update(['status' => 'accepted']); // or 'completed'
+    return redirect()->back()->with('success', 'Order accepted.');
+});
+// refresh admin dashbord when customer made order
+Route::get('/admin/check-new-orders', function () {
+    $count = \App\Models\Sell::where('status', 'pending')->count();
+    return response()->json(['count' => $count]);
+});
+
 
 
 Route::middleware('auth:user')->group(function () {

@@ -37,11 +37,17 @@ class DashboardController extends Controller
         ->groupBy(DB::raw('YEAR(created_at)'))
         ->get();
         $totalYearlySales = $yearlySells->sum('total_sales');
+
+        // Get the new orders (you can filter by status = 'pending', or any value you use for new)
+        $newOrders = Sell::with(['customer', 'sellDetail', 'sellDetail.product'])
+        ->where('status', 'pending')
+        ->orderBy('created_at', 'desc')
+        ->get();
             
         // return view('backend.dashboard',compact('dailySells','weeklySells','monthlySells' ,'yearlySells'));
         return view('backend.dashboard', compact(
             'dailySells', 'weeklySells', 'monthlySells', 'yearlySells',
-            'totalDailySales', 'totalWeeklySales', 'totalMonthlySales', 'totalYearlySales'
+            'totalDailySales', 'totalWeeklySales', 'totalMonthlySales', 'totalYearlySales','newOrders'
         ));
     }
     
